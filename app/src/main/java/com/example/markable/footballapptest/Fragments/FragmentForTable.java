@@ -11,19 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.markable.footballapptest.Classes.Team;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class FragmentForDiv extends Fragment {
+public class FragmentForTable extends Fragment {
 
     private static final String TAG = "FragTest";
 
@@ -31,8 +27,8 @@ public class FragmentForDiv extends Fragment {
 
     TextView textView;
 
-    public static FragmentForDiv newInstance(String data){
-        FragmentForDiv fragment = new FragmentForDiv();
+    public static FragmentForTable newInstance(String data){
+        FragmentForTable fragment = new FragmentForTable();
         Bundle args = new Bundle();
         args.putString("division", data);
         fragment.setArguments(args);
@@ -49,7 +45,7 @@ public class FragmentForDiv extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_test_divisions, container, false);
+        View view = inflater.inflate(R.layout.fragment_test_table, container, false);
         textView = (TextView) view.findViewById(R.id.textView_test);
         textView.setText("Чисто проверить! " + fromActivity );
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
