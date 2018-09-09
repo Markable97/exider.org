@@ -60,11 +60,11 @@ public class FragmentForDiv extends Fragment {
 
     public class ServerConnect extends AsyncTask<String, Void, String>{
 
-        String query = "select * from teams";
-        String fromServer = null;
-        String ipAdres = "192.168.0.104";
+        String query = "{\"id_division\":1,\"id_tour\":2}";
+        String fromServer = null, fromServerResultsPrevMatches = null ;
+        String ipAdres = "192.168.0.100";
 
-        ArrayList<Team> newTeams = new ArrayList<>();
+       
         private String result = "";
 
         @Override
@@ -77,13 +77,16 @@ public class FragmentForDiv extends Fragment {
             try {
                 socket = new Socket(ipAdres, 55555);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
-                Type t = new TypeToken<ArrayList<Team>>(){}.getType();
+                fromServerResultsPrevMatches = inResultsPrev.readUTF();
+                Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+               /* Type t = new TypeToken<ArrayList<Team>>(){}.getType();
                 newTeams = gson.fromJson(fromServer, t);
 
                 for(int i = 0; i < newTeams.size(); i++){
@@ -94,9 +97,10 @@ public class FragmentForDiv extends Fragment {
                     //Log.i(TAG, newTeams.get(i).getId() + " " + newTeams.get(i).getName() + " " + newTeams.get(i).getDate() + " " +
                       //      newTeams.get(i).getIdDivision());
                 }
-                Log.i(TAG, result);
+                Log.i(TAG, result);*/
                 out.close();
                 in.close();
+                inResultsPrev.close();
                 socket.close();
 
             } catch (IOException e) {
