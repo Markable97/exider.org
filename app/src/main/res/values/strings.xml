@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">FootballAppTest</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="high_div">Высший дивизион</string>>
+    <string name="first_div">Первый дивизион</string>>
+    <string name="secondA_div">Второй дивизион A</string>>
+    <string name="secondB_div">Второй дивизион B</string>>
+    <string name="thirdA_div">Третий дивизион A</string>>
+    <string name="thirdB_div">Третий дивизион B</string>>
+</resources>
