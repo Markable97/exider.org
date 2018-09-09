@@ -64,7 +64,7 @@ public class FragmentForDiv extends Fragment {
         String fromServer = null, fromServerResultsPrevMatches = null ;
         String ipAdres = "192.168.0.100";
 
-       
+
         private String result = "";
 
         @Override
