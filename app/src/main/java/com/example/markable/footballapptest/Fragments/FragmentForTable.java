@@ -49,12 +49,12 @@ public class FragmentForTable extends Fragment {
         textView = (TextView) view.findViewById(R.id.textView_test);
         textView.setText("Чисто проверить! " + fromActivity );
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
-        new ServerConnect().execute();
+        //new ServerConnect().execute();
 
         return view;
     }
 
-    public class ServerConnect extends AsyncTask<String, Void, String>{
+   /* public class ServerConnect extends AsyncTask<String, Void, String>{
 
         String query = "{\"id_division\":1,\"id_tour\":2}";
         String fromServer = null, fromServerResultsPrevMatches = null ;
@@ -82,18 +82,6 @@ public class FragmentForTable extends Fragment {
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
                 fromServerResultsPrevMatches = inResultsPrev.readUTF();
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
-               /* Type t = new TypeToken<ArrayList<Team>>(){}.getType();
-                newTeams = gson.fromJson(fromServer, t);
-
-                for(int i = 0; i < newTeams.size(); i++){
-
-                    result += newTeams.get(i).getId() + " " + newTeams.get(i).getName() + " " + newTeams.get(i).getDate() + " " +
-                            newTeams.get(i).getIdDivision() + "\n";
-
-                    //Log.i(TAG, newTeams.get(i).getId() + " " + newTeams.get(i).getName() + " " + newTeams.get(i).getDate() + " " +
-                      //      newTeams.get(i).getIdDivision());
-                }
-                Log.i(TAG, result);*/
                 out.close();
                 in.close();
                 inResultsPrev.close();
@@ -110,5 +98,5 @@ public class FragmentForTable extends Fragment {
         protected void onPostExecute(String s) {
             textView.setText(result);
         }
-    }
+    }*/
 }
