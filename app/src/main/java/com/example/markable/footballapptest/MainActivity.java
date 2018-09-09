@@ -3,11 +3,7 @@ package com.example.markable.footballapptest;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.markable.footballapptest.Adapters.SampleFragmentPageAdapter;
-import com.example.markable.footballapptest.Fragments.FragmentForDiv;
 import com.example.markable.footballapptest.Fragments.FragmentMain;
 
 public class MainActivity extends AppCompatActivity
@@ -103,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-            //fragmentClass = FragmentForDiv.class;
+            //fragmentClass = FragmentForTable.class;
             dataForFragment = "High";
         } else if (id == R.id.nav_gallery) {
             dataForFragment = "First";
@@ -127,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         }*/
 
         /*FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        FragmentForDiv fragForDiv = new FragmentForDiv().newInstance(dataForFragment);
+        FragmentForTable fragForDiv = new FragmentForTable().newInstance(dataForFragment);
         fragmentTransaction.replace(R.id.container, fragForDiv).commit();*/
         item.setChecked(true);
         setTitle(item.getTitle());

@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 
 import com.example.markable.footballapptest.Fragments.FragmentForCalendar;
-import com.example.markable.footballapptest.Fragments.FragmentForDiv;
+import com.example.markable.footballapptest.Fragments.FragmentForTable;
 import com.example.markable.footballapptest.Fragments.FragmentForResults;
 
 
@@ -29,10 +29,10 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return new FragmentForDiv().newInstance("Вкладка " + position);
+            case 0: return new FragmentForTable().newInstance("Вкладка " + position);
             case 1: return new FragmentForResults().newInstance("Вкладка " + position);
             case 2: return new FragmentForCalendar().newInstance("Вкладка " + position);
-            default: return new FragmentForDiv().newInstance("Вкладка " + position);
+            default: return new FragmentForTable().newInstance("Вкладка " + position);
         }
 
     }
