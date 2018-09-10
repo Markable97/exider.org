@@ -40,4 +40,10 @@ public class PrevMatches {
     public String getTeamVisit() {
         return teamVisit;
     }
+
+    @Override
+    public String toString() {
+        String result = nameDivision + " " + idTour + " " + teamHome + " " + goalHome + " " + goalVisit + " " + teamVisit;
+        return result;
+    }
 }

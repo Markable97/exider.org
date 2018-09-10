@@ -33,8 +33,8 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return new FragmentForTable().newInstance("Вкладка " + position + " " + divTable);
-            case 1: return new FragmentForResults().newInstance("Вкладка " + position + " " + prevReslts);
+            case 0: return new FragmentForTable().newInstance(divTable);
+            case 1: return new FragmentForResults().newInstance(prevReslts);
             case 2: return new FragmentForCalendar().newInstance("Вкладка " + position);
             default: return new FragmentForTable().newInstance("Вкладка " + position);
         }

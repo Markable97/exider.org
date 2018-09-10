@@ -11,19 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class FragmentForTable extends Fragment {
 
     private static final String TAG = "FragTest";
 
     private String fromActivity = null;
+
+    Gson gson = new Gson();
+
+    private ArrayList<TournamentTable> newTournamentTable = new ArrayList<>();
 
     TextView textView;
 
@@ -46,9 +53,23 @@ public class FragmentForTable extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_table, container, false);
-        textView = (TextView) view.findViewById(R.id.textView_test);
-        textView.setText("Чисто проверить! " + fromActivity );
+
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
+
+        textView = (TextView) view.findViewById(R.id.textView_test);
+        //textView.setText("Чисто проверить! " + fromActivity );
+
+        newTournamentTable = gson.fromJson(fromActivity, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+        String results = "";
+        for(int i = 0; i < newTournamentTable.size(); i++){
+            results += newTournamentTable.get(i).getDivisionName() + " " +
+                    newTournamentTable.get(i).getTeamName() + " " + newTournamentTable.get(i).getGames()
+                    + " " + newTournamentTable.get(i).getPoint() + " " + newTournamentTable.get(i).getWins()
+                    + " " + newTournamentTable.get(i).getDraws() + " " + newTournamentTable.get(i).getLosses() + "\n";
+        }
+        textView.setText(results);
+
+
         //new ServerConnect().execute();
 
         return view;

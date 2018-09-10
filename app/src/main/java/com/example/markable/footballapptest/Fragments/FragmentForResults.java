@@ -8,12 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 public class FragmentForResults extends Fragment {
 
     private static final String TAG = "FragRes";
     private String fromActivity;
+
+    private Gson gson = new Gson();
+
+    private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
 
     public static FragmentForResults newInstance (String data){
         FragmentForResults fragment = new FragmentForResults();
@@ -38,10 +47,18 @@ public class FragmentForResults extends Fragment {
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_results, container, false);
 
-        TextView textView = view.findViewById(R.id.textView_results);
-        textView.setText(fromActivity);
-
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
+
+        TextView textView = view.findViewById(R.id.textView_results);
+        //textView.setText(fromActivity);
+
+        newPrevMatches = gson.fromJson(fromActivity, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
+        String results = "";
+        for(int i = 0; i < newPrevMatches.size(); i++){
+            results += newPrevMatches.get(i).toString() + "\n";
+        }
+        textView.setText(results);
+
 
         return view;
     }
