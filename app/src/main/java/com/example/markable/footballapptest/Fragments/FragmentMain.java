@@ -36,7 +36,7 @@ public class FragmentMain extends Fragment {
 
         String query = "{\"id_division\":1,\"id_tour\":2}";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        String ipAdres = "192.168.0.100";
+        String ipAdres = "192.168.1.98";
 
 
         @Override
@@ -95,5 +95,40 @@ public class FragmentMain extends Fragment {
         }
 
         return view;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG,"OnStart ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "OnResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,"onPause" );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG,"onStop" );
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i(TAG, "onDetach");
     }
 }
