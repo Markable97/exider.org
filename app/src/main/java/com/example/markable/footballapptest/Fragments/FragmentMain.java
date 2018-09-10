@@ -59,6 +59,7 @@ public class FragmentMain extends Fragment {
                 fromServerResultsPrevMatches = inResultsPrev.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+                out.writeUTF("close");
                 out.close();
                 in.close();
                 inResultsPrev.close();
@@ -81,11 +82,8 @@ public class FragmentMain extends Fragment {
         Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
 
         new ServerConnectTest().execute();
-        int i = 0;
         while (table.equals("")){
-            i++;
         }
-        Log.i(TAG, String.valueOf(i));
         if (!table.equals("")){
             Log.i(TAG, "Зашел в if. Поля основного класса = " + table + prevResults);
             ViewPager viewPager = view.findViewById(R.id.viewPager);
