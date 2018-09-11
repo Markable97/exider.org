@@ -44,9 +44,9 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
 
     }
 
-   /* @Override
+    @Override
     public int getItemPosition(@NonNull Object object) {
-
+        Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
             ((UpdateFragListener) object).update(divTable, prevReslts);
         }
@@ -55,11 +55,12 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     }
 
     public void update(String divTable, String prevReslts){
+        Log.i(TAG, "Adapter: получил от шлавного фрагмента");
         this.divTable = divTable;
         this.prevReslts = prevReslts;
         //обновляет - вызов getItemPosition
         notifyDataSetChanged();
-    }*/
+    }
 
     @Override
     public CharSequence getPageTitle(int position) {

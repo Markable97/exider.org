@@ -36,6 +36,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     TextView textView;
 
     public static FragmentForTable newInstance(String data){
+        Log.i(TAG, "NewInstance: " + data);
         FragmentForTable fragment = new FragmentForTable();
         Bundle args = new Bundle();
         args.putString("division", data);
@@ -46,8 +47,8 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fromActivity = getArguments().getString("division","");
-        Log.i(TAG, "OnCreate: Получение строки из Bundle " + fromActivity);
+        //fromActivity = getArguments().getString("division","");
+        Log.i(TAG, "OnCreate:");
 
     }
 
@@ -55,8 +56,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_table, container, false);
-
-        Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
+        fromActivity = getArguments().getString("division","");
+        Log.i(TAG, "OnCreateView: Получение строки из Bundle " + fromActivity);
+        Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
         textView = (TextView) view.findViewById(R.id.textView_test);
         //textView.setText("Чисто проверить! " + fromActivity );
