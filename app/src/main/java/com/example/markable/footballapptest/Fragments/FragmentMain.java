@@ -24,6 +24,8 @@ public class FragmentMain extends Fragment {
 
     private static final String TAG = "FragMain";
 
+    View view;
+
     private String prevResults = "", table = "";
 
     SampleFragmentPageAdapter mAdapter;
@@ -31,6 +33,7 @@ public class FragmentMain extends Fragment {
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "OnCreate: ");
     }
 
     public class ServerConnectTest extends AsyncTask<String, Void, String>{
@@ -77,7 +80,20 @@ public class FragmentMain extends Fragment {
             }
 
             return null;
+        }
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //передача адаптеру
+            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
+            ViewPager viewPager = view.findViewById(R.id.viewPager);
+            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
+            viewPager.setAdapter(mAdapter);
+            TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+            mAdapter.update(table, prevResults);
         }
     }
 
@@ -90,12 +106,13 @@ public class FragmentMain extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        view = inflater.inflate(R.layout.fragment_main, container, false);
 
         Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
 
-        new ServerConnectTest().execute("1");
-        while (table.equals("")){
+        //new ServerConnectTest().execute("1");
+        update("1");
+       /* while (table.equals("")){
         }
         if (!table.equals("")){
            // mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
@@ -105,7 +122,7 @@ public class FragmentMain extends Fragment {
             //viewPager.setAdapter(mAdapter);
             TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
-        }
+        }*/
 
         return view;
     }
