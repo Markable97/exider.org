@@ -3,7 +3,6 @@ package com.example.markable.footballapptest.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -27,20 +26,28 @@ public class FragmentMain extends Fragment {
 
     private String prevResults = "", table = "";
 
+    SampleFragmentPageAdapter mAdapter;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     public class ServerConnectTest extends AsyncTask<String, Void, String>{
 
-        String query = "{\"id_division\":1,\"id_tour\":2}";
+        //String query = "{\"id_division\":1,\"id_tour\":2}";
+        String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        String ipAdres = "192.168.1.98";
+        //String ipAdres = "192.168.1.98";
+        String ipAdres = "10.0.2.2";
 
 
         @Override
         protected String doInBackground(String... strings) {
+
+            for(String s : strings){
+                query = "{\"id_division\":" + s + ",\"id_tour\":2}";
+            }
 
             Log.i(TAG, "Поток запущен");
             Socket socket;
@@ -74,26 +81,35 @@ public class FragmentMain extends Fragment {
         }
     }
 
-    @Nullable
+
+    public void update (String idDivision){
+        Log.i(TAG, "Interface: Передаче Pager-у");
+        new ServerConnectTest().execute(idDivision);
+       // mAdapter.update(table, prevResults);
+    }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
 
-        new ServerConnectTest().execute();
+        new ServerConnectTest().execute("1");
         while (table.equals("")){
         }
         if (!table.equals("")){
-            Log.i(TAG, "Зашел в if. Поля основного класса = " + table + prevResults);
+           // mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
+            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
             ViewPager viewPager = view.findViewById(R.id.viewPager);
             viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
+            //viewPager.setAdapter(mAdapter);
             TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
         }
 
         return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.UpdateFragListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class FragmentForTable extends Fragment {
+public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     private static final String TAG = "FragTest";
 
@@ -46,7 +47,8 @@ public class FragmentForTable extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fromActivity = getArguments().getString("division","");
-        Log.i(TAG, "OnCreate: Получение строки из Bundle");
+        Log.i(TAG, "OnCreate: Получение строки из Bundle " + fromActivity);
+
     }
 
     @Nullable
@@ -122,6 +124,22 @@ public class FragmentForTable extends Fragment {
     }*/
 
     @Override
+    public void update(String divTable, String prevResults) {
+        Log.i(TAG, "Interface: " + divTable);
+        /*this.fromActivity = divTable;
+        newTournamentTable.clear();
+        newTournamentTable = gson.fromJson(fromActivity, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+        String results = "";
+        for(int i = 0; i < newTournamentTable.size(); i++){
+            results += newTournamentTable.get(i).getDivisionName() + " " +
+                    newTournamentTable.get(i).getTeamName() + " " + newTournamentTable.get(i).getGames()
+                    + " " + newTournamentTable.get(i).getPoint() + " " + newTournamentTable.get(i).getWins()
+                    + " " + newTournamentTable.get(i).getDraws() + " " + newTournamentTable.get(i).getLosses() + "\n";
+        }
+        textView.setText(results);*/
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.i(TAG,"OnStart ");
@@ -156,4 +174,6 @@ public class FragmentForTable extends Fragment {
         super.onDetach();
         Log.i(TAG, "onDetach");
     }
+
+
 }

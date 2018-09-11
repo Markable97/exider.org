@@ -10,15 +10,19 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.UpdateFragListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 
-public class FragmentForResults extends Fragment {
+public class FragmentForResults extends Fragment implements UpdateFragListener {
 
     private static final String TAG = "FragRes";
     private String fromActivity;
+
+    TextView textView;
 
     private Gson gson = new Gson();
 
@@ -37,10 +41,8 @@ public class FragmentForResults extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         fromActivity = getArguments().getString("results","");
         Log.i(TAG, "OnCreate: Получение строки из Bundle");
-
     }
 
     @Override
@@ -49,7 +51,7 @@ public class FragmentForResults extends Fragment {
 
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
 
-        TextView textView = view.findViewById(R.id.textView_results);
+        textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
         newPrevMatches = gson.fromJson(fromActivity, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
@@ -62,6 +64,20 @@ public class FragmentForResults extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void update(String divTable, String prevResults) {
+        Log.i(TAG, "Interface: " + prevResults);
+        this.fromActivity = prevResults;
+        newPrevMatches.clear();
+        newPrevMatches = gson.fromJson(fromActivity, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
+        String results = "";
+        for(int i = 0; i < newPrevMatches.size(); i++){
+            results += newPrevMatches.get(i).toString() + "\n";
+        }
+        textView.setText(results);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
