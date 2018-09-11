@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainAct";
+    FragmentMain fragmentMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        FragmentMain fragmentMain = new FragmentMain();
+        fragmentMain = new FragmentMain();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
@@ -101,19 +102,21 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
             //fragmentClass = FragmentForTable.class;
-            dataForFragment = "High";
+            dataForFragment = "1";
         } else if (id == R.id.nav_gallery) {
-            dataForFragment = "First";
+            dataForFragment = "2";
         } else if (id == R.id.nav_slideshow) {
-            dataForFragment = "SecondA";
+            dataForFragment = "3";
         } else if (id == R.id.nav_manage) {
-            dataForFragment = "SecondB";
+            dataForFragment = "4";
         } else if (id == R.id.nav_share) {
-            dataForFragment = "ThirdA";
+            dataForFragment = "5";
         } else if (id == R.id.nav_send) {
-            dataForFragment = "ThirdB";
+            dataForFragment = "6";
         }
 
+
+        fragmentMain.update(dataForFragment);
 
         /*try {
             fragment = (Fragment) fragmentClass.newInstance();
