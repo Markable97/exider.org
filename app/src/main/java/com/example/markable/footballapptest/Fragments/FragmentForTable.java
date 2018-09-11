@@ -35,12 +35,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     TextView textView;
 
-    public static FragmentForTable newInstance(String data){
-        Log.i(TAG, "NewInstance: " + data);
+    public static FragmentForTable newInstance(){
+        Log.i(TAG, "NewInstance: ");
         FragmentForTable fragment = new FragmentForTable();
-        Bundle args = new Bundle();
-        args.putString("division", data);
-        fragment.setArguments(args);
         return fragment;
     }
 
