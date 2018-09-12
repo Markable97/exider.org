@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
@@ -15,8 +16,12 @@ import com.example.markable.footballapptest.Fragments.FragmentForResults;
 import com.example.markable.footballapptest.UpdateFragListener;
 
 
-public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
+public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
 
+
+    //private final FragmentForTable fragmentForTable = new FragmentForTable().newInstance();
+    //private final FragmentForResults fragmentForResults = new FragmentForResults().newInstance();
+    //private final FragmentForCalendar fragmentForCalendar = new FragmentForCalendar().newInstance();
 
     private static final String TAG = "PageAdap";
     final int PAGE_COUNT = 3;
@@ -30,15 +35,16 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
         this.context = context;
         this.divTable = divTable;
         this.prevReslts = prevResults;
-        Log.i(TAG, "Adapter: " + "divTable = " + this.divTable + "\n prevResults =" + this.prevReslts);
+        Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.divTable + "\n prevResults =" + this.prevReslts);
     }
 
     @Override
     public Fragment getItem(int position) {
+        Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
             case 0: return new FragmentForTable().newInstance(divTable);
             case 1: return new FragmentForResults().newInstance(prevReslts);
-            case 2: return new FragmentForCalendar().newInstance("Вкладка " + position);
+            case 2: return new FragmentForCalendar().newInstance();
             default: return new FragmentForTable().newInstance(divTable);
         }
 
@@ -55,7 +61,7 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     }
 
     public void update(String divTable, String prevReslts){
-        Log.i(TAG, "Adapter: получил от шлавного фрагмента");
+        Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
         this.divTable = divTable;
         this.prevReslts = prevReslts;
         //обновляет - вызов getItemPosition

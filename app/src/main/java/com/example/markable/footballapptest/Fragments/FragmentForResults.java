@@ -28,21 +28,21 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
 
     private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
 
-    public static FragmentForResults newInstance (String data){
+    public static FragmentForResults newInstance (String prevRes){
+        Log.i(TAG, "NewInstance: " + prevRes);
         FragmentForResults fragment = new FragmentForResults();
-
         Bundle args = new Bundle();
-        args.putString("results", data);
+        args.putString("results", prevRes);
         fragment.setArguments(args);
-
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fromActivity = getArguments().getString("results","");
-        Log.i(TAG, "OnCreate: Получение строки из Bundle");
+        Log.i(TAG, "OnCreate:");
+        fromActivity = getArguments().getString("results");
+        Log.i(TAG, "OnCreate:" + fromActivity);
     }
 
     @Override
@@ -54,12 +54,12 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
-        newPrevMatches = gson.fromJson(fromActivity, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
-        String results = "";
-        for(int i = 0; i < newPrevMatches.size(); i++){
-            results += newPrevMatches.get(i).toString() + "\n";
+        if(fromActivity != null){
+            update(null, fromActivity);
+        }else {
+            textView.setText("Чисто проверить! ");
         }
-        textView.setText(results);
+
 
 
         return view;
@@ -77,6 +77,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         }
         textView.setText(results);
     }
+
 
     @Override
     public void onStart() {

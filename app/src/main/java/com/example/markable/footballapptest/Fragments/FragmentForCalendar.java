@@ -18,20 +18,15 @@ public class FragmentForCalendar extends Fragment {
 
     private String fromActivity;
 
-    public static FragmentForCalendar newInstance(String data){
+    public static FragmentForCalendar newInstance(){
         FragmentForCalendar fragment = new FragmentForCalendar();
-
-        Bundle args = new Bundle();
-        args.putString("calendar", data);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fromActivity = getArguments().getString("calendar", "");
-        Log.i(TAG, "OnCreate: Получение строки из Bundle");
+        Log.i(TAG, "OnCreate:");
     }
 
     @Nullable

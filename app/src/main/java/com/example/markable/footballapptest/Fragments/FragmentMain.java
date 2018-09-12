@@ -86,22 +86,69 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
-            ViewPager viewPager = view.findViewById(R.id.viewPager);
-            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
-            viewPager.setAdapter(mAdapter);
-            TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
-            tabLayout.setupWithViewPager(viewPager);
-            mAdapter.update(table, prevResults);
+//            mAdapter.update(table, prevResults);
         }
     }
 
 
     public void update (String idDivision){
         Log.i(TAG, "Interface: Передаче Pager-у");
-        new ServerConnectTest().execute(idDivision);
+        new ServerConnectTestDouble().execute(idDivision);
        // mAdapter.update(table, prevResults);
+    }
+
+    public class ServerConnectTestDouble extends AsyncTask<String, Void, String>{
+
+        //String query = "{\"id_division\":1,\"id_tour\":2}";
+        String query = "";
+        String fromServer = null, fromServerResultsPrevMatches = null ;
+        //String ipAdres = "192.168.1.98";
+        String ipAdres = "10.0.2.2";
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            for(String s : strings){
+                query = "{\"id_division\":" + s + ",\"id_tour\":2}";
+            }
+
+            Log.i(TAG, "Поток запущен");
+            Socket socket;
+            Gson gson = new Gson();
+            try {
+                socket = new Socket(ipAdres, 55555);
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+                out.writeUTF(query);
+
+                fromServer = in.readUTF();
+                table = fromServer;
+                Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+                fromServerResultsPrevMatches = inResultsPrev.readUTF();
+                prevResults = fromServerResultsPrevMatches;
+                Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+                out.writeUTF("close");
+                out.close();
+                in.close();
+                inResultsPrev.close();
+                socket.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //передача адаптеру
+           mAdapter.update(table, prevResults);
+        }
     }
 
     @Override
@@ -110,19 +157,19 @@ public class FragmentMain extends Fragment {
 
         Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
 
-        //new ServerConnectTest().execute("1");
-        update("1");
-       /* while (table.equals("")){
+        new ServerConnectTest().execute("1");
+       // update("1");
+        while (table.equals("")){
         }
         if (!table.equals("")){
-           // mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
             Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
             ViewPager viewPager = view.findViewById(R.id.viewPager);
-            viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
-            //viewPager.setAdapter(mAdapter);
+            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
+            viewPager.setAdapter(mAdapter);
             TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
-        }*/
+        }
 
         return view;
     }
