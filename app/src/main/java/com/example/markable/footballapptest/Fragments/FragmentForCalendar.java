@@ -18,20 +18,15 @@ public class FragmentForCalendar extends Fragment {
 
     private String fromActivity;
 
-    public static FragmentForCalendar newInstance(String data){
+    public static FragmentForCalendar newInstance(){
         FragmentForCalendar fragment = new FragmentForCalendar();
-
-        Bundle args = new Bundle();
-        args.putString("calendar", data);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fromActivity = getArguments().getString("calendar", "");
-        Log.i(TAG, "OnCreate: Получение строки из Bundle");
+        Log.i(TAG, "OnCreate:");
     }
 
     @Nullable
@@ -44,5 +39,40 @@ public class FragmentForCalendar extends Fragment {
 
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
         return view;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG,"OnStart ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "OnResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,"onPause" );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG,"onStop" );
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i(TAG, "onDetach");
     }
 }
