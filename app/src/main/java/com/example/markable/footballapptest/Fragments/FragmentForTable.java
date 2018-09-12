@@ -29,6 +29,8 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     private String fromActivity = null;
 
+    Bundle args = new Bundle();
+
     Gson gson = new Gson();
 
     private ArrayList<TournamentTable> newTournamentTable = new ArrayList<>();
@@ -53,12 +55,22 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_table, container, false);
-        fromActivity = getArguments().getString("division","");
-        Log.i(TAG, "OnCreateView: Получение строки из Bundle " + fromActivity);
+        Log.i(TAG, "OnCreateView: переменная для JSON " + fromActivity);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
         textView = (TextView) view.findViewById(R.id.textView_test);
-        //textView.setText("Чисто проверить! " + fromActivity );
+
+        if(fromActivity != null){
+            updateTable(fromActivity);
+        }else {
+            textView.setText("Чисто проверить! ");
+        }
+
+
+        //textView.setText(fromActivity);
+        /*if(savedInstanceState == null){
+            fromActivity =  "[{\"divisionName\":\"Высший дивизион\",\"teamName\":\"Титан\",\"games\":2,\"point\":6,\"wins\":2,\"draws\":0,\"losses\":0}]";
+        }
 
         newTournamentTable = gson.fromJson(fromActivity, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
         String results = "";
@@ -68,7 +80,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     + " " + newTournamentTable.get(i).getPoint() + " " + newTournamentTable.get(i).getWins()
                     + " " + newTournamentTable.get(i).getDraws() + " " + newTournamentTable.get(i).getLosses() + "\n";
         }
-        textView.setText(results);
+        textView.setText(results);*/
 
 
         //new ServerConnect().execute();
@@ -124,8 +136,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     @Override
     public void update(String divTable, String prevResults) {
-        Log.i(TAG, "Interface: " + divTable);
+        Log.i(TAG, "Interface: Сработал пустой метод");
         /*this.fromActivity = divTable;
+        Log.i(TAG, "Interface: " + fromActivity);
         newTournamentTable.clear();
         newTournamentTable = gson.fromJson(fromActivity, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
         String results = "";
@@ -136,6 +149,30 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     + " " + newTournamentTable.get(i).getDraws() + " " + newTournamentTable.get(i).getLosses() + "\n";
         }
         textView.setText(results);*/
+    }
+
+    @Override
+    public void updateTable(String table) {
+        this.fromActivity = table;
+        Log.i(TAG, "Interface длы Table: " + fromActivity);
+        newTournamentTable.clear();
+        newTournamentTable = gson.fromJson(fromActivity, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+        String results = "";
+        for(int i = 0; i < newTournamentTable.size(); i++){
+            results += newTournamentTable.get(i).getDivisionName() + " " +
+                    newTournamentTable.get(i).getTeamName() + " " + newTournamentTable.get(i).getGames()
+                    + " " + newTournamentTable.get(i).getPoint() + " " + newTournamentTable.get(i).getWins()
+                    + " " + newTournamentTable.get(i).getDraws() + " " + newTournamentTable.get(i).getLosses() + "\n";
+        }
+        Log.i(TAG,"Interface длы Table: results =" + results);
+        textView.setText(results);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState: " + fromActivity);
+        outState.putString("division",fromActivity);
     }
 
     @Override
@@ -165,6 +202,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        args.putString("division", fromActivity);
+
         Log.i(TAG, "onDestroyView");
     }
 
