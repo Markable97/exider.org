@@ -28,8 +28,12 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
 
     private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
 
-    public static FragmentForResults newInstance (){
+    public static FragmentForResults newInstance (String prevRes){
+        Log.i(TAG, "NewInstance: " + prevRes);
         FragmentForResults fragment = new FragmentForResults();
+        Bundle args = new Bundle();
+        args.putString("results", prevRes);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -37,6 +41,8 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
+        fromActivity = getArguments().getString("results");
+        Log.i(TAG, "OnCreate:" + fromActivity);
     }
 
     @Override
@@ -48,16 +54,12 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
-        if(savedInstanceState == null){
-            fromActivity = "[{\"nameDivision\":\"Высший дивизион\",\"idTour\":2,\"teamHome\":\"Регион-13\",\"goalHome\":2,\"goalVisit\":1,\"teamVisit\":\"Трансгарант\"},{\"nameDivision\":\"Высший дивизион\",\"idTour\":2,\"teamHome\":\"Авангард\",\"goalHome\":5,\"goalVisit\":1,\"teamVisit\":\"Бастион\"}]";
+        if(fromActivity != null){
+            update(null, fromActivity);
+        }else {
+            textView.setText("Чисто проверить! ");
         }
 
-        newPrevMatches = gson.fromJson(fromActivity, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
-        String results = "";
-        for(int i = 0; i < newPrevMatches.size(); i++){
-            results += newPrevMatches.get(i).toString() + "\n";
-        }
-        textView.setText(results);
 
 
         return view;
@@ -76,10 +78,6 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         textView.setText(results);
     }
 
-    @Override
-    public void updateTable(String table) {
-
-    }
 
     @Override
     public void onStart() {

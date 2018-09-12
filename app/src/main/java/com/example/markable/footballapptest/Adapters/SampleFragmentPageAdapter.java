@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
@@ -15,12 +16,12 @@ import com.example.markable.footballapptest.Fragments.FragmentForResults;
 import com.example.markable.footballapptest.UpdateFragListener;
 
 
-public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
+public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
 
 
-    private final FragmentForTable fragmentForTable = new FragmentForTable().newInstance();
-    private final FragmentForResults fragmentForResults = new FragmentForResults().newInstance();
-    private final FragmentForCalendar fragmentForCalendar = new FragmentForCalendar().newInstance();
+    //private final FragmentForTable fragmentForTable = new FragmentForTable().newInstance();
+    //private final FragmentForResults fragmentForResults = new FragmentForResults().newInstance();
+    //private final FragmentForCalendar fragmentForCalendar = new FragmentForCalendar().newInstance();
 
     private static final String TAG = "PageAdap";
     final int PAGE_COUNT = 3;
@@ -41,10 +42,10 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return fragmentForTable;
-            case 1: return fragmentForResults;
-            case 2: return fragmentForCalendar;
-            default: return fragmentForTable;
+            case 0: return new FragmentForTable().newInstance(divTable);
+            case 1: return new FragmentForResults().newInstance(prevReslts);
+            case 2: return new FragmentForCalendar().newInstance();
+            default: return new FragmentForTable().newInstance(divTable);
         }
 
     }
@@ -54,7 +55,6 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
             ((UpdateFragListener) object).update(divTable, prevReslts);
-            ((UpdateFragListener) object).updateTable(divTable);
         }
 
         return super.getItemPosition(object);
