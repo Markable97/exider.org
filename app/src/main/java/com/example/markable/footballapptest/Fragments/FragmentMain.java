@@ -58,21 +58,21 @@ public class FragmentMain extends Fragment {
             try {
                 socket = new Socket(ipAdres, 55555);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
+                //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
+                Log.i(TAG, "doInBackground: ServerTestConnect");
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
-                fromServerResultsPrevMatches = inResultsPrev.readUTF();
+                fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
                 out.writeUTF("close");
                 out.close();
                 in.close();
-                inResultsPrev.close();
+               // inResultsPrev.close();
                 socket.close();
 
             } catch (IOException e) {
@@ -119,7 +119,7 @@ public class FragmentMain extends Fragment {
             try {
                 socket = new Socket(ipAdres, 55555);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
+                //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
                 out.writeUTF(query);
@@ -127,13 +127,13 @@ public class FragmentMain extends Fragment {
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
-                fromServerResultsPrevMatches = inResultsPrev.readUTF();
+                fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
                 out.writeUTF("close");
                 out.close();
                 in.close();
-                inResultsPrev.close();
+                //inResultsPrev.close();
                 socket.close();
 
             } catch (IOException e) {
