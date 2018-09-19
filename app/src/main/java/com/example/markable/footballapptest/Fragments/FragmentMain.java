@@ -63,6 +63,8 @@ public class FragmentMain extends Fragment {
                 Log.i(TAG, "doInBackground: ServerTestConnect");
                 out.writeUTF(query);
 
+                Log.i(TAG, "doInBackground: Добавляю BitMap");
+                
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
@@ -124,6 +126,8 @@ public class FragmentMain extends Fragment {
 
                 out.writeUTF(query);
 
+                
+                
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
