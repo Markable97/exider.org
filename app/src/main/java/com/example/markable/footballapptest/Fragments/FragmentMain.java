@@ -60,7 +60,7 @@ public class FragmentMain extends Fragment {
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
+                Log.i(TAG, "doInBackground: ServerTestConnect");
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
