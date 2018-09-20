@@ -99,6 +99,29 @@ public class FragmentMain extends Fragment {
        // mAdapter.update(table, prevResults);
     }
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
+
+        new ServerConnectTest().execute("1");
+       // update("1");
+        while (table.equals("")){
+        }
+        if (!table.equals("")){
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
+            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
+            ViewPager viewPager = view.findViewById(R.id.viewPager);
+            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
+            viewPager.setAdapter(mAdapter);
+            TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+        }
+
+        return view;
+    }
+
     public class ServerConnectTestDouble extends AsyncTask<String, Void, String>{
 
         //String query = "{\"id_division\":1,\"id_tour\":2}";
@@ -126,8 +149,8 @@ public class FragmentMain extends Fragment {
 
                 out.writeUTF(query);
 
-                
-                
+
+
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
@@ -151,31 +174,8 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-           mAdapter.update(table, prevResults);
+            mAdapter.update(table, prevResults);
         }
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
-
-        new ServerConnectTest().execute("1");
-       // update("1");
-        while (table.equals("")){
-        }
-        if (!table.equals("")){
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
-            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
-            ViewPager viewPager = view.findViewById(R.id.viewPager);
-            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
-            viewPager.setAdapter(mAdapter);
-            TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
-            tabLayout.setupWithViewPager(viewPager);
-        }
-
-        return view;
     }
 
     @Override
