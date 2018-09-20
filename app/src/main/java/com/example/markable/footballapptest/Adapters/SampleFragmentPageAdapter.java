@@ -2,6 +2,7 @@ package com.example.markable.footballapptest.Adapters;
 
 import android.content.Context;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,12 +30,14 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private String divTable;
     private String prevReslts;
+    private Bitmap image;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, Context context, String divTable, String prevResults) {
+    public SampleFragmentPageAdapter(FragmentManager fm, Context context, String divTable, String prevResults, Bitmap image) {
         super(fm);
         this.context = context;
         this.divTable = divTable;
         this.prevReslts = prevResults;
+        this.image = image;
         Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.divTable + "\n prevResults =" + this.prevReslts);
     }
 
@@ -42,10 +45,10 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return new FragmentForTable().newInstance(divTable);
+            case 0: return new FragmentForTable().newInstance(divTable, image);
             case 1: return new FragmentForResults().newInstance(prevReslts);
             case 2: return new FragmentForCalendar().newInstance();
-            default: return new FragmentForTable().newInstance(divTable);
+            default: return new FragmentForTable().newInstance(divTable, image);
         }
 
     }

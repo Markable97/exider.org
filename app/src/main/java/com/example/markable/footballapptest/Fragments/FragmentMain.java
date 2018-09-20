@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +30,8 @@ public class FragmentMain extends Fragment {
 
     private String prevResults = "", table = "";
 
+    private Bitmap imageBitmap;
+
     SampleFragmentPageAdapter mAdapter;
 
     @Override
@@ -43,6 +47,7 @@ public class FragmentMain extends Fragment {
         String fromServer = null, fromServerResultsPrevMatches = null ;
         //String ipAdres = "192.168.1.98";
         String ipAdres = "10.0.2.2";
+        byte byteArray[];
 
 
         @Override
@@ -63,8 +68,12 @@ public class FragmentMain extends Fragment {
                 Log.i(TAG, "doInBackground: ServerTestConnect");
                 out.writeUTF(query);
 
-                Log.i(TAG, "doInBackground: Добавляю BitMap");
-                
+                byteArray = new byte[30*1024];
+                int count = in.read(byteArray, 0, byteArray.length);
+                Log.i(TAG, "doInBackground: Добавляю BitMap count = " + count);
+                imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, count);
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.getByteCount());
+
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
@@ -110,7 +119,7 @@ public class FragmentMain extends Fragment {
         while (table.equals("")){
         }
         if (!table.equals("")){
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults, imageBitmap);
             Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
             ViewPager viewPager = view.findViewById(R.id.viewPager);
             //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
@@ -129,6 +138,7 @@ public class FragmentMain extends Fragment {
         String fromServer = null, fromServerResultsPrevMatches = null ;
         //String ipAdres = "192.168.1.98";
         String ipAdres = "10.0.2.2";
+        private byte[] byteArray;
 
 
         @Override
@@ -148,8 +158,11 @@ public class FragmentMain extends Fragment {
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
                 out.writeUTF(query);
-
-
+                byteArray = new byte[30*1024];
+                int count = in.read(byteArray, 0, byteArray.length);
+                Log.i(TAG, "doInBackground: Добавляю BitMap count = " + count);
+                imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, count);
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.getByteCount());
 
                 fromServer = in.readUTF();
                 table = fromServer;
