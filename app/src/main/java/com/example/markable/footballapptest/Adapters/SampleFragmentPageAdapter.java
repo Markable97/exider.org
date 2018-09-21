@@ -16,6 +16,8 @@ import com.example.markable.footballapptest.Fragments.FragmentForTable;
 import com.example.markable.footballapptest.Fragments.FragmentForResults;
 import com.example.markable.footballapptest.UpdateFragListener;
 
+import java.util.ArrayList;
+
 
 public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
 
@@ -30,9 +32,9 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private String divTable;
     private String prevReslts;
-    private Bitmap image;
+    private ArrayList<Bitmap> image;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, Context context, String divTable, String prevResults, Bitmap image) {
+    public SampleFragmentPageAdapter(FragmentManager fm, Context context, String divTable, String prevResults, ArrayList<Bitmap> image) {
         super(fm);
         this.context = context;
         this.divTable = divTable;
