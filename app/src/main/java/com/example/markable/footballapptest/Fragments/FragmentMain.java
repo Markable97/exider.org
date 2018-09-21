@@ -21,6 +21,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class FragmentMain extends Fragment {
 
@@ -30,7 +31,7 @@ public class FragmentMain extends Fragment {
 
     private String prevResults = "", table = "";
 
-    private Bitmap imageBitmap;
+    private ArrayList<Bitmap> imageBitmap = new ArrayList<>();
 
     SampleFragmentPageAdapter mAdapter;
 
@@ -47,7 +48,6 @@ public class FragmentMain extends Fragment {
         String fromServer = null, fromServerResultsPrevMatches = null ;
         //String ipAdres = "192.168.1.98";
         String ipAdres = "10.0.2.2";
-        byte byteArray[];
 
 
         @Override
@@ -68,18 +68,26 @@ public class FragmentMain extends Fragment {
                 Log.i(TAG, "doInBackground: ServerTestConnect");
                 out.writeUTF(query);
 
-                byteArray = new byte[30*1024];
-                int count = in.read(byteArray, 0, byteArray.length);
-                Log.i(TAG, "doInBackground: Добавляю BitMap count = " + count);
-                imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, count);
-                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.getByteCount());
-
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+
+                int countFiles = in.readInt();
+                imageBitmap.clear();
+                Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
+                for(int i = 0; i < countFiles; i++){
+                    int countBytes = in.readInt();
+                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
+                    byte[] byteArray = new byte[countBytes];
+                    int countFromServer = in.read(byteArray, 0, countBytes);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                }
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+
                 out.writeUTF("close");
                 out.close();
                 in.close();
@@ -138,7 +146,6 @@ public class FragmentMain extends Fragment {
         String fromServer = null, fromServerResultsPrevMatches = null ;
         //String ipAdres = "192.168.1.98";
         String ipAdres = "10.0.2.2";
-        private byte[] byteArray;
 
 
         @Override
@@ -158,11 +165,6 @@ public class FragmentMain extends Fragment {
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
                 out.writeUTF(query);
-                byteArray = new byte[30*1024];
-                int count = in.read(byteArray, 0, byteArray.length);
-                Log.i(TAG, "doInBackground: Добавляю BitMap count = " + count);
-                imageBitmap = BitmapFactory.decodeByteArray(byteArray, 0, count);
-                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.getByteCount());
 
                 fromServer = in.readUTF();
                 table = fromServer;
@@ -170,6 +172,20 @@ public class FragmentMain extends Fragment {
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+
+                int countFiles = in.readInt();
+                imageBitmap.clear();
+                Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
+                for(int i = 0; i < countFiles; i++){
+                    int countBytes = in.readInt();
+                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
+                    byte[] byteArray = new byte[countBytes];
+                    int countFromServer = in.read(byteArray, 0, countBytes);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                }
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+
                 out.writeUTF("close");
                 out.close();
                 in.close();
