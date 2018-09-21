@@ -39,14 +39,14 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     TextView textView;
     ImageView image;
-    Bitmap imageBitmap;
+    private ArrayList<Bitmap> imageBitmap;
 
-    public static FragmentForTable newInstance(String table, Bitmap image){
+    public static FragmentForTable newInstance(String table, ArrayList<Bitmap> image){
         Log.i(TAG, "NewInstance: " + table);
         FragmentForTable fragment = new FragmentForTable();
         Bundle args = new Bundle();
         args.putString("division", table);
-        args.putParcelable("image", image);
+        args.putParcelableArrayList("image", image);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,9 +56,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
         fromActivity = getArguments().getString("division","");
-        imageBitmap = getArguments().getParcelable("image");
+        imageBitmap = getArguments().getParcelableArrayList("image");
         Log.i(TAG, "OnCreate: " + fromActivity);
-        Log.i(TAG, "onCreate Bitmap: " + imageBitmap.getByteCount());
+        Log.i(TAG, "onCreate Bitmap: " + imageBitmap.size());
     }
 
     @Nullable
@@ -70,7 +70,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
         textView = (TextView) view.findViewById(R.id.textView_test);
         image = view.findViewById(R.id.imageViewTest);
-        image.setImageBitmap(imageBitmap);
+        image.setImageBitmap(imageBitmap.get(0));
         if(fromActivity != null){
             update(fromActivity, null);
         }else {
