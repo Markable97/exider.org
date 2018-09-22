@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +21,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class FragmentMain extends Fragment {
 
@@ -27,6 +30,8 @@ public class FragmentMain extends Fragment {
     View view;
 
     private String prevResults = "", table = "";
+
+    private ArrayList<Bitmap> imageBitmap = new ArrayList<>();
 
     SampleFragmentPageAdapter mAdapter;
 
@@ -69,6 +74,20 @@ public class FragmentMain extends Fragment {
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+
+                int countFiles = in.readInt();
+                imageBitmap.clear();
+                Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
+                for(int i = 0; i < countFiles; i++){
+                    int countBytes = in.readInt();
+                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
+                    byte[] byteArray = new byte[countBytes];
+                    int countFromServer = in.read(byteArray, 0, countBytes);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                }
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+
                 out.writeUTF("close");
                 out.close();
                 in.close();
@@ -95,6 +114,29 @@ public class FragmentMain extends Fragment {
         Log.i(TAG, "Interface: Передаче Pager-у");
         new ServerConnectTestDouble().execute(idDivision);
        // mAdapter.update(table, prevResults);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
+
+        new ServerConnectTest().execute("1");
+       // update("1");
+        while (table.equals("")){
+        }
+        if (!table.equals("")){
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults, imageBitmap);
+            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
+            ViewPager viewPager = view.findViewById(R.id.viewPager);
+            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
+            viewPager.setAdapter(mAdapter);
+            TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+        }
+
+        return view;
     }
 
     public class ServerConnectTestDouble extends AsyncTask<String, Void, String>{
@@ -130,6 +172,20 @@ public class FragmentMain extends Fragment {
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+
+                int countFiles = in.readInt();
+                imageBitmap.clear();
+                Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
+                for(int i = 0; i < countFiles; i++){
+                    int countBytes = in.readInt();
+                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
+                    byte[] byteArray = new byte[countBytes];
+                    int countFromServer = in.read(byteArray, 0, countBytes);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                }
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+
                 out.writeUTF("close");
                 out.close();
                 in.close();
@@ -147,31 +203,8 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-           mAdapter.update(table, prevResults);
+            mAdapter.update(table, prevResults);
         }
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
-
-        new ServerConnectTest().execute("1");
-       // update("1");
-        while (table.equals("")){
-        }
-        if (!table.equals("")){
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults);
-            Log.i(TAG, "Зашел в if. Поля основного класса\n " + "Таблица ="  + table + "\n Результаты =" + prevResults);
-            ViewPager viewPager = view.findViewById(R.id.viewPager);
-            //viewPager.setAdapter(new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults));
-            viewPager.setAdapter(mAdapter);
-            TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
-            tabLayout.setupWithViewPager(viewPager);
-        }
-
-        return view;
     }
 
     @Override

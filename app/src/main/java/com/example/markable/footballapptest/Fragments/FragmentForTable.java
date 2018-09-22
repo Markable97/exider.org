@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.TournamentTable;
@@ -36,12 +38,15 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     private ArrayList<TournamentTable> newTournamentTable = new ArrayList<>();
 
     TextView textView;
+    ImageView image;
+    private ArrayList<Bitmap> imageBitmap;
 
-    public static FragmentForTable newInstance(String table ){
+    public static FragmentForTable newInstance(String table, ArrayList<Bitmap> image){
         Log.i(TAG, "NewInstance: " + table);
         FragmentForTable fragment = new FragmentForTable();
         Bundle args = new Bundle();
         args.putString("division", table);
+        args.putParcelableArrayList("image", image);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +56,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
         fromActivity = getArguments().getString("division","");
+        imageBitmap = getArguments().getParcelableArrayList("image");
         Log.i(TAG, "OnCreate: " + fromActivity);
+        Log.i(TAG, "onCreate Bitmap: " + imageBitmap.size());
     }
 
     @Nullable
@@ -62,7 +69,8 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
         textView = (TextView) view.findViewById(R.id.textView_test);
-
+        image = view.findViewById(R.id.imageViewTest);
+        image.setImageBitmap(imageBitmap.get(0));
         if(fromActivity != null){
             update(fromActivity, null);
         }else {
