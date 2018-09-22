@@ -68,6 +68,8 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreateView: переменная для JSON " + fromActivity);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
+        Log.i(TAG, "onCreateView: Создание таблицы");
+
         textView = (TextView) view.findViewById(R.id.textView_test);
         image = view.findViewById(R.id.imageViewTest);
         image.setImageBitmap(imageBitmap.get(0));
