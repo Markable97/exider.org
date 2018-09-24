@@ -1,6 +1,10 @@
 package com.example.markable.footballapptest.Classes;
 
-public class TournamentTable {
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
+
+public class TournamentTable implements Serializable {
     private String divisionName;
     private String teamName;
     private int games;
@@ -8,6 +12,7 @@ public class TournamentTable {
     private int wins;
     private int draws;
     private int losses;
+    public transient Bitmap image;
 
     public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses){
         setDivision(division);
@@ -17,6 +22,12 @@ public class TournamentTable {
         setWins(wins);
         setDraws(draws);
         setLosses(losses);
+    }
+
+    @Override
+    public String toString() {
+        return getDivisionName() + " " + getTeamName() + " " + getGames() + " " + getWins() + " " + getDraws() + " " + getLosses()
+                + " " + getPoint() + "\n";
     }
 
     private void setDivision(String division) {
@@ -44,6 +55,15 @@ public class TournamentTable {
     private void setLosses(int losses) {
         this.losses = losses;
     }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
     public String getDivisionName() {
         return divisionName;
     }

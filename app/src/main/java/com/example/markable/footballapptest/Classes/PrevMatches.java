@@ -1,6 +1,8 @@
 package com.example.markable.footballapptest.Classes;
 
-public class PrevMatches {
+import java.io.Serializable;
+
+public class PrevMatches implements Serializable {
     private String nameDivision;
     private int idTour;
     private String teamHome;
