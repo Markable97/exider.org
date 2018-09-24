@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
+import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentForCalendar;
 import com.example.markable.footballapptest.Fragments.FragmentForTable;
 import com.example.markable.footballapptest.Fragments.FragmentForResults;
@@ -32,14 +33,13 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private String divTable;
     private String prevReslts;
-    private ArrayList<Bitmap> image;
+    private ArrayList<TournamentTable> table;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, Context context, String divTable, String prevResults, ArrayList<Bitmap> image) {
+    public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, String prevResults) {
         super(fm);
         this.context = context;
-        this.divTable = divTable;
+        this.table = divTable;
         this.prevReslts = prevResults;
-        this.image = image;
         Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.divTable + "\n prevResults =" + this.prevReslts);
     }
 
@@ -47,10 +47,10 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return new FragmentForTable().newInstance(divTable, image);
+            case 0: return new FragmentForTable().newInstance(table);
             case 1: return new FragmentForResults().newInstance(prevReslts);
             case 2: return new FragmentForCalendar().newInstance();
-            default: return new FragmentForTable().newInstance(divTable, image);
+            default: return new FragmentForTable().newInstance(table);
         }
 
     }
@@ -59,15 +59,15 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(@NonNull Object object) {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
-            ((UpdateFragListener) object).update(divTable, prevReslts);
+            ((UpdateFragListener) object).update(table, prevReslts);
         }
 
         return super.getItemPosition(object);
     }
 
-    public void update(String divTable, String prevReslts){
+    public void update(ArrayList<TournamentTable> divTable, String prevReslts){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
-        this.divTable = divTable;
+        this.table = divTable;
         this.prevReslts = prevReslts;
         //обновляет - вызов getItemPosition
         notifyDataSetChanged();
