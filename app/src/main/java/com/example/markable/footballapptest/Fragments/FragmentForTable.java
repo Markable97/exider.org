@@ -40,14 +40,12 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     TextView textView;
     ImageView image;
-    private ArrayList<Bitmap> imageBitmap;
 
-    public static FragmentForTable newInstance(String table, ArrayList<Bitmap> image){
+    public static FragmentForTable newInstance(ArrayList<TournamentTable> table){
         Log.i(TAG, "NewInstance: " + table);
         FragmentForTable fragment = new FragmentForTable();
         Bundle args = new Bundle();
-        args.putString("division", table);
-        args.putParcelableArrayList("image", image);
+        args.putSerializable("table", table);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,10 +54,11 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        fromActivity = getArguments().getString("division","");
-        imageBitmap = getArguments().getParcelableArrayList("image");
+        newTournamentTable = (ArrayList<TournamentTable>) getArguments().getSerializable("table");
+        //fromActivity = getArguments().getString("division","");
         Log.i(TAG, "OnCreate: " + fromActivity);
-        Log.i(TAG, "onCreate Bitmap: " + imageBitmap.size());
+        Log.i(TAG, "OnCreate: длина массива " + newTournamentTable.size() );
+
     }
 
     @Nullable
@@ -74,16 +73,16 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         textView = (TextView) view.findViewById(R.id.textView_test);
         LinearLayout linearLayout = view.findViewById(R.id.layout_table);
         ViewGroup.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        for(int i = 0; i < imageBitmap.size() ; i++){
+        for(int i = 0; i < newTournamentTable.size() ; i++){
             ImageView imageView = new ImageView(getContext());
-            imageView.setImageBitmap(imageBitmap.get(i));
+            imageView.setImageBitmap(newTournamentTable.get(i).getImage());
             imageView.setLayoutParams(imageParams);
             linearLayout.addView(imageView);
         }
         //image = view.findViewById(R.id.imageViewTest);
         //image.setImageBitmap(imageBitmap.get(0));
-        if(fromActivity != null){
-            update(fromActivity, null);
+        if(newTournamentTable.size() != 0){
+            update(newTournamentTable, null);
         }else {
             textView.setText("Чисто проверить! ");
         }
@@ -94,18 +93,13 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
 
     @Override
-    public void update(String divTable, String prevResults) {
+    public void update(ArrayList divTable, String prevResults) {
         Log.i(TAG, "Interface: Сработал пустой метод");
-        this.fromActivity = divTable;
-        Log.i(TAG, "Interface: " + fromActivity);
-        newTournamentTable.clear();
-        newTournamentTable = gson.fromJson(fromActivity, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+        this.newTournamentTable = divTable;
+        Log.i(TAG, "Interface: " + newTournamentTable.size());
         String results = "";
         for(int i = 0; i < newTournamentTable.size(); i++){
-            results += newTournamentTable.get(i).getDivisionName() + " " +
-                    newTournamentTable.get(i).getTeamName() + " " + newTournamentTable.get(i).getGames()
-                    + " " + newTournamentTable.get(i).getPoint() + " " + newTournamentTable.get(i).getWins()
-                    + " " + newTournamentTable.get(i).getDraws() + " " + newTournamentTable.get(i).getLosses() + "\n";
+            results += newTournamentTable.get(i).toString();
         }
         textView.setText(results);
     }

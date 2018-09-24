@@ -1,8 +1,12 @@
 package com.example.markable.footballapptest;
 
+import com.example.markable.footballapptest.Classes.TournamentTable;
+
+import java.util.ArrayList;
+
 public interface UpdateFragListener {
 
-    void update(String divTable, String prevResults);
+    void update(ArrayList<TournamentTable> divTable, String prevResults);
 
 
 }

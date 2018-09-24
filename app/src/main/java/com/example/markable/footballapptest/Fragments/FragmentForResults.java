@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.UpdateFragListener;
 import com.google.gson.Gson;
@@ -66,7 +67,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     }
 
     @Override
-    public void update(String divTable, String prevResults) {
+    public void update(ArrayList<TournamentTable> divTable, String prevResults) {
         Log.i(TAG, "Interface: " + prevResults);
         this.fromActivity = prevResults;
         newPrevMatches.clear();

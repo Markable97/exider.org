@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.SampleFragmentPageAdapter;
+import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,6 +34,7 @@ public class FragmentMain extends Fragment {
     private String prevResults = "", table = "";
 
     private ArrayList<Bitmap> imageBitmap = new ArrayList<>();
+    private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
 
     SampleFragmentPageAdapter mAdapter;
 
@@ -74,6 +77,8 @@ public class FragmentMain extends Fragment {
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+                tournamentTable.clear();
+                tournamentTable = gson.fromJson(table, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
@@ -90,9 +95,9 @@ public class FragmentMain extends Fragment {
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
                     //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
-                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
+                    tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
-                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+                //Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
 
                 out.writeUTF("close");
                 out.close();
@@ -111,7 +116,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults, imageBitmap);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResults);
             viewPager.setAdapter(mAdapter);
             tabLayout.setupWithViewPager(viewPager);
         }
@@ -181,6 +186,8 @@ public class FragmentMain extends Fragment {
                 fromServer = in.readUTF();
                 table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+                tournamentTable.clear();
+                tournamentTable = gson.fromJson(table, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResults = fromServerResultsPrevMatches;
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
@@ -196,9 +203,9 @@ public class FragmentMain extends Fragment {
                     in.readFully(byteArray);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
                     //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
-                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
+                    tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
-                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+               // Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
 
                 out.writeUTF("close");
                 out.close();
@@ -217,7 +224,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter.update(table, prevResults);
+            mAdapter.update(tournamentTable, prevResults);
         }
     }
 
