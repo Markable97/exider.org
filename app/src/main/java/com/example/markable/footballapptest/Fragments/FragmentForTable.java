@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.TournamentTable;
@@ -71,8 +72,16 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "onCreateView: Создание таблицы");
 
         textView = (TextView) view.findViewById(R.id.textView_test);
-        image = view.findViewById(R.id.imageViewTest);
-        image.setImageBitmap(imageBitmap.get(0));
+        LinearLayout linearLayout = view.findViewById(R.id.layout_table);
+        ViewGroup.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        for(int i = 0; i < imageBitmap.size() ; i++){
+            ImageView imageView = new ImageView(getContext());
+            imageView.setImageBitmap(imageBitmap.get(i));
+            imageView.setLayoutParams(imageParams);
+            linearLayout.addView(imageView);
+        }
+        //image = view.findViewById(R.id.imageViewTest);
+        //image.setImageBitmap(imageBitmap.get(0));
         if(fromActivity != null){
             update(fromActivity, null);
         }else {
