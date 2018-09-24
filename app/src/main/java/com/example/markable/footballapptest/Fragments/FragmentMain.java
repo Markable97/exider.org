@@ -35,6 +35,9 @@ public class FragmentMain extends Fragment {
 
     SampleFragmentPageAdapter mAdapter;
 
+    ViewPager viewPager;
+    TabLayout tabLayout;
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +49,8 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        //String ipAdres = "192.168.1.98";
-        String ipAdres = "10.0.2.2";
+        String ipAdres = "192.168.0.105";
+        //String ipAdres = "10.0.2.2";
 
 
         @Override
@@ -78,13 +81,16 @@ public class FragmentMain extends Fragment {
                 int countFiles = in.readInt();
                 imageBitmap.clear();
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
+                byte[] byteArray;
                 for(int i = 0; i < countFiles; i++){
                     int countBytes = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
-                    byte[] byteArray = new byte[countBytes];
-                    int countFromServer = in.read(byteArray, 0, countBytes);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
-                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    Log.i(TAG, "doInBackground: кол-во байтов пришло = " + countBytes );
+                    byteArray = new byte[countBytes];
+                    in.readFully(byteArray);
+                    //int countFromServer = in.read(byteArray, 0, countBytes);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
                 Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
 
@@ -105,7 +111,9 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-//            mAdapter.update(table, prevResults);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults, imageBitmap);
+            viewPager.setAdapter(mAdapter);
+            tabLayout.setupWithViewPager(viewPager);
         }
     }
 
@@ -122,9 +130,13 @@ public class FragmentMain extends Fragment {
 
         Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
 
+        viewPager = view.findViewById(R.id.viewPager);
+        tabLayout = view.findViewById(R.id.sliding_tabs);
+
+
         new ServerConnectTest().execute("1");
        // update("1");
-        while (table.equals("")){
+        /*while (table.equals("")){
         }
         if (!table.equals("")){
             mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults, imageBitmap);
@@ -134,7 +146,7 @@ public class FragmentMain extends Fragment {
             viewPager.setAdapter(mAdapter);
             TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
-        }
+        }*/
 
         return view;
     }
@@ -144,8 +156,8 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        //String ipAdres = "192.168.1.98";
-        String ipAdres = "10.0.2.2";
+        String ipAdres = "192.168.0.105";
+        //String ipAdres = "10.0.2.2";
 
 
         @Override
@@ -180,9 +192,11 @@ public class FragmentMain extends Fragment {
                     int countBytes = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
                     byte[] byteArray = new byte[countBytes];
-                    int countFromServer = in.read(byteArray, 0, countBytes);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
-                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    //int countFromServer = in.read(byteArray, 0, countBytes);
+                    in.readFully(byteArray);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
                 Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
 
