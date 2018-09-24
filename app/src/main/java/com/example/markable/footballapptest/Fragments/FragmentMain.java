@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.SampleFragmentPageAdapter;
+import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
@@ -31,10 +32,9 @@ public class FragmentMain extends Fragment {
 
     View view;
 
-    private String prevResults = "", table = "";
-
     private ArrayList<Bitmap> imageBitmap = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
+    private ArrayList<PrevMatches> prevResultsMatch = new ArrayList<>();
 
     SampleFragmentPageAdapter mAdapter;
 
@@ -75,12 +75,12 @@ public class FragmentMain extends Fragment {
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
-                table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
                 tournamentTable.clear();
-                tournamentTable = gson.fromJson(table, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
                 fromServerResultsPrevMatches = in.readUTF();
-                prevResults = fromServerResultsPrevMatches;
+                prevResultsMatch.clear();
+                prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
 
                 int countFiles = in.readInt();
@@ -116,7 +116,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResults);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch);
             viewPager.setAdapter(mAdapter);
             tabLayout.setupWithViewPager(viewPager);
         }
@@ -184,12 +184,12 @@ public class FragmentMain extends Fragment {
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
-                table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
                 tournamentTable.clear();
-                tournamentTable = gson.fromJson(table, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
                 fromServerResultsPrevMatches = in.readUTF();
-                prevResults = fromServerResultsPrevMatches;
+                prevResultsMatch.clear();
+                prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
 
                 int countFiles = in.readInt();
@@ -224,7 +224,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter.update(tournamentTable, prevResults);
+            mAdapter.update(tournamentTable, prevResultsMatch);
         }
     }
 

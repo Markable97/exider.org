@@ -29,11 +29,11 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
 
     private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
 
-    public static FragmentForResults newInstance (String prevRes){
+    public static FragmentForResults newInstance (ArrayList<PrevMatches> prevRes){
         Log.i(TAG, "NewInstance: " + prevRes);
         FragmentForResults fragment = new FragmentForResults();
         Bundle args = new Bundle();
-        args.putString("results", prevRes);
+        args.putSerializable("results", prevRes);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,7 +42,8 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        fromActivity = getArguments().getString("results");
+        newPrevMatches = (ArrayList<PrevMatches>) getArguments().getSerializable("results");
+        //fromActivity = getArguments().getString("results");
         Log.i(TAG, "OnCreate:" + fromActivity);
     }
 
@@ -55,8 +56,8 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
-        if(fromActivity != null){
-            update(null, fromActivity);
+        if(newPrevMatches.size() != 0){
+            update(null, newPrevMatches);
         }else {
             textView.setText("Чисто проверить! ");
         }
@@ -67,11 +68,9 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     }
 
     @Override
-    public void update(ArrayList<TournamentTable> divTable, String prevResults) {
+    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults) {
         Log.i(TAG, "Interface: " + prevResults);
-        this.fromActivity = prevResults;
-        newPrevMatches.clear();
-        newPrevMatches = gson.fromJson(fromActivity, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
+        this.newPrevMatches = prevResults;
         String results = "";
         for(int i = 0; i < newPrevMatches.size(); i++){
             results += newPrevMatches.get(i).toString() + "\n";

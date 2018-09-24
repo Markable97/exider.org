@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
+import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentForCalendar;
 import com.example.markable.footballapptest.Fragments.FragmentForTable;
@@ -31,16 +32,15 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[]{"Таблица", "Результаты", "Календарь"};
     private Context context;
-    private String divTable;
-    private String prevReslts;
     private ArrayList<TournamentTable> table;
+    private ArrayList<PrevMatches> results;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, String prevResults) {
+    public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults) {
         super(fm);
         this.context = context;
         this.table = divTable;
-        this.prevReslts = prevResults;
-        Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.divTable + "\n prevResults =" + this.prevReslts);
+        this.results = prevResults;
+        Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.results + "\n prevResults =" + this.table);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
             case 0: return new FragmentForTable().newInstance(table);
-            case 1: return new FragmentForResults().newInstance(prevReslts);
+            case 1: return new FragmentForResults().newInstance(results);
             case 2: return new FragmentForCalendar().newInstance();
             default: return new FragmentForTable().newInstance(table);
         }
@@ -59,16 +59,16 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(@NonNull Object object) {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
-            ((UpdateFragListener) object).update(table, prevReslts);
+            ((UpdateFragListener) object).update(table, results);
         }
 
         return super.getItemPosition(object);
     }
 
-    public void update(ArrayList<TournamentTable> divTable, String prevReslts){
+    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
         this.table = divTable;
-        this.prevReslts = prevReslts;
+        this.results = prevReslts;
         //обновляет - вызов getItemPosition
         notifyDataSetChanged();
     }

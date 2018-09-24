@@ -93,7 +93,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
 
     @Override
-    public void update(ArrayList divTable, String prevResults) {
+    public void update(ArrayList divTable, ArrayList prevResults) {
         Log.i(TAG, "Interface: Сработал пустой метод");
         this.newTournamentTable = divTable;
         Log.i(TAG, "Interface: " + newTournamentTable.size());
