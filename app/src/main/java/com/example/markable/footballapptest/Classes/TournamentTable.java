@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest.Classes;
 
+import android.graphics.Bitmap;
+
 public class TournamentTable {
     private String divisionName;
     private String teamName;
@@ -8,6 +10,7 @@ public class TournamentTable {
     private int wins;
     private int draws;
     private int losses;
+    public transient Bitmap image;
 
     public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses){
         setDivision(division);
