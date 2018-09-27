@@ -95,44 +95,67 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "createTable: Создание таблицы");
         int countColumn = 10;
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
-        for(int i = 0; i < newTournamentTable.size(); i++){
+        for(int i = -1; i < newTournamentTable.size(); i++){
             Log.i(TAG, "createTable: Строка = " + i);
             TableRow tableRow = new TableRow(getActivity());
             tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             //tableRow.setBackgroundResource();
             for(int j = 0; j < countColumn; j++){
-                Log.i(TAG, "createTable: Столбец = " + j);
-                TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
-                params.gravity = Gravity.CENTER;
-                TextView tv = new TextView(getActivity());
-                tv.setLayoutParams(params);
-                tv.setGravity(Gravity.CENTER);
-                switch (j){
-                    case 0: tv.setText(String.valueOf(i+1));break;
-                    case 1:
-                        TableRow.LayoutParams paramsImage = new TableRow.LayoutParams(_50dp, _50dp,1.0f);
-                        paramsImage.gravity = Gravity.CENTER;
-                        ImageView imageView = new ImageView(getActivity());
-                        imageView.setLayoutParams(paramsImage);
-                        imageView.setImageBitmap(newTournamentTable.get(i).getImage());
-                        tableRow.addView(imageView, j);
-                        break;
-                    case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
-                    case 3: tv.setText(newTournamentTable.get(i).getGames());break;
-                    case 4: tv.setText(newTournamentTable.get(i).getWins());break;
-                    case 5: tv.setText(newTournamentTable.get(i).getDraws());break;
-                    case 6: tv.setText(newTournamentTable.get(i).getLosses());break;
-                    case 7: tv.setText(newTournamentTable.get(i).getGoalsScored());break;
-                    case 8: tv.setText(newTournamentTable.get(i).getGoalsConceded());break;
-                    case 9: tv.setText(newTournamentTable.get(i).getPoint());break;
-                }
-                Log.i(TAG, "onCreateView: TV = " + tv.getText());
-                if(j!=1){
+                if(i == -1){
+                    Log.i(TAG, "createTable: Столбец = " + j);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+                    params.gravity = Gravity.CENTER;
+                    TextView tv = new TextView(getActivity());
+                    tv.setLayoutParams(params);
+                    tv.setGravity(Gravity.CENTER);
+                    switch (j){
+                        case 0: tv.setText("#");break;
+                        case 1: tv.setText("Лого");break;
+                        case 2: tv.setText("Команда");break;
+                        case 3: tv.setText("И");break;
+                        case 4: tv.setText("В");break;
+                        case 5: tv.setText("Н");break;
+                        case 6: tv.setText("П");break;
+                        case 7: tv.setText("З");break;
+                        case 8: tv.setText("П");break;
+                        case 9: tv.setText("О");break;
+                    }
                     tableRow.addView(tv, j);
+                }else{
+                    Log.i(TAG, "createTable: Столбец = " + j);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+                    params.gravity = Gravity.CENTER;
+                    TextView tv = new TextView(getActivity());
+                    tv.setLayoutParams(params);
+                    tv.setGravity(Gravity.CENTER);
+                    switch (j){
+                        case 0: tv.setText(String.valueOf(i+1));break;
+                        case 1:
+                            TableRow.LayoutParams paramsImage = new TableRow.LayoutParams(_50dp, _50dp,1.0f);
+                            paramsImage.gravity = Gravity.CENTER;
+                            ImageView imageView = new ImageView(getActivity());
+                            imageView.setLayoutParams(paramsImage);
+                            imageView.setImageBitmap(newTournamentTable.get(i).getImage());
+                            tableRow.addView(imageView, j);
+                            break;
+                        case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
+                        case 3: tv.setText(newTournamentTable.get(i).getGames());break;
+                        case 4: tv.setText(newTournamentTable.get(i).getWins());break;
+                        case 5: tv.setText(newTournamentTable.get(i).getDraws());break;
+                        case 6: tv.setText(newTournamentTable.get(i).getLosses());break;
+                        case 7: tv.setText(newTournamentTable.get(i).getGoalsScored());break;
+                        case 8: tv.setText(newTournamentTable.get(i).getGoalsConceded());break;
+                        case 9: tv.setText(newTournamentTable.get(i).getPoint());break;
+                    }
+                    Log.i(TAG, "onCreateView: TV = " + tv.getText());
+                    if(j!=1){
+                        tableRow.addView(tv, j);
+                    }
                 }
             }
-            tableLay.addView(tableRow, i);
+            tableLay.addView(tableRow, i+1);
         }
         return view;
     }
