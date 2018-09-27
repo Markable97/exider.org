@@ -52,7 +52,7 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        String ipAdres = "192.168.0.105";
+        String ipAdres = "192.168.0.104";
         //String ipAdres = "10.0.2.2";
 
 
@@ -161,7 +161,7 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        String ipAdres = "192.168.0.105";
+        String ipAdres = "192.168.0.104";
         //String ipAdres = "10.0.2.2";
 
 

@@ -12,9 +12,12 @@ public class TournamentTable implements Serializable {
     private int wins;
     private int draws;
     private int losses;
+    private int goalsScored;
+    private int goalsConceded;
     public transient Bitmap image;
 
-    public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses){
+    public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses,
+                           int goalsScored, int goalsConceded){
         setDivision(division);
         setTeam(team);
         setPoint(point);
@@ -22,12 +25,14 @@ public class TournamentTable implements Serializable {
         setWins(wins);
         setDraws(draws);
         setLosses(losses);
+        setGoalsScored(goalsScored);
+        setGoalsConceded(goalsConceded);
     }
 
     @Override
     public String toString() {
         return getDivisionName() + " " + getTeamName() + " " + getGames() + " " + getWins() + " " + getDraws() + " " + getLosses()
-                + " " + getPoint() + "\n";
+                + " " +getGoalsScored() + " " + getGoalsConceded()+ " " + getPoint() + "\n";
     }
 
     private void setDivision(String division) {
@@ -47,15 +52,18 @@ public class TournamentTable implements Serializable {
     private void setWins(int wins) {
         this.wins = wins;
     }
-
     private void setDraws(int draws) {
         this.draws = draws;
     }
-
     private void setLosses(int losses) {
         this.losses = losses;
     }
-
+    private void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+    private void setGoalsConceded(int goalsConceded) {
+        this.goalsConceded = goalsConceded;
+    }
     public void setImage(Bitmap image) {
         this.image = image;
     }
@@ -72,23 +80,31 @@ public class TournamentTable implements Serializable {
         return teamName;
     }
 
-    public int getGames() {
-        return games;
+    public String getGames() {
+        return String.valueOf(games);
     }
 
-    public int getPoint() {
-        return point;
+    public String getPoint() {
+        return String.valueOf(point);
     }
 
-    public int getWins() {
-        return wins;
+    public String getWins() {
+        return String.valueOf(wins);
     }
 
-    public int getDraws() {
-        return draws;
+    public String getDraws() {
+        return String.valueOf(draws);
     }
 
-    public int getLosses() {
-        return losses;
+    public String getLosses() {
+        return String.valueOf(losses);
+    }
+
+    public String getGoalsScored() {
+        return String.valueOf(goalsScored);
+    }
+
+    public String getGoalsConceded() {
+        return String.valueOf(goalsConceded);
     }
 }
