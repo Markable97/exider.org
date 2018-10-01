@@ -141,7 +141,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "Interface: Сработал пустой метод");
         this.newTournamentTable = divTable;
         Log.i(TAG, "createTable: Создание таблицы");
-        int countColumn = 10;
+        int countColumn = 7;
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
         tableLay.removeAllViews();
         for(int i = -1; i < newTournamentTable.size(); i++){
@@ -163,12 +163,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                         case 1: tv.setText("Лого");break;
                         case 2: tv.setText("Команда");break;
                         case 3: tv.setText("И");break;
-                        case 4: tv.setText("В");break;
-                        case 5: tv.setText("Н");break;
-                        case 6: tv.setText("П");break;
-                        case 7: tv.setText("З");break;
-                        case 8: tv.setText("П");break;
-                        case 9: tv.setText("О");break;
+                        case 4: tv.setText("З");break;
+                        case 5: tv.setText("П");break;
+                        case 6: tv.setText("О");break;
                     }
                     tableRow.addView(tv, j);
                 }else{
@@ -191,12 +188,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             break;
                         case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
                         case 3: tv.setText(newTournamentTable.get(i).getGames());break;
-                        case 4: tv.setText(newTournamentTable.get(i).getWins());break;
-                        case 5: tv.setText(newTournamentTable.get(i).getDraws());break;
-                        case 6: tv.setText(newTournamentTable.get(i).getLosses());break;
-                        case 7: tv.setText(newTournamentTable.get(i).getGoalScored());break;
-                        case 8: tv.setText(newTournamentTable.get(i).getGoalConceded());break;
-                        case 9: tv.setText(newTournamentTable.get(i).getPoint());break;
+                        case 4: tv.setText(newTournamentTable.get(i).getGoalScored());break;
+                        case 5: tv.setText(newTournamentTable.get(i).getGoalConceded());break;
+                        case 6: tv.setText(newTournamentTable.get(i).getPoint());break;
                     }
                     Log.i(TAG, "onCreateView: TV = " + tv.getText());
                     if(j!=1){
