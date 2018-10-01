@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.markable.footballapptest.Adapters.ListViewArrayAdapterForResult;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
@@ -23,7 +25,8 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     private static final String TAG = "FragRes";
     private String fromActivity;
 
-    TextView textView;
+    private ListView lisrView;
+   // TextView textView;
 
     private Gson gson = new Gson();
 
@@ -51,15 +54,16 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_results, container, false);
 
+        lisrView = view.findViewById(R.id.listViewForResult);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
         Log.i(TAG, "onCreateView: Начало новой ветки");
-        textView = view.findViewById(R.id.textView_results);
+        //textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
         if(newPrevMatches.size() != 0){
             update(null, newPrevMatches);
         }else {
-            textView.setText("Чисто проверить! ");
+            //textView.setText("Чисто проверить! ");
         }
 
 
@@ -71,11 +75,12 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults) {
         Log.i(TAG, "Interface: " + prevResults);
         this.newPrevMatches = prevResults;
-        String results = "";
+        lisrView.setAdapter(new ListViewArrayAdapterForResult(getActivity(), newPrevMatches));
+        /*String results = "";
         for(int i = 0; i < newPrevMatches.size(); i++){
             results += newPrevMatches.get(i).toString() + "\n";
         }
-        textView.setText(results);
+        textView.setText(results);*/
     }
 
 
