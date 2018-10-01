@@ -2,6 +2,7 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Adapters.ListViewArrayAdapterForResult;
+import com.example.markable.footballapptest.Adapters.RecyclerViewForResults;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
@@ -25,7 +27,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     private static final String TAG = "FragRes";
     private String fromActivity;
 
-    private ListView lisrView;
+    RecyclerView recyclerView;
    // TextView textView;
 
     private Gson gson = new Gson();
@@ -54,9 +56,9 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_results, container, false);
 
-        lisrView = view.findViewById(R.id.listViewForResult);
+        recyclerView = view.findViewById(R.id.listForResults);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
-        Log.i(TAG, "onCreateView: Начало новой ветки");
+        Log.i(TAG, "onCreateView: Начало новой ветки c новым адаптером");
         //textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
@@ -75,7 +77,9 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults) {
         Log.i(TAG, "Interface: " + prevResults);
         this.newPrevMatches = prevResults;
-        lisrView.setAdapter(new ListViewArrayAdapterForResult(getActivity(), newPrevMatches));
+        RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
+        recyclerView.setAdapter(adapter);
+        //lisrView.setAdapter(new ListViewArrayAdapterForResult(getActivity(), newPrevMatches));
         /*String results = "";
         for(int i = 0; i < newPrevMatches.size(); i++){
             results += newPrevMatches.get(i).toString() + "\n";

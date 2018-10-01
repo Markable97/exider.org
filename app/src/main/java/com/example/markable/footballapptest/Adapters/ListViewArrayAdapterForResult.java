@@ -21,7 +21,7 @@ public class ListViewArrayAdapterForResult extends ArrayAdapter<PrevMatches> {
     private final Activity context;
 
     public ListViewArrayAdapterForResult(Activity context, List<PrevMatches> list){
-        super(context, R.layout.listview_row_results, list);
+        super(context, R.layout.recycle_row_results, list);
         Log.i(TAG, "ListViewArrayAdapterForResult: Вызов конструктора");
         this.context = context;
         this.list = list;
@@ -48,7 +48,7 @@ public class ListViewArrayAdapterForResult extends ArrayAdapter<PrevMatches> {
         if (rowView == null) {
             Log.i(TAG, "getView: Если объект пустой");
             LayoutInflater inflater = context.getLayoutInflater();
-            rowView = inflater.inflate(R.layout.listview_row_results, null, true);
+            rowView = inflater.inflate(R.layout.recycle_row_results, null, true);
             holder = new ViewHolder();
             holder.imageTeamHome = (ImageView) rowView.findViewById(R.id.imageTeamHome);
             holder.imageTeamVisit = (ImageView) rowView.findViewById(R.id.imageTeamVisit);
