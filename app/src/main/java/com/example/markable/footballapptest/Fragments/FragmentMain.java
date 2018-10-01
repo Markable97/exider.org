@@ -14,8 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.SampleFragmentPageAdapter;
+import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -29,11 +32,14 @@ public class FragmentMain extends Fragment {
 
     View view;
 
-    private String prevResults = "", table = "";
-
     private ArrayList<Bitmap> imageBitmap = new ArrayList<>();
+    private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
+    private ArrayList<PrevMatches> prevResultsMatch = new ArrayList<>();
 
     SampleFragmentPageAdapter mAdapter;
+
+    ViewPager viewPager;
+    TabLayout tabLayout;
 
     @Override
     public void onCreate( Bundle savedInstanceState) {
@@ -46,8 +52,9 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        //String ipAdres = "192.168.1.98";
-        String ipAdres = "10.0.2.2";
+        //String ipAdres = "192.168.0.104";
+        String ipAdres = "92.38.244.227";
+        //String ipAdres = "10.0.2.2";
 
 
         @Override
@@ -69,25 +76,35 @@ public class FragmentMain extends Fragment {
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
-                table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+                tournamentTable.clear();
+                tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                for(int i = 0; i<tournamentTable.size(); i++){
+                    Log.i(TAG, "doInBackground: " + tournamentTable.get(i).toString());
+                }
                 fromServerResultsPrevMatches = in.readUTF();
-                prevResults = fromServerResultsPrevMatches;
+                prevResultsMatch.clear();
+                prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+                for(int i = 0; i<prevResultsMatch.size(); i++){
+                    Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
+                }
 
                 int countFiles = in.readInt();
                 imageBitmap.clear();
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
+                byte[] byteArray;
                 for(int i = 0; i < countFiles; i++){
                     int countBytes = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
-                    byte[] byteArray = new byte[countBytes];
-                    int countFromServer = in.read(byteArray, 0, countBytes);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
-                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    Log.i(TAG, "doInBackground: кол-во байтов пришло = " + countBytes );
+                    byteArray = new byte[countBytes];
+                    in.readFully(byteArray);
+                    //int countFromServer = in.read(byteArray, 0, countBytes);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
-                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
-
+                //Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
                 out.writeUTF("close");
                 out.close();
                 in.close();
@@ -105,7 +122,9 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-//            mAdapter.update(table, prevResults);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch);
+            viewPager.setAdapter(mAdapter);
+            tabLayout.setupWithViewPager(viewPager);
         }
     }
 
@@ -122,9 +141,13 @@ public class FragmentMain extends Fragment {
 
         Log.i(TAG, "OnCreateView: Загрузка главного фрагмента");
 
+        viewPager = view.findViewById(R.id.viewPager);
+        tabLayout = view.findViewById(R.id.sliding_tabs);
+
+
         new ServerConnectTest().execute("1");
        // update("1");
-        while (table.equals("")){
+        /*while (table.equals("")){
         }
         if (!table.equals("")){
             mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), table, prevResults, imageBitmap);
@@ -134,7 +157,7 @@ public class FragmentMain extends Fragment {
             viewPager.setAdapter(mAdapter);
             TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
-        }
+        }*/
 
         return view;
     }
@@ -144,8 +167,9 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        //String ipAdres = "192.168.1.98";
-        String ipAdres = "10.0.2.2";
+       // String ipAdres = "192.168.0.104";
+        String ipAdres = "92.38.244.227";
+        //String ipAdres = "10.0.2.2";
 
 
         @Override
@@ -167,12 +191,19 @@ public class FragmentMain extends Fragment {
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
-                table = fromServer;
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+                tournamentTable.clear();
+                tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                for(int i = 0; i<tournamentTable.size(); i++){
+                    Log.i(TAG, "doInBackground: " + tournamentTable.get(i).toString());
+                }
                 fromServerResultsPrevMatches = in.readUTF();
-                prevResults = fromServerResultsPrevMatches;
+                prevResultsMatch.clear();
+                prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
-
+                for(int i = 0; i<prevResultsMatch.size(); i++){
+                    Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
+                }
                 int countFiles = in.readInt();
                 imageBitmap.clear();
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
@@ -180,11 +211,13 @@ public class FragmentMain extends Fragment {
                     int countBytes = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
                     byte[] byteArray = new byte[countBytes];
-                    int countFromServer = in.read(byteArray, 0, countBytes);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + countFromServer);
-                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    //int countFromServer = in.read(byteArray, 0, countBytes);
+                    in.readFully(byteArray);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
-                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+               // Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
 
                 out.writeUTF("close");
                 out.close();
@@ -203,7 +236,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter.update(table, prevResults);
+            mAdapter.update(tournamentTable, prevResultsMatch);
         }
     }
 

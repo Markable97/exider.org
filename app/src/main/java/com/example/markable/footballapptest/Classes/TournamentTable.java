@@ -1,6 +1,10 @@
 package com.example.markable.footballapptest.Classes;
 
-public class TournamentTable {
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
+
+public class TournamentTable implements Serializable {
     private String divisionName;
     private String teamName;
     private int games;
@@ -8,8 +12,12 @@ public class TournamentTable {
     private int wins;
     private int draws;
     private int losses;
+    private int goalScored;
+    private int goalConceded;
+    public transient Bitmap image;
 
-    public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses){
+    public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses,
+                           int goalScored, int goalConceded){
         setDivision(division);
         setTeam(team);
         setPoint(point);
@@ -17,6 +25,14 @@ public class TournamentTable {
         setWins(wins);
         setDraws(draws);
         setLosses(losses);
+        setGoalScored(goalScored);
+        setGoalConceded(goalConceded);
+    }
+
+    @Override
+    public String toString() {
+        return getDivisionName() + " " + getTeamName() + " " + getGames() + " " + getWins() + " " + getDraws() + " " + getLosses()
+                + " " +getGoalScored() + " " + getGoalConceded()+ " " + getPoint() + "\n";
     }
 
     private void setDivision(String division) {
@@ -36,14 +52,26 @@ public class TournamentTable {
     private void setWins(int wins) {
         this.wins = wins;
     }
-
     private void setDraws(int draws) {
         this.draws = draws;
     }
-
     private void setLosses(int losses) {
         this.losses = losses;
     }
+    private void setGoalScored(int goalsScored) {
+        this.goalScored = goalsScored;
+    }
+    private void setGoalConceded(int goalsConceded) {
+        this.goalConceded = goalsConceded;
+    }
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
     public String getDivisionName() {
         return divisionName;
     }
@@ -52,23 +80,31 @@ public class TournamentTable {
         return teamName;
     }
 
-    public int getGames() {
-        return games;
+    public String getGames() {
+        return String.valueOf(games);
     }
 
-    public int getPoint() {
-        return point;
+    public String getPoint() {
+        return String.valueOf(point);
     }
 
-    public int getWins() {
-        return wins;
+    public String getWins() {
+        return String.valueOf(wins);
     }
 
-    public int getDraws() {
-        return draws;
+    public String getDraws() {
+        return String.valueOf(draws);
     }
 
-    public int getLosses() {
-        return losses;
+    public String getLosses() {
+        return String.valueOf(losses);
+    }
+
+    public String getGoalScored() {
+        return String.valueOf(goalScored);
+    }
+
+    public String getGoalConceded() {
+        return String.valueOf(goalConceded);
     }
 }
