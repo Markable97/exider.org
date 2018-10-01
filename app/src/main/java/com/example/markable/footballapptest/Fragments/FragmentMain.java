@@ -52,7 +52,8 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        String ipAdres = "192.168.0.104";
+        //String ipAdres = "192.168.0.104";
+        String ipAdres = "92.38.244.227";
         //String ipAdres = "10.0.2.2";
 
 
@@ -78,10 +79,16 @@ public class FragmentMain extends Fragment {
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
                 tournamentTable.clear();
                 tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                for(int i = 0; i<tournamentTable.size(); i++){
+                    Log.i(TAG, "doInBackground: " + tournamentTable.get(i).toString());
+                }
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResultsMatch.clear();
                 prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
+                for(int i = 0; i<prevResultsMatch.size(); i++){
+                    Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
+                }
 
                 int countFiles = in.readInt();
                 imageBitmap.clear();
@@ -98,7 +105,6 @@ public class FragmentMain extends Fragment {
                     tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
                 //Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
-
                 out.writeUTF("close");
                 out.close();
                 in.close();
@@ -161,7 +167,8 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
-        String ipAdres = "192.168.0.104";
+       // String ipAdres = "192.168.0.104";
+        String ipAdres = "92.38.244.227";
         //String ipAdres = "10.0.2.2";
 
 
@@ -187,11 +194,16 @@ public class FragmentMain extends Fragment {
                 Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
                 tournamentTable.clear();
                 tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                for(int i = 0; i<tournamentTable.size(); i++){
+                    Log.i(TAG, "doInBackground: " + tournamentTable.get(i).toString());
+                }
                 fromServerResultsPrevMatches = in.readUTF();
                 prevResultsMatch.clear();
                 prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
                 Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
-
+                for(int i = 0; i<prevResultsMatch.size(); i++){
+                    Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
+                }
                 int countFiles = in.readInt();
                 imageBitmap.clear();
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
