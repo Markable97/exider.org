@@ -52,7 +52,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         View view = inflater.inflate(R.layout.fragment_test_results, container, false);
 
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
-
+        Log.i(TAG, "onCreateView: Начало новой ветки");
         textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
