@@ -92,9 +92,58 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
             //textView.setText("Чисто проверить! ");
         }
 
+
+        return view;
+    }
+
+/*
+    public void createTable(){
         Log.i(TAG, "createTable: Создание таблицы");
         int countColumn = 10;
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
+        for(int i = 0; i < newTournamentTable.size(); i++){
+            Log.i(TAG, "createTable: Строка = " + i);
+            TableRow tableRow = new TableRow(getContext());
+            tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            //tableRow.setBackgroundResource();
+            for(int j = 0; j < countColumn; j++){
+                Log.i(TAG, "createTable: Столбец = " + j);
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                switch (j){
+                    case 0: tv.setText(i+"1");break;
+                    case 1:
+                        ImageView imageView = new ImageView(getContext());
+                        imageView.setLayoutParams(new LinearLayout.LayoutParams(_50dp,_50dp,1.0f));
+                        imageView.setImageBitmap(newTournamentTable.get(i).getImage());
+                        tableRow.addView(tv, j);
+                        break;
+                    case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
+                    case 3: tv.setText(String.valueOf(newTournamentTable.get(i).getGames()));break;
+                    case 4: tv.setText(String.valueOf(newTournamentTable.get(i).getWins()));break;
+                    case 5: tv.setText(String.valueOf(newTournamentTable.get(i).getDraws()));break;
+                    case 6: tv.setText(String.valueOf(newTournamentTable.get(i).getLosses()));break;
+                    case 7: tv.setText(String.valueOf(newTournamentTable.get(i).getGoalsScored()));break;
+                    case 8: tv.setText(String.valueOf(newTournamentTable.get(i).getGoalsConceded()));break;
+                    case 9: tv.setText(String.valueOf(newTournamentTable.get(i).getPoint()));break;
+                }
+                if(j!=1){
+                    tableRow.addView(tv, j);
+                }
+            }
+            table.addView(tableRow, i);
+        }
+    }
+*/
+    @Override
+    public void update(ArrayList divTable, ArrayList prevResults) {
+        Log.i(TAG, "Interface: Сработал пустой метод");
+        this.newTournamentTable = divTable;
+        Log.i(TAG, "createTable: Создание таблицы");
+        int countColumn = 10;
+        Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
+        tableLay.removeAllViews();
         for(int i = -1; i < newTournamentTable.size(); i++){
             Log.i(TAG, "createTable: Строка = " + i);
             TableRow tableRow = new TableRow(getActivity());
@@ -145,8 +194,8 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                         case 4: tv.setText(newTournamentTable.get(i).getWins());break;
                         case 5: tv.setText(newTournamentTable.get(i).getDraws());break;
                         case 6: tv.setText(newTournamentTable.get(i).getLosses());break;
-                        case 7: tv.setText(newTournamentTable.get(i).getGoalsScored());break;
-                        case 8: tv.setText(newTournamentTable.get(i).getGoalsConceded());break;
+                        case 7: tv.setText(newTournamentTable.get(i).getGoalScored());break;
+                        case 8: tv.setText(newTournamentTable.get(i).getGoalConceded());break;
                         case 9: tv.setText(newTournamentTable.get(i).getPoint());break;
                     }
                     Log.i(TAG, "onCreateView: TV = " + tv.getText());
@@ -157,53 +206,6 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
             }
             tableLay.addView(tableRow, i+1);
         }
-        return view;
-    }
-
-/*
-    public void createTable(){
-        Log.i(TAG, "createTable: Создание таблицы");
-        int countColumn = 10;
-        Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
-        for(int i = 0; i < newTournamentTable.size(); i++){
-            Log.i(TAG, "createTable: Строка = " + i);
-            TableRow tableRow = new TableRow(getContext());
-            tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            //tableRow.setBackgroundResource();
-            for(int j = 0; j < countColumn; j++){
-                Log.i(TAG, "createTable: Столбец = " + j);
-                TextView tv = new TextView(getContext());
-                tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                switch (j){
-                    case 0: tv.setText(i+"1");break;
-                    case 1:
-                        ImageView imageView = new ImageView(getContext());
-                        imageView.setLayoutParams(new LinearLayout.LayoutParams(_50dp,_50dp,1.0f));
-                        imageView.setImageBitmap(newTournamentTable.get(i).getImage());
-                        tableRow.addView(tv, j);
-                        break;
-                    case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
-                    case 3: tv.setText(String.valueOf(newTournamentTable.get(i).getGames()));break;
-                    case 4: tv.setText(String.valueOf(newTournamentTable.get(i).getWins()));break;
-                    case 5: tv.setText(String.valueOf(newTournamentTable.get(i).getDraws()));break;
-                    case 6: tv.setText(String.valueOf(newTournamentTable.get(i).getLosses()));break;
-                    case 7: tv.setText(String.valueOf(newTournamentTable.get(i).getGoalsScored()));break;
-                    case 8: tv.setText(String.valueOf(newTournamentTable.get(i).getGoalsConceded()));break;
-                    case 9: tv.setText(String.valueOf(newTournamentTable.get(i).getPoint()));break;
-                }
-                if(j!=1){
-                    tableRow.addView(tv, j);
-                }
-            }
-            table.addView(tableRow, i);
-        }
-    }
-*/
-    @Override
-    public void update(ArrayList divTable, ArrayList prevResults) {
-        Log.i(TAG, "Interface: Сработал пустой метод");
-        this.newTournamentTable = divTable;
         /*Log.i(TAG, "Interface: " + newTournamentTable.size());
         String results = "";
         for(int i = 0; i < newTournamentTable.size(); i++){
