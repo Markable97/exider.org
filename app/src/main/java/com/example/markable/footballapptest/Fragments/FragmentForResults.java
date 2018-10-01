@@ -56,7 +56,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
 
         lisrView = view.findViewById(R.id.listViewForResult);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
-        Log.i(TAG, "onCreateView: Начало новой ветки");
+        Log.i(TAG, "onCreateView: Начало новой ветки c новым адаптером");
         //textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
 
