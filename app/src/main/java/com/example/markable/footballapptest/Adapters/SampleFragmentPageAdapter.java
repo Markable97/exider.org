@@ -31,7 +31,7 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     private static final String TAG = "PageAdap";
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"Таблица", "Результаты", "Календарь"};
+    private String tabTitles[] = new String[]{"Календарь", "Результаты", "Таблица"};
     private Context context;
     private ArrayList<TournamentTable> table;
     private ArrayList<PrevMatches> results;
@@ -52,9 +52,9 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return new FragmentForTable().newInstance(table);
+            case 0: return new FragmentForCalendar().newInstance(calendar);
             case 1: return new FragmentForResults().newInstance(results);
-            case 2: return new FragmentForCalendar().newInstance(calendar);
+            case 2: return new FragmentForTable().newInstance(table);
             default: return new FragmentForTable().newInstance(table);
         }
 
