@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.SampleFragmentPageAdapter;
+import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
@@ -35,6 +36,7 @@ public class FragmentMain extends Fragment {
     private ArrayList<Bitmap> imageBitmap = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
     private ArrayList<PrevMatches> prevResultsMatch = new ArrayList<>();
+    private ArrayList<NextMatches> nextResultsMatch = new ArrayList<>();
 
     SampleFragmentPageAdapter mAdapter;
 
@@ -51,7 +53,7 @@ public class FragmentMain extends Fragment {
 
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
-        String fromServer = null, fromServerResultsPrevMatches = null ;
+        String fromServer = null, fromServerResultsPrevMatches = null, fromServerCalendar = null ;
         //String ipAdres = "192.168.0.104";
         String ipAdres = "95.163.161.29";
         //String ipAdres = "10.0.2.2";
@@ -76,7 +78,7 @@ public class FragmentMain extends Fragment {
                 out.writeUTF(query);
 
                 fromServer = in.readUTF();
-                Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+                Log.i(TAG, "[1] Данные с сервера в виду JSON = " + fromServer);
                 tournamentTable.clear();
                 tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
                 for(int i = 0; i<tournamentTable.size(); i++){
@@ -89,9 +91,13 @@ public class FragmentMain extends Fragment {
                 for(int i = 0; i<prevResultsMatch.size(); i++){
                     Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
                 }
+                fromServerCalendar = in.readUTF();
+                nextResultsMatch.clear();
+                nextResultsMatch = gson.fromJson(fromServerCalendar, new TypeToken<ArrayList<NextMatches>>(){}.getType());
+                Log.i(TAG, "[3] Данные с сервера в виде JSON = " + fromServerCalendar);
+                Log.i(TAG, nextResultsMatch.toString());
 
                 int countFiles = in.readInt();
-                imageBitmap.clear();
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
                 byte[] byteArray;
                 for(int i = 0; i < countFiles; i++){
@@ -122,7 +128,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch, nextResultsMatch);
             viewPager.setAdapter(mAdapter);
             tabLayout.setupWithViewPager(viewPager);
         }
@@ -166,7 +172,7 @@ public class FragmentMain extends Fragment {
 
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
-        String fromServer = null, fromServerResultsPrevMatches = null ;
+        String fromServer = null, fromServerResultsPrevMatches = null, fromServerCalendar = null ;
        // String ipAdres = "192.168.0.104";
         String ipAdres = "95.163.161.29";
         //String ipAdres = "10.0.2.2";
@@ -204,8 +210,13 @@ public class FragmentMain extends Fragment {
                 for(int i = 0; i<prevResultsMatch.size(); i++){
                     Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
                 }
+                fromServerCalendar = in.readUTF();
+                nextResultsMatch.clear();
+                nextResultsMatch = gson.fromJson(fromServerCalendar, new TypeToken<ArrayList<NextMatches>>(){}.getType());
+                Log.i(TAG, "[3] Данные с сервера в виде JSON = " + fromServerCalendar);
+                Log.i(TAG, nextResultsMatch.toString());
                 int countFiles = in.readInt();
-                imageBitmap.clear();
+
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
                 for(int i = 0; i < countFiles; i++){
                     int countBytes = in.readInt();
@@ -236,7 +247,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter.update(tournamentTable, prevResultsMatch);
+            mAdapter.update(tournamentTable, prevResultsMatch, nextResultsMatch);
         }
     }
 
