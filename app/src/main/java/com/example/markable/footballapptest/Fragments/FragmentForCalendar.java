@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.markable.footballapptest.Adapters.AdapterForCalendar;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
@@ -24,7 +26,8 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
 
     private ArrayList<NextMatches> newNextMatches = new ArrayList<>();
 
-   // RecyclerView recyclerView;
+    RecyclerView recyclerView;
+    AdapterForCalendar adapter;
 
     public static FragmentForCalendar newInstance(ArrayList<NextMatches> calendar){
         Log.i(TAG, "newInstance: " + calendar);
@@ -49,9 +52,11 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
         Log.i(TAG, "onCreateView: начало ветки для календаря");
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " );
         Log.i(TAG, "onCreateView: Размер массива " + newNextMatches.size());
-        //recyclerView = view.findViewById(R.id.listForCalendar);
 
-
+        recyclerView = (RecyclerView) view.findViewById(R.id.listForCalendar);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new AdapterForCalendar(newNextMatches);
+        recyclerView.setAdapter(adapter);
 
        /* if(newNextMatches.size() != 0){
             update(null, null, newNextMatches);
@@ -66,6 +71,8 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
         Log.i(TAG, "Interface: ");
         this.newNextMatches = calendar;
+        adapter.update(newNextMatches);
+        //adapter.notifyDataSetChanged();
         Log.i(TAG, "update: " + newNextMatches);
     }
     
