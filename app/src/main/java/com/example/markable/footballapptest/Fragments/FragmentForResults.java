@@ -20,6 +20,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     private static final String TAG = "FragRes";
 
     RecyclerView recyclerView;
+    RecyclerViewForResults adapter;
    // TextView textView;
 
 
@@ -51,7 +52,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         Log.i(TAG, "onCreateView: Начало новой ветки c новым адаптером");
         //textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
-        RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
+        adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
         recyclerView.setAdapter(adapter);
         /*if(newPrevMatches.size() != 0){
             update(null, newPrevMatches, null);
@@ -68,8 +69,9 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
         Log.i(TAG, "Interface: " + prevResults);
         this.newPrevMatches = prevResults;
-        RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
-        recyclerView.setAdapter(adapter);
+        adapter.update(newPrevMatches);
+        //RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
+        //recyclerView.setAdapter(adapter);
         //lisrView.setAdapter(new ListViewArrayAdapterForResult(getActivity(), newPrevMatches));
         /*String results = "";
         for(int i = 0; i < newPrevMatches.size(); i++){

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +53,10 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         return list.size();
     }
 
+    public void update(ArrayList<PrevMatches> prevMatches){
+        this.list = prevMatches;
+        notifyDataSetChanged();
+    }
     /**
      * Реализация класса ViewHolder, хранящего ссылки на виджеты.
      */
