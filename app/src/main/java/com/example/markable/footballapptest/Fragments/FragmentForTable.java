@@ -87,7 +87,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         //image = view.findViewById(R.id.imageViewTest);
         //image.setImageBitmap(imageBitmap.get(0));
         if(newTournamentTable.size() != 0){
-            update(newTournamentTable, null);
+            update(newTournamentTable, null, null);
         }else {
             //textView.setText("Чисто проверить! ");
         }
@@ -137,7 +137,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     }
 */
     @Override
-    public void update(ArrayList divTable, ArrayList prevResults) {
+    public void update(ArrayList divTable, ArrayList prevResults, ArrayList calendar) {
         Log.i(TAG, "Interface: Сработал пустой метод");
         this.newTournamentTable = divTable;
         Log.i(TAG, "createTable: Создание таблицы");
@@ -145,13 +145,13 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
         tableLay.removeAllViews();
         for(int i = -1; i < newTournamentTable.size(); i++){
-            Log.i(TAG, "createTable: Строка = " + i);
+            //Log.i(TAG, "createTable: Строка = " + i);
             TableRow tableRow = new TableRow(getActivity());
             tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             //tableRow.setBackgroundResource();
             for(int j = 0; j < countColumn; j++){
                 if(i == -1){
-                    Log.i(TAG, "createTable: Столбец = " + j);
+                    //Log.i(TAG, "createTable: Столбец = " + j);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
                     params.gravity = Gravity.CENTER;
@@ -169,7 +169,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     }
                     tableRow.addView(tv, j);
                 }else{
-                    Log.i(TAG, "createTable: Столбец = " + j);
+                    //Log.i(TAG, "createTable: Столбец = " + j);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
                     params.gravity = Gravity.CENTER;
@@ -192,7 +192,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                         case 5: tv.setText(newTournamentTable.get(i).getGoalConceded());break;
                         case 6: tv.setText(newTournamentTable.get(i).getPoint());break;
                     }
-                    Log.i(TAG, "onCreateView: TV = " + tv.getText());
+                    //Log.i(TAG, "onCreateView: TV = " + tv.getText());
                     if(j!=1){
                         tableRow.addView(tv, j);
                     }

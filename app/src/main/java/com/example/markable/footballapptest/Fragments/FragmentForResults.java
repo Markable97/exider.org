@@ -8,22 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.markable.footballapptest.Adapters.RecyclerViewForResults;
+import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.UpdateFragListener;
-import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class FragmentForResults extends Fragment implements UpdateFragListener {
 
     private static final String TAG = "FragRes";
-    private String fromActivity;
 
     RecyclerView recyclerView;
    // TextView textView;
 
-    private Gson gson = new Gson();
 
     private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
 
@@ -42,7 +40,6 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         Log.i(TAG, "OnCreate:");
         newPrevMatches = (ArrayList<PrevMatches>) getArguments().getSerializable("results");
         //fromActivity = getArguments().getString("results");
-        Log.i(TAG, "OnCreate:" + fromActivity);
     }
 
     @Override
@@ -50,16 +47,17 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         View view = inflater.inflate(R.layout.fragment_test_results, container, false);
 
         recyclerView = view.findViewById(R.id.listForResults);
-        Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
+        Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
         Log.i(TAG, "onCreateView: Начало новой ветки c новым адаптером");
         //textView = view.findViewById(R.id.textView_results);
         //textView.setText(fromActivity);
-
-        if(newPrevMatches.size() != 0){
-            update(null, newPrevMatches);
+        RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
+        recyclerView.setAdapter(adapter);
+        /*if(newPrevMatches.size() != 0){
+            update(null, newPrevMatches, null);
         }else {
             //textView.setText("Чисто проверить! ");
-        }
+        }*/
 
 
 
@@ -67,7 +65,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     }
 
     @Override
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults) {
+    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
         Log.i(TAG, "Interface: " + prevResults);
         this.newPrevMatches = prevResults;
         RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
