@@ -39,6 +39,7 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     @Override
     public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, int position) {
         PrevMatches match = list.get(position);
+        holder.tour.setText("Тур" + String.valueOf(match.getIdTour()));
         holder.nameTeamHome.setText(match.getTeamHome());
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));
@@ -56,6 +57,7 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView tour;
         ImageView imageTeamHome;
         ImageView imageTeamVisit;
         TextView nameTeamHome;
@@ -65,12 +67,13 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
 
         ViewHolder(View itemView) {
             super(itemView);
-            imageTeamHome = itemView.findViewById(R.id.imageTeamHome);
-            imageTeamVisit = itemView.findViewById(R.id.imageTeamVisit);
-            nameTeamHome = itemView.findViewById(R.id.nameTeamHome);
-            nameTeamVisit = itemView.findViewById(R.id.nameTeamVisit);
-            goalTeamHome =  itemView.findViewById(R.id.goalTeamHome);
-            goalTeamVisit =  itemView.findViewById(R.id.goalTeamVisit);
+            tour = itemView.findViewById(R.id.res_tour);
+            imageTeamHome = itemView.findViewById(R.id.res_image_home);
+            imageTeamVisit = itemView.findViewById(R.id.res_image_visit);
+            nameTeamHome = itemView.findViewById(R.id.res_name_home);
+            nameTeamVisit = itemView.findViewById(R.id.res_name_visit);
+            goalTeamHome =  itemView.findViewById(R.id.res_goal_home);
+            goalTeamVisit =  itemView.findViewById(R.id.res_goal_visit);
         }
     }
 }

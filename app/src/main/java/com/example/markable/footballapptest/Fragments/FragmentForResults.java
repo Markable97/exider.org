@@ -7,19 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import com.example.markable.footballapptest.Adapters.ListViewArrayAdapterForResult;
 import com.example.markable.footballapptest.Adapters.RecyclerViewForResults;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.UpdateFragListener;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 
 public class FragmentForResults extends Fragment implements UpdateFragListener {

@@ -53,7 +53,7 @@ public class FragmentMain extends Fragment {
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
         //String ipAdres = "192.168.0.104";
-        String ipAdres = "92.38.244.227";
+        String ipAdres = "95.163.161.29";
         //String ipAdres = "10.0.2.2";
 
 
@@ -168,7 +168,7 @@ public class FragmentMain extends Fragment {
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null ;
        // String ipAdres = "192.168.0.104";
-        String ipAdres = "92.38.244.227";
+        String ipAdres = "95.163.161.29";
         //String ipAdres = "10.0.2.2";
 
 
