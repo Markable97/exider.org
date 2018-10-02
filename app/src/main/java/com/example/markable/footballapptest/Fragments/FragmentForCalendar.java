@@ -34,6 +34,8 @@ public class FragmentForCalendar extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_calendar, container, false);
 
+        Log.i(TAG, "onCreateView: начало ветки для календаря");
+        
         TextView textView = view.findViewById(R.id.textView_calendar);
         textView.setText(fromActivity);
 
