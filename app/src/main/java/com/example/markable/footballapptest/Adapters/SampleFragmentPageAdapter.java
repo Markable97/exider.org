@@ -36,16 +36,18 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     private ArrayList<TournamentTable> table;
     private ArrayList<PrevMatches> results;
     private ArrayList<NextMatches> calendar;
+    private ArrayList<Bitmap> image;
 
     public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults,
-                                     ArrayList<NextMatches> calendar) {
+                                     ArrayList<NextMatches> calendar, ArrayList<Bitmap> image) {
         super(fm);
         this.context = context;
         this.table = divTable;
         this.results = prevResults;
         this.calendar = calendar;
+        this.image = image;
         Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.table + "\n prevResults =" + this.results
-                + "\n calendar = " + this.calendar);
+                + "\n calendar = " + this.calendar + "image " + this.image);
     }
 
     @Override
@@ -70,11 +72,13 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
         return super.getItemPosition(object);
     }
 
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts, ArrayList<NextMatches> calendar){
+    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts,
+                       ArrayList<NextMatches> calendar, ArrayList<Bitmap> image){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
         this.table = divTable;
         this.results = prevReslts;
         this.calendar = calendar;
+        this.image = image;
         //обновляет - вызов getItemPosition
         notifyDataSetChanged();
     }
