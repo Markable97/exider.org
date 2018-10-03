@@ -96,7 +96,7 @@ public class FragmentMain extends Fragment {
                 nextResultsMatch = gson.fromJson(fromServerCalendar, new TypeToken<ArrayList<NextMatches>>(){}.getType());
                 Log.i(TAG, "[3] Данные с сервера в виде JSON = " + fromServerCalendar);
                 Log.i(TAG, nextResultsMatch.toString());
-
+                imageBitmap.clear();
                 int countFiles = in.readInt();
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
                 byte[] byteArray;
@@ -110,7 +110,7 @@ public class FragmentMain extends Fragment {
                     imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                     tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
-                //Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
                 out.writeUTF("close");
                 out.close();
                 in.close();
@@ -128,7 +128,8 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch, nextResultsMatch);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch,
+                    nextResultsMatch, imageBitmap);
             viewPager.setAdapter(mAdapter);
             tabLayout.setupWithViewPager(viewPager);
         }
@@ -215,8 +216,8 @@ public class FragmentMain extends Fragment {
                 nextResultsMatch = gson.fromJson(fromServerCalendar, new TypeToken<ArrayList<NextMatches>>(){}.getType());
                 Log.i(TAG, "[3] Данные с сервера в виде JSON = " + fromServerCalendar);
                 Log.i(TAG, nextResultsMatch.toString());
+                imageBitmap.clear();
                 int countFiles = in.readInt();
-
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
                 for(int i = 0; i < countFiles; i++){
                     int countBytes = in.readInt();
@@ -225,10 +226,10 @@ public class FragmentMain extends Fragment {
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     in.readFully(byteArray);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
-                    //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                     tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
-               // Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
+                Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
 
                 out.writeUTF("close");
                 out.close();
@@ -247,7 +248,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter.update(tournamentTable, prevResultsMatch, nextResultsMatch);
+            mAdapter.update(tournamentTable, prevResultsMatch, nextResultsMatch, imageBitmap);
         }
     }
 
