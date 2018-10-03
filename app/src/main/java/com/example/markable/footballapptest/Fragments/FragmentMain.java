@@ -107,7 +107,7 @@ public class FragmentMain extends Fragment {
                     in.readFully(byteArray);
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
-                    //imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, countFromServer));
+                    imageBitmap.add(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                     tournamentTable.get(i).setImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
                 }
                 //Log.i(TAG, "doInBackground: Bitmap = " + imageBitmap.size());
