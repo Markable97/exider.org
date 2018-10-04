@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.AdapterForCalendar;
+import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
@@ -25,15 +27,16 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     private static final String TAG = "FragCal";
 
     private ArrayList<NextMatches> newNextMatches = new ArrayList<>();
-
+    private ArrayList<ImageFromServer> imageBitmap;
     RecyclerView recyclerView;
     AdapterForCalendar adapter;
 
-    public static FragmentForCalendar newInstance(ArrayList<NextMatches> calendar){
+    public static FragmentForCalendar newInstance(ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image){
         Log.i(TAG, "newInstance: " + calendar);
         FragmentForCalendar fragment = new FragmentForCalendar();
         Bundle args = new Bundle();
         args.putSerializable("calendar", calendar);
+        args.putSerializable("imageForCalendar", image);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,6 +46,8 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
         newNextMatches = (ArrayList<NextMatches>) getArguments().getSerializable("calendar");
+        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForCalendar");
+        Log.i(TAG, "onCreate: Массив картинок = " + imageBitmap.size());
     }
 
     @Nullable
