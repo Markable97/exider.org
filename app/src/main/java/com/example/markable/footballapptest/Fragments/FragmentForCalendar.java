@@ -1,25 +1,43 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.markable.footballapptest.Adapters.AdapterForCalendar;
+import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.NextMatches;
+import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.UpdateFragListener;
 
-public class FragmentForCalendar extends Fragment {
+import java.util.ArrayList;
+
+public class FragmentForCalendar extends Fragment implements UpdateFragListener {
 
     private static final String TAG = "FragCal";
 
-    private String fromActivity;
+    private ArrayList<NextMatches> newNextMatches = new ArrayList<>();
+    private ArrayList<ImageFromServer> imageBitmap;
+    RecyclerView recyclerView;
+    AdapterForCalendar adapter;
 
-    public static FragmentForCalendar newInstance(){
+    public static FragmentForCalendar newInstance(ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image){
+        Log.i(TAG, "newInstance: " + calendar);
         FragmentForCalendar fragment = new FragmentForCalendar();
+        Bundle args = new Bundle();
+        args.putSerializable("calendar", calendar);
+        args.putSerializable("imageForCalendar", image);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -27,19 +45,42 @@ public class FragmentForCalendar extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
+        newNextMatches = (ArrayList<NextMatches>) getArguments().getSerializable("calendar");
+        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForCalendar");
+        Log.i(TAG, "onCreate: Массив картинок = " + imageBitmap.size());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_calendar, container, false);
+        Log.i(TAG, "onCreateView: начало ветки для календаря");
+        Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " );
+        Log.i(TAG, "onCreateView: Размер массива " + newNextMatches.size());
 
-        TextView textView = view.findViewById(R.id.textView_calendar);
-        textView.setText(fromActivity);
+        recyclerView = (RecyclerView) view.findViewById(R.id.listForCalendar);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new AdapterForCalendar(newNextMatches, imageBitmap);
+        recyclerView.setAdapter(adapter);
 
-        Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " + fromActivity);
+       /* if(newNextMatches.size() != 0){
+            update(null, null, newNextMatches);
+        }else {
+
+        }*/
+
         return view;
     }
+
+    @Override
+    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
+        Log.i(TAG, "Interface: ");
+        this.newNextMatches = calendar;
+        adapter.update(newNextMatches, imageBitmap);
+        //adapter.notifyDataSetChanged();
+        Log.i(TAG, "update: " + newNextMatches);
+    }
+    
     @Override
     public void onStart() {
         super.onStart();

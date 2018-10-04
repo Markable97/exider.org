@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
+import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentForCalendar;
@@ -30,27 +32,33 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     private static final String TAG = "PageAdap";
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"Таблица", "Результаты", "Календарь"};
+    private String tabTitles[] = new String[]{"Календарь", "Результаты", "Таблица"};
     private Context context;
     private ArrayList<TournamentTable> table;
     private ArrayList<PrevMatches> results;
+    private ArrayList<NextMatches> calendar;
+    private ArrayList<ImageFromServer> image;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults) {
+    public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults,
+                                     ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image) {
         super(fm);
         this.context = context;
         this.table = divTable;
         this.results = prevResults;
-        Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.results + "\n prevResults =" + this.table);
+        this.calendar = calendar;
+        this.image = image;
+        Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.table + "\n prevResults =" + this.results
+                + "\n calendar = " + this.calendar + "image " + this.image);
     }
 
     @Override
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return new FragmentForTable().newInstance(table);
-            case 1: return new FragmentForResults().newInstance(results);
-            case 2: return new FragmentForCalendar().newInstance();
-            default: return new FragmentForTable().newInstance(table);
+            case 0: return new FragmentForCalendar().newInstance(calendar, image);
+            case 1: return new FragmentForResults().newInstance(results, image);
+            case 2: return new FragmentForTable().newInstance(table, image);
+            default: return new FragmentForTable().newInstance(table, image);
         }
 
     }
@@ -59,16 +67,19 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(@NonNull Object object) {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
-            ((UpdateFragListener) object).update(table, results);
+            ((UpdateFragListener) object).update(table, results,calendar);
         }
 
         return super.getItemPosition(object);
     }
 
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts){
+    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts,
+                       ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
         this.table = divTable;
         this.results = prevReslts;
+        this.calendar = calendar;
+        this.image = image;
         //обновляет - вызов getItemPosition
         notifyDataSetChanged();
     }

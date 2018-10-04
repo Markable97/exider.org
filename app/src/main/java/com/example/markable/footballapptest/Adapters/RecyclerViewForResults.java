@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,18 +23,18 @@ import java.util.List;
 
 public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewForResults.ViewHolder> {
 
-    private LayoutInflater inflater;
     private List<PrevMatches>  list;
+    private ArrayList<ImageFromServer> listImage;
 
     //конструктов для адаптера
-    public RecyclerViewForResults(Context context, List<PrevMatches> list){
+    public RecyclerViewForResults(List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
         this.list = list;
-        this.inflater = LayoutInflater.from(context);
+        this.listImage = listImage;
     }
 
     @Override
     public RecyclerViewForResults.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.recycle_row_results, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_row_results, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,6 +42,16 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, int position) {
         PrevMatches match = list.get(position);
         holder.tour.setText("Тур" + String.valueOf(match.getIdTour()));
+        holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
+        for(int i = 0; i < list.size(); i++){
+            for(int j = 0; j < listImage.size(); j++){
+                if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImage());
+                } else if (match.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImage());
+                }
+            }
+        }
         holder.nameTeamHome.setText(match.getTeamHome());
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));
@@ -52,6 +64,11 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         return list.size();
     }
 
+    public void update(ArrayList<PrevMatches> prevMatches, ArrayList<ImageFromServer> image){
+        this.list = prevMatches;
+        this.listImage = image;
+        notifyDataSetChanged();
+    }
     /**
      * Реализация класса ViewHolder, хранящего ссылки на виджеты.
      */
