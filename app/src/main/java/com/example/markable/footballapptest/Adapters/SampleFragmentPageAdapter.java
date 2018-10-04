@@ -56,7 +56,7 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
             case 0: return new FragmentForCalendar().newInstance(calendar, image);
-            case 1: return new FragmentForResults().newInstance(results);
+            case 1: return new FragmentForResults().newInstance(results, image);
             case 2: return new FragmentForTable().newInstance(table, image);
             default: return new FragmentForTable().newInstance(table, image);
         }
