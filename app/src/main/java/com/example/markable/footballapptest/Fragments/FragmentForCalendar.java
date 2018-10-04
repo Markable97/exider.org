@@ -60,7 +60,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.listForCalendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new AdapterForCalendar(newNextMatches);
+        adapter = new AdapterForCalendar(newNextMatches, imageBitmap);
         recyclerView.setAdapter(adapter);
 
        /* if(newNextMatches.size() != 0){
@@ -76,7 +76,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
         Log.i(TAG, "Interface: ");
         this.newNextMatches = calendar;
-        adapter.update(newNextMatches);
+        adapter.update(newNextMatches, imageBitmap);
         //adapter.notifyDataSetChanged();
         Log.i(TAG, "update: " + newNextMatches);
     }
