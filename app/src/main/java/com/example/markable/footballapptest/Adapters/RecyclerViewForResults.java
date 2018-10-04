@@ -41,7 +41,6 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     @Override
     public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, int position) {
         PrevMatches match = list.get(position);
-        holder.tour.setText("Тур" + String.valueOf(match.getIdTour()));
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
