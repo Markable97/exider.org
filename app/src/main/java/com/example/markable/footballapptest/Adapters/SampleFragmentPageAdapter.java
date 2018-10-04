@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 
+import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
@@ -36,10 +37,10 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     private ArrayList<TournamentTable> table;
     private ArrayList<PrevMatches> results;
     private ArrayList<NextMatches> calendar;
-    private ArrayList<Bitmap> image;
+    private ArrayList<ImageFromServer> image;
 
     public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults,
-                                     ArrayList<NextMatches> calendar, ArrayList<Bitmap> image) {
+                                     ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image) {
         super(fm);
         this.context = context;
         this.table = divTable;
@@ -54,10 +55,10 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return new FragmentForCalendar().newInstance(calendar);
+            case 0: return new FragmentForCalendar().newInstance(calendar, image);
             case 1: return new FragmentForResults().newInstance(results);
-            case 2: return new FragmentForTable().newInstance(table);
-            default: return new FragmentForTable().newInstance(table);
+            case 2: return new FragmentForTable().newInstance(table, image);
+            default: return new FragmentForTable().newInstance(table, image);
         }
 
     }
@@ -73,7 +74,7 @@ public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
     }
 
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts,
-                       ArrayList<NextMatches> calendar, ArrayList<Bitmap> image){
+                       ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
         this.table = divTable;
         this.results = prevReslts;
