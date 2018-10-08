@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="backTable">#000000</color>
+    <color name="backCell">#ffffff</color>
+
+    <color name="nextDiv">#e4f7e3</color>
+    <color name="nextDivSt">#feffdb</color>
+    <color name="prevDiv">#ffd5cf</color>
+    <color name="prevDivSt">#ffedea</color>
 </resources>
