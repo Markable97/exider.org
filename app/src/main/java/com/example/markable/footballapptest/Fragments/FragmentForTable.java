@@ -1,11 +1,11 @@
 package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,9 +32,12 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
     //private final float scale = getBaseContext().getResources().getDisplayMetrics().density;
 
-    int _50dp;
+    int _50dp, _1dp;
+    int green, yellow, pink, red;
 
     Gson gson = new Gson();
+
+    int whiteColor;
 
     private ArrayList<TournamentTable> newTournamentTable = new ArrayList<>();
     private ArrayList<ImageFromServer> imageBitmap;
@@ -56,7 +59,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     public void onAttach(Context context) {
         super.onAttach(context);
         final float scale = context.getResources().getDisplayMetrics().density;
-        _50dp = (int) (50*scale*0.5f);
+        _50dp = (int) (49*scale*0.5f);
+        _1dp = (int)(1*scale*0.5f);
+
     }
 
     @Override
@@ -69,7 +74,11 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreate: " + fromActivity);
         Log.i(TAG, "OnCreate: длина массива " + newTournamentTable.size() );
         Log.i(TAG, "OnCreate: длина массива image " + imageBitmap.size() );
-
+        green = ContextCompat.getColor(getActivity(),R.color.nextDiv);
+        yellow = ContextCompat.getColor(getActivity(),R.color.nextDivSt);
+        red = ContextCompat.getColor(getActivity(),R.color.prevDiv);
+        pink = ContextCompat.getColor(getActivity(),R.color.prevDivSt);
+        whiteColor = ContextCompat.getColor(getActivity(), R.color.backCell);
     }
 
     @Nullable
@@ -80,7 +89,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
         Log.i(TAG, "onCreateView: Создание таблицы");
+
         tableLay = view.findViewById(R.id.tableForDiv);
+        tableLay.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.backTable));
         //textView = (TextView) view.findViewById(R.id.textView_test);
         //LinearLayout linearLayout = view.findViewById(R.id.layout_table);
         /*ViewGroup.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -142,6 +153,40 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         }
     }
 */
+
+    int changeColor(String nameDivision,int position){
+        int color = 0;
+        switch (nameDivision){
+            case "Высший дивизион":
+                if(position==0){
+                    color = green;
+                }else if(position==1 || position==2){
+                    color = yellow;
+                }else if (position==newTournamentTable.size() - 3 ){
+                    color = pink;
+                }else if(position==newTournamentTable.size() - 1 || position==newTournamentTable.size() - 2 ){
+                    color = red;
+                }else {
+                    color = whiteColor;
+                }
+                break;
+            case "Первый дивизион":
+                if(position==0 || position==1){
+                    color = green;
+                }else if(position==2){
+                    color = yellow;
+                }else if ((position>=newTournamentTable.size()-8)&&(position<newTournamentTable.size()-6)){
+                    color = pink;
+                }else if(position>=newTournamentTable.size()-6){
+                    color = red;
+                }else {
+                    color = whiteColor;
+                }
+                break;
+        }
+        return color;
+    }
+
     @Override
     public void update(ArrayList divTable, ArrayList prevResults, ArrayList calendar) {
         Log.i(TAG, "Interface: Сработал пустой метод");
@@ -150,6 +195,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         int countColumn = 7;
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
         tableLay.removeAllViews();
+
+
+
         for(int i = -1; i < newTournamentTable.size(); i++){
             //Log.i(TAG, "createTable: Строка = " + i);
             TableRow tableRow = new TableRow(getActivity());
@@ -159,11 +207,13 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                 if(i == -1){
                     //Log.i(TAG, "createTable: Столбец = " + j);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
-                    params.gravity = Gravity.CENTER;
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    //params.gravity = Gravity.CENTER;
+                    params.setMargins(_1dp, _1dp, _1dp, _1dp);
                     TextView tv = new TextView(getActivity());
                     tv.setLayoutParams(params);
                     tv.setGravity(Gravity.CENTER);
+                    tv.setBackgroundColor(whiteColor);
                     switch (j){
                         case 0: tv.setText("#");break;
                         case 1: tv.setText("Лого");break;
@@ -177,17 +227,22 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                 }else{
                     //Log.i(TAG, "createTable: Столбец = " + j);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
-                    params.gravity = Gravity.CENTER;
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    //params.gravity = Gravity.CENTER;
                     TextView tv = new TextView(getActivity());
+                    params.setMargins(_1dp, _1dp, _1dp, _1dp);
                     tv.setLayoutParams(params);
                     tv.setGravity(Gravity.CENTER);
+                    tv.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                     switch (j){
                         case 0: tv.setText(String.valueOf(i+1));break;
                         case 1:
-                            TableRow.LayoutParams paramsImage = new TableRow.LayoutParams(_50dp, _50dp,1.0f);
-                            paramsImage.gravity = Gravity.CENTER;
+                            TableRow.LayoutParams paramsImage = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT);
+                            //paramsImage.gravity = Gravity.CENTER;
+                            paramsImage.setMargins(_1dp, _1dp, _1dp, _1dp);
                             ImageView imageView = new ImageView(getActivity());
+                            imageView.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                             imageView.setLayoutParams(paramsImage);
                             imageView.setImageBitmap(imageBitmap.get(i).getBitmapImage());
                             tableRow.addView(imageView, j);

@@ -12,5 +12,6 @@
     <string name="secondA_div">Второй дивизион A</string>>
     <string name="secondB_div">Второй дивизион B</string>>
     <string name="thirdA_div">Третий дивизион A</string>>
-    <string name="thirdB_div">Третий дивизион B</string>>
+    <string name="thirdB_div">Третий дивизион B</string>
+    <string name="descriptionTAble">И - игры, З - забито, П - пропущено, О - очки</string>>
 </resources>

@@ -34,6 +34,8 @@ public class FragmentMain extends Fragment {
 
     View view;
 
+    final String IP = "192.168.0.104";
+
     private ArrayList<ImageFromServer> imageArray = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
     private ArrayList<PrevMatches> prevResultsMatch = new ArrayList<>();
@@ -56,7 +58,7 @@ public class FragmentMain extends Fragment {
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null, fromServerCalendar = null ;
         //String ipAdres = "192.168.0.104";
-        String ipAdres = "92.38.241.107";
+        //String ipAdres = "92.38.241.107";
         //String ipAdres = "10.0.2.2";
 
 
@@ -71,7 +73,7 @@ public class FragmentMain extends Fragment {
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(ipAdres, 55555);
+                socket = new Socket(IP, 55555);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -177,8 +179,8 @@ public class FragmentMain extends Fragment {
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
         String fromServer = null, fromServerResultsPrevMatches = null, fromServerCalendar = null ;
-       // String ipAdres = "192.168.0.104";
-        String ipAdres = "92.38.241.107";
+        //String ipAdres = "192.168.0.104";
+        //String ipAdres = "92.38.241.107";
         //String ipAdres = "10.0.2.2";
 
 
@@ -193,7 +195,7 @@ public class FragmentMain extends Fragment {
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(ipAdres, 55555);
+                socket = new Socket(IP, 55555);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());

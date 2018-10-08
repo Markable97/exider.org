@@ -44,9 +44,10 @@
 
                     <ImageView
                         android:id="@+id/cal_image_home"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         app:srcCompat="@android:drawable/btn_star_big_on" />
 
                     <TextView
@@ -54,6 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="TextView"
                         tools:text="Морс" />
@@ -66,9 +68,10 @@
 
                     <ImageView
                         android:id="@+id/cal_image_visit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         app:srcCompat="@android:drawable/btn_star_big_off" />
 
                     <TextView
@@ -76,6 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="TextView"
                         tools:text="ЛФК Империя" />
@@ -103,6 +107,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="TextView"
+                    android:textSize="12sp"
                     tools:text="6 окт., 13:30" />
 
                 <View
@@ -115,9 +120,10 @@
                     android:id="@+id/cal_stadium"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="1.8"
                     android:gravity="center"
                     android:text="TextView"
+                    android:textSize="12sp"
                     tools:text="Спартак 1" />
             </LinearLayout>
         </LinearLayout>
