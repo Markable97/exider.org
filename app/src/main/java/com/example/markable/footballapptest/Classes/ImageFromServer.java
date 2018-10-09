@@ -9,19 +9,24 @@ import java.io.Serializable;
 public class ImageFromServer implements Parcelable, Serializable {
 
     String nameImage;
-    Bitmap bitmapImage;
+    Bitmap bitmapImageBig;
+    transient Bitmap bitmapImageSmall;
 
-    public ImageFromServer(String nameImage, Bitmap bitmapImage) {
+    public ImageFromServer(String nameImage,Bitmap bitmapImageSmall ,Bitmap bitmapImageBig) {
         this.nameImage = nameImage;
-        this.bitmapImage = bitmapImage;
+        this.bitmapImageSmall = bitmapImageSmall;
+        this.bitmapImageBig = bitmapImageBig;
     }
-
+    public ImageFromServer(String nameImage, Bitmap bitmapImageBig){
+        this.nameImage = nameImage;
+        this.bitmapImageBig = bitmapImageBig;
+    }
     public String getNameImage() {
         return nameImage;
     }
 
-    public Bitmap getBitmapImage() {
-        return bitmapImage;
+    public Bitmap getBitmapImageBig() {
+        return bitmapImageBig;
     }
 
     @Override
@@ -32,7 +37,7 @@ public class ImageFromServer implements Parcelable, Serializable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(nameImage);
-        dest.writeParcelable(bitmapImage, flags);
+        dest.writeParcelable(bitmapImageBig, flags);
     }
 
     public static final Creator<ImageFromServer> CREATOR = new Creator<ImageFromServer>() {

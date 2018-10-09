@@ -100,7 +100,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         /*ViewGroup.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         for(int i = 0; i < newTournamentTable.size() ; i++){
             ImageView imageView = new ImageView(getContext());
-            imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImage());
+            imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImageBig());
             imageView.setLayoutParams(imageParams);
             linearLayout.addView(imageView);
         }*/
@@ -136,7 +136,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     case 1:
                         ImageView imageView = new ImageView(getContext());
                         imageView.setLayoutParams(new LinearLayout.LayoutParams(_50dp,_50dp,1.0f));
-                        imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImage());
+                        imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImageBig());
                         tableRow.addView(tv, j);
                         break;
                     case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
@@ -247,7 +247,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             ImageView imageView = new ImageView(getActivity());
                             imageView.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                             imageView.setLayoutParams(paramsImage);
-                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImage());
+                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImageBig());
                             tableRow.addView(imageView, j);
                             break;
                         case 2:

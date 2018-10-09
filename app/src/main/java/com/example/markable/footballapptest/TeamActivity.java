@@ -10,11 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
-import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamMatches;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamStatistic;
-
-import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -42,7 +39,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         nameTeam.setText(image.getNameImage());
 
         imageTeam = findViewById(R.id.teamActivity_im_image);
-        imageTeam.setImageBitmap(image.getBitmapImage());
+        imageTeam.setImageBitmap(image.getBitmapImageBig());
 
         rb_statistic = findViewById(R.id.rb_statisticPlayers);
         rb_statistic.setChecked(true);

@@ -1,7 +1,6 @@
 package com.example.markable.footballapptest.Adapters;
 
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +44,9 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
                 if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImage());
+                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 } else if (match.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImage());
+                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
         }

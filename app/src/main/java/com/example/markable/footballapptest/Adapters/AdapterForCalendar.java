@@ -1,6 +1,5 @@
 package com.example.markable.footballapptest.Adapters;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,9 +37,9 @@ public class AdapterForCalendar extends RecyclerView.Adapter<AdapterForCalendar.
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
                 if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageHome.setImageBitmap(listImage.get(j).getBitmapImage());
+                    holder.imageHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 } else if (match.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageVisit.setImageBitmap(listImage.get(j).getBitmapImage());
+                    holder.imageVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
         }
