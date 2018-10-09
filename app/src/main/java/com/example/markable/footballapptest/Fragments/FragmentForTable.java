@@ -1,7 +1,9 @@
 package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.TeamActivity;
 import com.example.markable.footballapptest.UpdateFragListener;
 import com.google.gson.Gson;
 
@@ -247,7 +250,19 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             imageView.setImageBitmap(imageBitmap.get(i).getBitmapImage());
                             tableRow.addView(imageView, j);
                             break;
-                        case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
+                        case 2:
+                            tv.setText(newTournamentTable.get(i).getTeamName());
+                            final int finalI = i;
+                            tv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ImageFromServer descriptionImage = imageBitmap.get(finalI);
+                                    Intent intent = new Intent(getActivity(), TeamActivity.class);
+                                    intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
+                                    startActivity(intent);
+                                }
+                            });
+                            break;
                         case 3: tv.setText(newTournamentTable.get(i).getGames());break;
                         case 4: tv.setText(newTournamentTable.get(i).getGoalScored());break;
                         case 5: tv.setText(newTournamentTable.get(i).getGoalConceded());break;
