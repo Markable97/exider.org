@@ -10,6 +10,12 @@ import com.example.markable.footballapptest.R;
 
 public class FragmentStatisticAssistant extends Fragment {
 
+    public static FragmentStatisticAssistant  newInstance(){
+        FragmentStatisticAssistant fragmnet = new FragmentStatisticAssistant();
+
+        return fragmnet;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

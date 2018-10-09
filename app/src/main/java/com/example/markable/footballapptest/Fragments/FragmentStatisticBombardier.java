@@ -10,6 +10,11 @@ import com.example.markable.footballapptest.R;
 
 public class FragmentStatisticBombardier extends Fragment {
 
+    public static FragmentStatisticBombardier newInstance(){
+        FragmentStatisticBombardier fragment = new FragmentStatisticBombardier();
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

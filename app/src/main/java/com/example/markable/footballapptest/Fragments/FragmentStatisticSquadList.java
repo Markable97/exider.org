@@ -11,6 +11,10 @@ import com.example.markable.footballapptest.R;
 
 public class FragmentStatisticSquadList extends Fragment {
 
+    public static FragmentStatisticSquadList newInstance(){
+        FragmentStatisticSquadList fragment = new FragmentStatisticSquadList();
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
