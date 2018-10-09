@@ -13,5 +13,7 @@
     <string name="secondB_div">Второй дивизион B</string>>
     <string name="thirdA_div">Третий дивизион A</string>>
     <string name="thirdB_div">Третий дивизион B</string>
-    <string name="descriptionTAble">И - игры, З - забито, П - пропущено, О - очки</string>>
+    <string name="descriptionTAble">И - игры, З - забито, П - пропущено, О - очки</string>
+    <string name="state_player">Статистика игркоов</string>
+    <string name="all_matches">Все матчи</string>>
 </resources>
