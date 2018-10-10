@@ -71,8 +71,8 @@
     <FrameLayout
         android:id="@+id/container_frag_team"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp">
 
 
     </FrameLayout>
