@@ -230,6 +230,7 @@ public class FragmentMain extends Fragment {
                 Log.i(TAG, nextResultsMatch.toString());
                 imageArray.clear();
                 int countFiles = in.readInt();
+                byte[] byteArrayBig;
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
                 for(int i = 0; i < countFiles; i++){
                     String nameImageFromServer = in.readUTF();
@@ -240,8 +241,14 @@ public class FragmentMain extends Fragment {
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     in.readFully(byteArray);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    int countBytesBig = in.readInt();
+                    Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
+                    byteArrayBig = new byte[countBytesBig];
+                    in.readFully(byteArrayBig);
+                    Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
                     imageArray.add(new ImageFromServer(nameImageFromServer,
-                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length)));
+                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),
+                            BitmapFactory.decodeByteArray(byteArrayBig,0, byteArrayBig.length)));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 

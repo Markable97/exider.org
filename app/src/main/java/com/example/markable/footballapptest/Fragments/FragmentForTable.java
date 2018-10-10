@@ -178,9 +178,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     color = green;
                 }else if(position==2){
                     color = yellow;
-                }else if ((position>=newTournamentTable.size()-8)&&(position<newTournamentTable.size()-6)){
+                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
                     color = pink;
-                }else if(position>=newTournamentTable.size()-6){
+                }else if(position>=newTournamentTable.size()-5){
                     color = red;
                 }else {
                     color = whiteColor;
