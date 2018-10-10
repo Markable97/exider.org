@@ -2,30 +2,54 @@ package com.example.markable.footballapptest.Classes;
 
 import android.graphics.Bitmap;
 
-public class Bombardier {
+public class Player {
 
-    private String playetName;
-    Bitmap playerImage;
-    private int countGoals;
+    private String playerName;
+    transient Bitmap playerImage;
+    private int games;
+    private int goal;
+    private int assist;
+    private int yellowCard;
+    private int redCard;
 
-    public Bombardier(String playetName, int countGoals) {
-        this.playetName = playetName;
-        this.countGoals = countGoals;
+    public Player(String playerName, int games, int goal, int assist, int yellowCard, int redCard) {
+        this.playerName = playerName;
+        this.games = games;
+        this.goal = goal;
+        this.assist = assist;
+        this.yellowCard = yellowCard;
+        this.redCard = redCard;
     }
 
     public void setPlayerImage(Bitmap playerImage) {
         this.playerImage = playerImage;
     }
 
-    public String getPlayetName() {
-        return playetName;
+    public String getPlayerName() {
+        return playerName;
     }
 
     public Bitmap getPlayerImage() {
         return playerImage;
     }
 
-    public int getCountGoals() {
-        return countGoals;
+    public int getGoal() {
+        return goal;
+    }
+
+    public int getGames() {
+        return games;
+    }
+
+    public int getAssist() {
+        return assist;
+    }
+
+    public int getYellowCard() {
+        return yellowCard;
+    }
+
+    public int getRedCard() {
+        return redCard;
     }
 }
