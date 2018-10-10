@@ -29,6 +29,10 @@ public class ImageFromServer implements Parcelable, Serializable {
         return bitmapImageBig;
     }
 
+    public Bitmap getBitmapImageSmall() {
+        return bitmapImageSmall;
+    }
+
     @Override
     public int describeContents() {
         return 0;

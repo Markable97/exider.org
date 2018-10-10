@@ -247,7 +247,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             ImageView imageView = new ImageView(getActivity());
                             imageView.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                             imageView.setLayoutParams(paramsImage);
-                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImageBig());
+                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImageSmall());
                             tableRow.addView(imageView, j);
                             break;
                         case 2:
