@@ -1,7 +1,9 @@
 package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.TeamActivity;
 import com.example.markable.footballapptest.UpdateFragListener;
 import com.google.gson.Gson;
 
@@ -97,7 +100,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         /*ViewGroup.LayoutParams imageParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         for(int i = 0; i < newTournamentTable.size() ; i++){
             ImageView imageView = new ImageView(getContext());
-            imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImage());
+            imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImageBig());
             imageView.setLayoutParams(imageParams);
             linearLayout.addView(imageView);
         }*/
@@ -133,7 +136,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     case 1:
                         ImageView imageView = new ImageView(getContext());
                         imageView.setLayoutParams(new LinearLayout.LayoutParams(_50dp,_50dp,1.0f));
-                        imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImage());
+                        imageView.setImageBitmap(newTournamentTable.get(i).getBitmapImageBig());
                         tableRow.addView(tv, j);
                         break;
                     case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
@@ -175,9 +178,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     color = green;
                 }else if(position==2){
                     color = yellow;
-                }else if ((position>=newTournamentTable.size()-8)&&(position<newTournamentTable.size()-6)){
+                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
                     color = pink;
-                }else if(position>=newTournamentTable.size()-6){
+                }else if(position>=newTournamentTable.size()-5){
                     color = red;
                 }else {
                     color = whiteColor;
@@ -244,10 +247,22 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             ImageView imageView = new ImageView(getActivity());
                             imageView.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                             imageView.setLayoutParams(paramsImage);
-                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImage());
+                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImageSmall());
                             tableRow.addView(imageView, j);
                             break;
-                        case 2: tv.setText(newTournamentTable.get(i).getTeamName());break;
+                        case 2:
+                            tv.setText(newTournamentTable.get(i).getTeamName());
+                            final int finalI = i;
+                            tv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ImageFromServer descriptionImage = imageBitmap.get(finalI);
+                                    Intent intent = new Intent(getActivity(), TeamActivity.class);
+                                    intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
+                                    startActivity(intent);
+                                }
+                            });
+                            break;
                         case 3: tv.setText(newTournamentTable.get(i).getGames());break;
                         case 4: tv.setText(newTournamentTable.get(i).getGoalScored());break;
                         case 5: tv.setText(newTournamentTable.get(i).getGoalConceded());break;
