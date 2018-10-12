@@ -44,9 +44,9 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
                 if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageSmall());
+                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 } else if (match.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageSmall());
+                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
         }
