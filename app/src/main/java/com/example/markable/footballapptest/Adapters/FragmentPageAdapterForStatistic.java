@@ -9,12 +9,12 @@ import com.example.markable.footballapptest.Fragments.FragmentStatisticAssistant
 import com.example.markable.footballapptest.Fragments.FragmentStatisticBombardier;
 import com.example.markable.footballapptest.Fragments.FragmentStatisticSquadList;
 
-public class FragmentPageAdapterForTeam extends FragmentPagerAdapter {
+public class FragmentPageAdapterForStatistic extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[]{"Состав", "Бомбардиры", "Ассистент"};
 
-    public FragmentPageAdapterForTeam(FragmentManager fm) {
+    public FragmentPageAdapterForStatistic(FragmentManager fm) {
         super(fm);
     }
 
