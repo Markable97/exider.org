@@ -12,9 +12,13 @@ import com.example.markable.footballapptest.R;
 public class FragmentForTeamMatches extends Fragment {
 
 
+    private static final String TAG = "FragMatches";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_matches, container, false);
+
+
 
         return view;
     }
