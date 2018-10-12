@@ -14,6 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.FragmentPageAdapterForStatistic;
 import com.example.markable.footballapptest.R;
+import com.google.gson.Gson;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class FragmentForTeamStatistic extends Fragment {
 
@@ -63,18 +69,36 @@ public class FragmentForTeamStatistic extends Fragment {
 
     public class ServerConnect extends AsyncTask<String, Void, String>{
 
+        String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
         final String IP = "192.168.0.103";
         String fromServer = null;
 
         @Override
         protected String doInBackground(String... strings) {
-
+            Log.i(TAG, "doInBackground: поток запущен");
             for(String s : strings){
                 query = "{\"messageLogic\":\"team\",\"id_team\":"+ s + "}";
                 //query = "{\"id_division\":" + s + ",\"id_tour\":2}";
             }
-            Log.i(TAG, "doInBackground: " + query);
+            Socket socket;
+            Gson gson = new Gson();
+
+            try {
+                socket = new Socket(IP, 55555);
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+                out.writeUTF(query);
+
+                fromServer = in.readUTF();
+                Log.i(TAG, "doInBackground: Данные от сервера" + fromServer);
+
+                out.writeUTF(queryClose);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
