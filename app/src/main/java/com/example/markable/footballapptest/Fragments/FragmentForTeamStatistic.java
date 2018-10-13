@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.markable.footballapptest.Adapters.FragmentPageAdapterForStatistic;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.ReturnFromFragForAct;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,6 +31,8 @@ public class FragmentForTeamStatistic extends Fragment {
 
 
     private static final String TAG = "FragStatistic";
+
+    ReturnFromFragForAct fromFragForAct;
 
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -47,12 +51,36 @@ public class FragmentForTeamStatistic extends Fragment {
         return fragment;
     }
 
+    public static FragmentForTeamStatistic newInstance(ArrayList<Player> player){
+        Log.i(TAG, "NewInstance2: " + player.toString());
+        FragmentForTeamStatistic fragment = new FragmentForTeamStatistic();
+        Bundle args = new Bundle();
+        args.putSerializable("nameTeamArray", player);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof ReturnFromFragForAct){
+            fromFragForAct = (ReturnFromFragForAct) context;
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String fromBun = getArguments().getString("nameTeam","хуй тебе а не данные");
         Log.i(TAG, "onCreate: " + fromBun);
-        new ServerConnect().execute(fromBun);
+        //Log.i(TAG, "onCreate: " + arrayPlayers.size());
+        if(getArguments().getSerializable("nameTeamArray" ) == null){
+            Log.i(TAG, "onCreate: длина массива равна 0");
+            new ServerConnect().execute(fromBun);
+        }else {
+            arrayPlayers = (ArrayList<Player>) getArguments().getSerializable("nameTeamArray");
+            Log.i(TAG, "onCreate: Длина массива = " + arrayPlayers.size() );
+        }
 
 
     }
@@ -61,7 +89,7 @@ public class FragmentForTeamStatistic extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_statistic, container, false);
 
-
+        Log.i(TAG, "onCreateView: ");
 
         viewPager = view.findViewById(R.id.viewPager_team_statistic);
         tabLayout = view.findViewById(R.id.statistic_tabs);
@@ -103,6 +131,7 @@ public class FragmentForTeamStatistic extends Fragment {
                 arrayPlayers = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: \n" + arrayPlayers.toString());
 
+
                 out.writeUTF(queryClose);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -114,6 +143,44 @@ public class FragmentForTeamStatistic extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            fromFragForAct.sendDataToActivity(arrayPlayers);
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG,"OnStart ");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "OnResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,"onPause" );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG,"onStop" );
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i(TAG, "onDetach");
+    }
+
 }
