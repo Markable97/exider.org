@@ -13,13 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.FragmentPageAdapterForStatistic;
+import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class FragmentForTeamStatistic extends Fragment {
 
@@ -31,6 +35,7 @@ public class FragmentForTeamStatistic extends Fragment {
 
     FragmentPageAdapterForStatistic mAdapter;
 
+    ArrayList<Player> arrayPlayers = new ArrayList<>();
     String teamName;
 
     public static FragmentForTeamStatistic newInstance(String name){
@@ -71,7 +76,7 @@ public class FragmentForTeamStatistic extends Fragment {
 
         String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
-        final String IP = "192.168.0.103";
+        final String IP = "192.168.0.101";
         String fromServer = null;
 
         @Override
@@ -94,6 +99,9 @@ public class FragmentForTeamStatistic extends Fragment {
 
                 fromServer = in.readUTF();
                 Log.i(TAG, "doInBackground: Данные от сервера" + fromServer);
+                Type t = new TypeToken<ArrayList<Player>>(){}.getType();
+                arrayPlayers = gson.fromJson(fromServer, t);
+                Log.i(TAG, "doInBackground: \n" + arrayPlayers.toString());
 
                 out.writeUTF(queryClose);
             } catch (IOException e) {
