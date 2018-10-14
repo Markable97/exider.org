@@ -2,7 +2,9 @@ package com.example.markable.footballapptest.Classes;
 
 import android.graphics.Bitmap;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable{
 
     private int idPlayer;
     private String playerTeam;
