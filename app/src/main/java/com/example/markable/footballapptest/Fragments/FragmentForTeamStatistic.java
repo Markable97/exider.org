@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,8 @@ public class FragmentForTeamStatistic extends Fragment {
 
     ViewPager viewPager;
     TabLayout tabLayout;
+
+    boolean flag = false;
 
     FragmentPageAdapterForStatistic mAdapter;
 
@@ -80,6 +83,7 @@ public class FragmentForTeamStatistic extends Fragment {
         }else {
             arrayPlayers = (ArrayList<Player>) getArguments().getSerializable("nameTeamArray");
             Log.i(TAG, "onCreate: Длина массива = " + arrayPlayers.size() );
+            flag = true;
         }
 
 
@@ -93,9 +97,12 @@ public class FragmentForTeamStatistic extends Fragment {
 
         viewPager = view.findViewById(R.id.viewPager_team_statistic);
         tabLayout = view.findViewById(R.id.statistic_tabs);
-        mAdapter = new FragmentPageAdapterForStatistic(getChildFragmentManager());
-        viewPager.setAdapter(mAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        if(flag){
+            fromFragForAct.sendDataToActivity(arrayPlayers);
+            mAdapter = new FragmentPageAdapterForStatistic(getChildFragmentManager(), arrayPlayers);
+            viewPager.setAdapter(mAdapter);
+            tabLayout.setupWithViewPager(viewPager);
+        }
 
         return view;
     }
@@ -104,7 +111,7 @@ public class FragmentForTeamStatistic extends Fragment {
 
         String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
-        final String IP = "192.168.0.101";
+        final String IP = "192.168.0.103";
         String fromServer = null;
 
         @Override
@@ -144,6 +151,9 @@ public class FragmentForTeamStatistic extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             fromFragForAct.sendDataToActivity(arrayPlayers);
+            mAdapter = new FragmentPageAdapterForStatistic(getChildFragmentManager(), arrayPlayers);
+            viewPager.setAdapter(mAdapter);
+            tabLayout.setupWithViewPager(viewPager);
         }
     }
 
