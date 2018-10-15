@@ -1,10 +1,12 @@
 package com.example.markable.footballapptest.Classes;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class Player implements Serializable{
+public class Player implements Serializable, Parcelable{
 
     private int idPlayer;
     private String playerTeam;
@@ -33,6 +35,8 @@ public class Player implements Serializable{
         this.yellowCard = yellowCard;
         this.redCard = redCard;
     }
+
+
 
     public Bitmap getPlayerImage() {
         return playerImage;
@@ -103,6 +107,56 @@ public class Player implements Serializable{
                 ", assist=" + assist +
                 ", yellowCard=" + yellowCard +
                 ", redCard=" + redCard +
+                "image= " + playerImage +
                 '}'+"\n";
     }
+
+    protected Player(Parcel in) {
+        idPlayer = in.readInt();
+        playerTeam = in.readString();
+        playerName = in.readString();
+        birhtday = in.readString();
+        amplua = in.readString();
+        number = in.readInt();
+        games = in.readInt();
+        goal = in.readInt();
+        assist = in.readInt();
+        yellowCard = in.readInt();
+        redCard = in.readInt();
+        playerImage = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(idPlayer);
+        dest.writeString(playerTeam);
+        dest.writeString(playerName);
+        dest.writeString(birhtday);
+        dest.writeString(amplua);
+        dest.writeInt(number);
+        dest.writeInt(games);
+        dest.writeInt(goal);
+        dest.writeInt(assist);
+        dest.writeInt(yellowCard);
+        dest.writeInt(redCard);
+        dest.writeValue(playerImage);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Player> CREATOR = new Parcelable.Creator<Player>() {
+        @Override
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
+        }
+
+        @Override
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
 }
