@@ -35,7 +35,7 @@ public class FragmentStatisticSquadList extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         arrayPlayers = (ArrayList<Player>) getArguments().getSerializable("arrayPlayers");
-        Log.i(TAG, "onCreate: длина массива =  " + arrayPlayers.size());
+        Log.i(TAG, "onCreate: длина массива =  " + arrayPlayers.toString());
     }
 
     @Override
