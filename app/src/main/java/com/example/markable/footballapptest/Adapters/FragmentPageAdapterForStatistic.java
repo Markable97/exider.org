@@ -5,26 +5,32 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 
+import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Fragments.FragmentStatisticAssistant;
 import com.example.markable.footballapptest.Fragments.FragmentStatisticBombardier;
 import com.example.markable.footballapptest.Fragments.FragmentStatisticSquadList;
 
-public class FragmentPageAdapterForTeam extends FragmentPagerAdapter {
+import java.util.ArrayList;
+
+public class FragmentPageAdapterForStatistic extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[]{"Состав", "Бомбардиры", "Ассистент"};
 
-    public FragmentPageAdapterForTeam(FragmentManager fm) {
+    private ArrayList<Player> arrayPlayers;
+
+    public FragmentPageAdapterForStatistic(FragmentManager fm, ArrayList<Player> arrayPlayers) {
         super(fm);
+        this.arrayPlayers = arrayPlayers;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0:  return  new FragmentStatisticSquadList().newInstance();
+            case 0:  return  new FragmentStatisticSquadList().newInstance(arrayPlayers);
             case 1:  return  new FragmentStatisticBombardier().newInstance();
             case 2:  return  new FragmentStatisticAssistant().newInstance();
-            default: return  new FragmentStatisticSquadList().newInstance();
+            default: return  new FragmentStatisticSquadList().newInstance(arrayPlayers);
 
         }
     }

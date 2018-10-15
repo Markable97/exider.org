@@ -34,7 +34,7 @@ public class FragmentMain extends Fragment {
 
     View view;
 
-    final String IP = "192.168.0.103";
+    final String IP = "192.168.0.105";
 
     private ArrayList<ImageFromServer> imageArray = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
@@ -66,7 +66,7 @@ public class FragmentMain extends Fragment {
         protected String doInBackground(String... strings) {
 
             for(String s : strings){
-                query = "{\"id_division\":" + s + ",\"id_tour\":2}";
+                query = "{\"messageLogic\":\"division\",\"id_division\":"+ s + "}";
             }
 
             Log.i(TAG, "Поток запущен");
@@ -107,23 +107,23 @@ public class FragmentMain extends Fragment {
                 for(int i = 0; i < countFiles; i++){
                     String nameImageFromServer = in.readUTF();
                     Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
-                    int countBytes = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов пришло = " + countBytes );
-                    byteArray = new byte[countBytes];
-                    in.readFully(byteArray);
+                    /*int countBytes = in.readInt();
+                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
+                    byte[] byteArray = new byte[countBytes];
                     //int countFromServer = in.read(byteArray, 0, countBytes);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    in.readFully(byteArray);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);*/
                     int countBytesBig = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
                     byteArrayBig = new byte[countBytesBig];
                     in.readFully(byteArrayBig);
                     Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,
-                                    BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),
-                                        BitmapFactory.decodeByteArray(byteArrayBig,0, byteArrayBig.length)));
+                    imageArray.add(new ImageFromServer(nameImageFromServer,/*
+                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
+                            BitmapFactory.decodeByteArray(byteArrayBig,0, byteArrayBig.length)));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
-                out.writeUTF("close");
+                out.writeUTF("{\"messageLogic\":\"close\"}");
                 out.close();
                 in.close();
                // inResultsPrev.close();
@@ -195,7 +195,8 @@ public class FragmentMain extends Fragment {
         protected String doInBackground(String... strings) {
 
             for(String s : strings){
-                query = "{\"id_division\":" + s + ",\"id_tour\":2}";
+                query = "{\"messageLogic\":\"division\",\"id_division\":"+ s + "}";
+                //query = "{\"id_division\":" + s + ",\"id_tour\":2}";
             }
 
             Log.i(TAG, "Поток запущен");
@@ -235,24 +236,24 @@ public class FragmentMain extends Fragment {
                 for(int i = 0; i < countFiles; i++){
                     String nameImageFromServer = in.readUTF();
                     Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
-                    int countBytes = in.readInt();
+                    /*int countBytes = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
                     byte[] byteArray = new byte[countBytes];
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     in.readFully(byteArray);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);
+                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);*/
                     int countBytesBig = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
                     byteArrayBig = new byte[countBytesBig];
                     in.readFully(byteArrayBig);
                     Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,
-                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),
+                    imageArray.add(new ImageFromServer(nameImageFromServer,/*
+                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
                             BitmapFactory.decodeByteArray(byteArrayBig,0, byteArrayBig.length)));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 
-                out.writeUTF("close");
+                out.writeUTF("{\"messageLogic\":\"close\"}");
                 out.close();
                 in.close();
                 //inResultsPrev.close();

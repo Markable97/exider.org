@@ -3,6 +3,7 @@ package com.example.markable.footballapptest;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -10,10 +11,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamMatches;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamStatistic;
 
-public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+import java.util.ArrayList;
+
+public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ReturnFromFragForAct {
+
+    private static final String TAG = "TeamAcrivity";
 
     private ImageFromServer image;
 
@@ -23,7 +29,10 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     RadioGroup radioGroup;
     FrameLayout container;
 
+    ArrayList<Player> arrayPlayers = new ArrayList<>();
 
+    FragmentForTeamStatistic fragStatistic;
+    FragmentForTeamMatches fragMatches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +58,11 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         container = findViewById(R.id.container_frag_team);
 
+        fragStatistic = new FragmentForTeamStatistic().newInstance(image.getNameImage());
+        fragMatches = new FragmentForTeamMatches();
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.container_frag_team, new FragmentForTeamStatistic() ).commit();
+        fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
 
     }
 
@@ -58,16 +70,24 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
             case R.id.rb_statisticPlayers:
-                FragmentForTeamStatistic fragStatistic = new FragmentForTeamStatistic();
+                Log.i(TAG, "onCheckedChanged: Длина массива" + arrayPlayers.size());
+                if(arrayPlayers.size()!=0){
+                    fragStatistic = new FragmentForTeamStatistic().newInstance(arrayPlayers);
+                }
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_frag_team, fragStatistic);
                 fragmentTransaction.commit();
                 break;
             case R.id.rb_allMatches:
-                FragmentForTeamMatches fragMatches = new FragmentForTeamMatches();
+
                 FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction1.replace(R.id.container_frag_team, fragMatches).commit();
                 break;
         }
+    }
+
+    @Override
+    public void sendDataToActivity(ArrayList<Player> arrayPlayers) {
+        this.arrayPlayers = arrayPlayers;
     }
 }
