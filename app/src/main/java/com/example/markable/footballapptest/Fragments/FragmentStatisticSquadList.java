@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -175,7 +176,26 @@ public class FragmentStatisticSquadList extends Fragment {
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
                             case 0: textView.setText(String.valueOf(numberPlayer + 1)); break;
-                            case 1: textView.setText(player.getPlayerName());numberPlayer++; break;
+                            case 1:
+                                LinearLayout linearLayout = new LinearLayout(getActivity());
+                                LinearLayout.LayoutParams paramsLa = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+                                paramsLa.gravity = Gravity.CENTER;
+                                linearLayout.setBackgroundColor(whiteColor);
+                                linearLayout.setLayoutParams(params);
+                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                ImageView imageView = new ImageView(getActivity());
+                                //imageView.setLayoutParams(paramsLa);
+                                imageView.setImageBitmap(player.getPlayerImage());
+                                TextView tv = new TextView(getActivity());
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setLayoutParams(paramsLa);
+                                tv.setText(player.getPlayerName());
+                                //textView.setText(player.getPlayerName());
+                                linearLayout.addView(imageView);
+                                linearLayout.addView(tv);
+                                tableRow.addView(linearLayout);
+                                numberPlayer++; break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -183,7 +203,9 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
                         Log.i(TAG, "onCreateView: Создание J++++)"  + j);
-                        tableRow.addView(textView, j);
+                        if(j!=1){
+                            tableRow.addView(textView, j);
+                        }
                     } else if (i > goalkeepers && i <= (arrayPlayers.size() + 4 - forwards - halfbacks - defenders - 3) && j==0) {//шапка защитников
                         params.span = 7;
                         textView.setLayoutParams(params);
@@ -196,7 +218,26 @@ public class FragmentStatisticSquadList extends Fragment {
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
                             case 0: textView.setText(String.valueOf(numberPlayer + 1)); break;
-                            case 1: textView.setText(player.getPlayerName());numberPlayer++; break;
+                            case 1:
+                                LinearLayout linearLayout = new LinearLayout(getActivity());
+                                LinearLayout.LayoutParams paramsLa = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+                                paramsLa.gravity = Gravity.CENTER;
+                                linearLayout.setBackgroundColor(whiteColor);
+                                linearLayout.setLayoutParams(params);
+                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                ImageView imageView = new ImageView(getActivity());
+                                //imageView.setLayoutParams(paramsLa);
+                                imageView.setImageBitmap(player.getPlayerImage());
+                                TextView tv = new TextView(getActivity());
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setLayoutParams(paramsLa);
+                                tv.setText(player.getPlayerName());
+                                //textView.setText(player.getPlayerName());
+                                linearLayout.addView(imageView);
+                                linearLayout.addView(tv);
+                                tableRow.addView(linearLayout);
+                                numberPlayer++; break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -205,7 +246,9 @@ public class FragmentStatisticSquadList extends Fragment {
                         }
                         Log.i(TAG, "onCreateView: Защитники  i ="  + i + "# = "+ numberPlayer);
                         Log.i(TAG, "onCreateView: Создание J++++)"  + j);
-                        tableRow.addView(textView, j);
+                        if(j!=1){
+                            tableRow.addView(textView, j);
+                        }
                     } else  if ((i > goalkeepers + 1 + defenders) && (i <= (arrayPlayers.size() + 4 - forwards - halfbacks  - 2)) && (j==0) ){//шапка полу
                         params.span = 7;
                         textView.setLayoutParams(params);
@@ -219,7 +262,26 @@ public class FragmentStatisticSquadList extends Fragment {
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
                             case 0: textView.setText(String.valueOf(numberPlayer + 1)); break;
-                            case 1: textView.setText(player.getPlayerName());numberPlayer++; break;
+                            case 1:
+                                LinearLayout linearLayout = new LinearLayout(getActivity());
+                                LinearLayout.LayoutParams paramsLa = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+                                paramsLa.gravity = Gravity.CENTER;
+                                linearLayout.setBackgroundColor(whiteColor);
+                                linearLayout.setLayoutParams(params);
+                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                ImageView imageView = new ImageView(getActivity());
+                                //imageView.setLayoutParams(paramsLa);
+                                imageView.setImageBitmap(player.getPlayerImage());
+                                TextView tv = new TextView(getActivity());
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setLayoutParams(paramsLa);
+                                tv.setText(player.getPlayerName());
+                                //textView.setText(player.getPlayerName());
+                                linearLayout.addView(imageView);
+                                linearLayout.addView(tv);
+                                tableRow.addView(linearLayout);
+                                numberPlayer++; break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -227,7 +289,9 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
                         Log.i(TAG, "onCreateView: Создание J++++)"  + j);
-                        tableRow.addView(textView, j);
+                        if(j!=1){
+                            tableRow.addView(textView, j);
+                        }
                     } else if((i > goalkeepers + 1 + defenders + 1 + halfbacks) && (i <= (arrayPlayers.size() + 4 - forwards - 1)) && (j==0)){//шапка нап
                         Log.i(TAG, "onCreateView: Шааааапка напа i = " + i);
                         params.span = 7;
@@ -241,7 +305,26 @@ public class FragmentStatisticSquadList extends Fragment {
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
                             case 0: textView.setText(String.valueOf(numberPlayer + 1)); break;
-                            case 1: textView.setText(player.getPlayerName()); break;
+                            case 1:
+                                LinearLayout linearLayout = new LinearLayout(getActivity());
+                                LinearLayout.LayoutParams paramsLa = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+                                paramsLa.gravity = Gravity.CENTER;
+                                linearLayout.setBackgroundColor(whiteColor);
+                                linearLayout.setLayoutParams(params);
+                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                ImageView imageView = new ImageView(getActivity());
+                                //imageView.setLayoutParams(paramsLa);
+                                imageView.setImageBitmap(player.getPlayerImage());
+                                TextView tv = new TextView(getActivity());
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setLayoutParams(paramsLa);
+                                tv.setText(player.getPlayerName());
+                                //textView.setText(player.getPlayerName());
+                                linearLayout.addView(imageView);
+                                linearLayout.addView(tv);
+                                tableRow.addView(linearLayout);
+                                break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -249,7 +332,9 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
                         Log.i(TAG, "onCreateView: Создание J++++)"  + j);
-                        tableRow.addView(textView, j);
+                        if(j!=1){
+                            tableRow.addView(textView, j);
+                        }
                     }
                 }
             }
