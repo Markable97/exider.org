@@ -1,6 +1,7 @@
 package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -111,14 +112,14 @@ public class FragmentForTeamStatistic extends Fragment {
 
         String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
-        final String IP = "192.168.0.103";
+        final String IP = "192.168.0.105";
         String fromServer = null;
 
         @Override
         protected String doInBackground(String... strings) {
             Log.i(TAG, "doInBackground: поток запущен");
             for(String s : strings){
-                query = "{\"messageLogic\":\"team\",\"id_team\":"+ s + "}";
+                query = "{\"messageLogic\":\"team\",\"id_team\":\""+ s + "\"}";
                 //query = "{\"id_division\":" + s + ",\"id_tour\":2}";
             }
             Socket socket;
@@ -138,6 +139,15 @@ public class FragmentForTeamStatistic extends Fragment {
                 arrayPlayers = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: \n" + arrayPlayers.toString());
 
+                int countImage = in.readInt();
+                Log.i(TAG, "doInBackground: кол-во фоток от сервера = " + countImage);
+                byte[] byteArray;
+                for(int i = 0; i < countImage; i++){
+                    int countBytes = in.readInt();
+                    byteArray = new byte[countBytes];
+                    in.readFully(byteArray);
+                    arrayPlayers.get(i).setPlayerImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
+                }
 
                 out.writeUTF(queryClose);
             } catch (IOException e) {
