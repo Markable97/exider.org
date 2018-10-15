@@ -119,8 +119,10 @@ public class FragmentStatisticSquadList extends Fragment {
         table = view.findViewById(R.id.table_squad);
 
         int numberPlayer = 0;
+        boolean flag;
         for(int i = -1; i < arrayPlayers.size() + 4; i++){
             Log.i(TAG, "onCreateView: I ================================= " + i);
+            flag = false;
             TableRow tableRow = new TableRow(getActivity());
             tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             for(int j = 0; j < 7; j++){
@@ -195,7 +197,7 @@ public class FragmentStatisticSquadList extends Fragment {
                                 linearLayout.addView(imageView);
                                 linearLayout.addView(tv);
                                 tableRow.addView(linearLayout);
-                                numberPlayer++; break;
+                                flag = true; break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -237,7 +239,7 @@ public class FragmentStatisticSquadList extends Fragment {
                                 linearLayout.addView(imageView);
                                 linearLayout.addView(tv);
                                 tableRow.addView(linearLayout);
-                                numberPlayer++; break;
+                                flag = true; break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -281,7 +283,7 @@ public class FragmentStatisticSquadList extends Fragment {
                                 linearLayout.addView(imageView);
                                 linearLayout.addView(tv);
                                 tableRow.addView(linearLayout);
-                                numberPlayer++; break;
+                                flag = true; break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
                             case 4: textView.setText(String.valueOf(player.getAssist())); break;
@@ -324,6 +326,7 @@ public class FragmentStatisticSquadList extends Fragment {
                                 linearLayout.addView(imageView);
                                 linearLayout.addView(tv);
                                 tableRow.addView(linearLayout);
+                                flag = true;
                                 break;
                             case 2: textView.setText(String.valueOf(player.getGames())); break;
                             case 3: textView.setText(String.valueOf(player.getGoal())); break;
@@ -337,6 +340,9 @@ public class FragmentStatisticSquadList extends Fragment {
                         }
                     }
                 }
+            }
+            if(flag==true){
+                numberPlayer++;
             }
             Log.i(TAG, "onCreateView: Создание i+++++++++++++++++++)"  + i);
             table.addView(tableRow, i+1);
