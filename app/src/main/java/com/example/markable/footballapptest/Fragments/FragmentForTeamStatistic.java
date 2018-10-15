@@ -141,12 +141,14 @@ public class FragmentForTeamStatistic extends Fragment {
 
                 int countImage = in.readInt();
                 Log.i(TAG, "doInBackground: кол-во фоток от сервера = " + countImage);
-                byte[] byteArray;
-                for(int i = 0; i < countImage; i++){
-                    int countBytes = in.readInt();
-                    byteArray = new byte[countBytes];
-                    in.readFully(byteArray);
-                    arrayPlayers.get(i).setPlayerImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
+                if(countImage != 0 && countImage==arrayPlayers.size()){
+                    byte[] byteArray;
+                    for(int i = 0; i < countImage; i++){
+                        int countBytes = in.readInt();
+                        byteArray = new byte[countBytes];
+                        in.readFully(byteArray);
+                        arrayPlayers.get(i).setPlayerImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
+                    }
                 }
 
                 out.writeUTF(queryClose);
