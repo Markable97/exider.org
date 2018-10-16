@@ -115,13 +115,13 @@ public class FragmentStatisticSquadList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistic_squad, container, false);
-        Log.i(TAG, "onCreateView: Новая ветка");
+        Log.i(TAG, "onCreateView: Создание таблицы");
         table = view.findViewById(R.id.table_squad);
 
         int numberPlayer = 0;
         boolean flag;
         for(int i = -1; i < arrayPlayers.size() + 4; i++){
-            Log.i(TAG, "onCreateView: I ================================= " + i);
+            //Log.i(TAG, "onCreateView: I ================================= " + i);
             flag = false;
             TableRow tableRow = new TableRow(getActivity());
             tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -143,7 +143,7 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 3: textView.setText("Голы");break;
                             case 4: textView.setText("Пасы");break;
                         }
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                   //     Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
                     }else{
                         ImageView imageView = new ImageView(getActivity());
@@ -153,11 +153,11 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 5: imageView.setImageResource(yellowCard); break;
                             case 6: imageView.setImageResource(redCard); break;
                         }
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                   //     Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(imageView, j);
                     }
                 }else{//все остальное
-                    Log.i(TAG, "onCreateView: остальное i = " + i + "J========" + j);
+                 //   Log.i(TAG, "onCreateView: остальное i = " + i + "J========" + j);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                     //params.gravity = Gravity.CENTER;
@@ -169,8 +169,8 @@ public class FragmentStatisticSquadList extends Fragment {
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Вратарь");
-                        Log.i(TAG, "onCreateView: Шаааааааапка i = " + i);
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                       // Log.i(TAG, "onCreateView: Шаааааааапка i = " + i);
+                       // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
                     }else if((i>0 && i<(arrayPlayers.size() + 4 - forwards - halfbacks - defenders - 3)) ){//список вратарей
                         textView.setLayoutParams(params);
@@ -204,7 +204,7 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 5: textView.setText(String.valueOf(player.getYellowCard())); break;
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                       // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
@@ -212,8 +212,8 @@ public class FragmentStatisticSquadList extends Fragment {
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Защитник");
-                        Log.i(TAG, "onCreateView: Шааааапка i = " + i);
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                      //  Log.i(TAG, "onCreateView: Шааааапка i = " + i);
+                        //Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
                     } else if (i > goalkeepers + 1  && i < (arrayPlayers.size() + 4 - forwards - halfbacks  - 2) ){//список защитников
                         textView.setLayoutParams(params);
@@ -246,8 +246,8 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 5: textView.setText(String.valueOf(player.getYellowCard())); break;
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
-                        Log.i(TAG, "onCreateView: Защитники  i ="  + i + "# = "+ numberPlayer);
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                       // Log.i(TAG, "onCreateView: Защитники  i ="  + i + "# = "+ numberPlayer);
+                       // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
@@ -255,12 +255,12 @@ public class FragmentStatisticSquadList extends Fragment {
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Полузащитник");
-                        Log.i(TAG, "onCreateView: Шааааапка полу i = " + i);
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                      //  Log.i(TAG, "onCreateView: Шааааапка полу i = " + i);
+                       // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
                     } else if((i > goalkeepers + 1 + defenders + 1) && (i < (arrayPlayers.size() + 4 - forwards - 1))){//список полу
                         textView.setLayoutParams(params);
-                        Log.i(TAG, "onCreateView: Полу  i ="  + i + "# = "+ numberPlayer);
+                        //Log.i(TAG, "onCreateView: Полу  i ="  + i + "# = "+ numberPlayer);
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
                             case 0: textView.setText(String.valueOf(numberPlayer + 1)); break;
@@ -290,19 +290,19 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 5: textView.setText(String.valueOf(player.getYellowCard())); break;
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                       // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
                     } else if((i > goalkeepers + 1 + defenders + 1 + halfbacks) && (i <= (arrayPlayers.size() + 4 - forwards - 1)) && (j==0)){//шапка нап
-                        Log.i(TAG, "onCreateView: Шааааапка напа i = " + i);
+                       // Log.i(TAG, "onCreateView: Шааааапка напа i = " + i);
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Нападающий");
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                        //Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
                     } else if((i > goalkeepers + 1 + defenders + 1 + halfbacks + 1) && (i< arrayPlayers.size() + 4)){
-                        Log.i(TAG, "onCreateView: Нап  i ="  + i + "# = "+ numberPlayer);
+                       // Log.i(TAG, "onCreateView: Нап  i ="  + i + "# = "+ numberPlayer);
                         textView.setLayoutParams(params);
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
@@ -334,7 +334,7 @@ public class FragmentStatisticSquadList extends Fragment {
                             case 5: textView.setText(String.valueOf(player.getYellowCard())); break;
                             case 6: textView.setText(String.valueOf(player.getRedCard())); break;
                         }
-                        Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                       // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
@@ -344,7 +344,7 @@ public class FragmentStatisticSquadList extends Fragment {
             if(flag==true){
                 numberPlayer++;
             }
-            Log.i(TAG, "onCreateView: Создание i+++++++++++++++++++)"  + i);
+            //Log.i(TAG, "onCreateView: Создание i+++++++++++++++++++)"  + i);
             table.addView(tableRow, i+1);
         }
 

@@ -107,7 +107,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         @Override
         protected String doInBackground(String... strings) {
-
+            Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             for(String s : strings){
                 query = "{\"messageLogic\":\"matches\",\"id_team\":\""+ s + "\"}";
             }
