@@ -104,6 +104,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         String query = "";
         final String IP = "192.168.0.105";
         String fromServer = null;
+        int countIm = 0;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -127,6 +128,12 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 Type t = new TypeToken<ArrayList<AllMatchesForTeam>>(){}.getType();
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
+
+                countIm = in.readInt();
+                Log.i(TAG, "doInBackground: кол-во картинок = " + countIm);
+                if(countIm!=0){
+
+                }
 
                 out.writeUTF(queryClose);
             } catch (IOException e) {
