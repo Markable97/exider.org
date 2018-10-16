@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest;
 
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamMatches;
@@ -30,6 +32,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     FrameLayout container;
 
     ArrayList<Player> arrayPlayers = new ArrayList<>();
+    ArrayList<AllMatchesForTeam> arrayAllMatches = new ArrayList<>();
 
     FragmentForTeamStatistic fragStatistic;
     FragmentForTeamMatches fragMatches;
@@ -38,11 +41,12 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_content);
-
         Bundle args = getIntent().getExtras();
         if(args!=null){
             image = args.getParcelable("dateForActivity");
         }
+
+        new ServerConnect().execute(image.getNameImage());
 
         nameTeam = findViewById(R.id.teamAcrivity_tv_teamName);
         nameTeam.setText(image.getNameImage());
@@ -84,6 +88,22 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction1.replace(R.id.container_frag_team, fragMatches).commit();
                 break;
+        }
+    }
+
+    public class ServerConnect extends AsyncTask<String, Void, String >{
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 
