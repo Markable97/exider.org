@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class Player implements Serializable, Parcelable{
 
@@ -157,6 +158,23 @@ public class Player implements Serializable, Parcelable{
         @Override
         public Player[] newArray(int size) {
             return new Player[size];
+        }
+    };
+/**
+ *Если этот метод возвращает отрицательное число, то текущий объект будет располагаться перед тем,
+ * который передается через параметр. Если метод вернет положительное число, то, наоборот, после второго объекта.
+ * Если метод возвратит ноль, значит, оба объекта равны.
+ * **/
+    public static Comparator<Player> sortGoal = new Comparator<Player>() {
+        @Override
+        public int compare(Player o1, Player o2) {
+            return o2.getGoal() - o1.getGoal();
+        }
+    };
+    public static Comparator<Player> sortAssist = new Comparator<Player>() {
+        @Override
+        public int compare(Player o1, Player o2) {
+            return o2.getAssist() - o1.getAssist();
         }
     };
 }

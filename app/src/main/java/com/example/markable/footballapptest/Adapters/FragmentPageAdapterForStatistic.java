@@ -28,8 +28,8 @@ public class FragmentPageAdapterForStatistic extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:  return  new FragmentStatisticSquadList().newInstance(arrayPlayers);
-            case 1:  return  new FragmentStatisticBombardier().newInstance();
-            case 2:  return  new FragmentStatisticAssistant().newInstance();
+            case 1:  return  new FragmentStatisticBombardier().newInstance(arrayPlayers);
+            case 2:  return  new FragmentStatisticAssistant().newInstance(arrayPlayers);
             default: return  new FragmentStatisticSquadList().newInstance(arrayPlayers);
 
         }
