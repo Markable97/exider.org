@@ -2,6 +2,7 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.os.Bundle;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,21 @@ public class FragmentForTeamMatches extends Fragment {
 
 
     private static final String TAG = "FragMatches";
+
+    public static FragmentForTeamMatches newInstance(){
+        FragmentForTeamMatches fragment = new FragmentForTeamMatches();
+
+        Bundle args = new Bundle();
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
