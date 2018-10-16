@@ -16,7 +16,14 @@ import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamMatches;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamStatistic;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ReturnFromFragForAct {
@@ -93,10 +100,38 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     public class ServerConnect extends AsyncTask<String, Void, String >{
 
+        String queryClose = "{\"messageLogic\":\"close\"}";
+        String query = "";
+        final String IP = "192.168.0.105";
+        String fromServer = null;
+
         @Override
         protected String doInBackground(String... strings) {
 
-            
+            for(String s : strings){
+                query = "{\"messageLogic\":\"matches\",\"id_team\":\""+ s + "\"}";
+            }
+
+            Socket socket;
+            Gson gson = new Gson();
+
+            try {
+                socket = new Socket(IP, 55555);
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+                out.writeUTF(query);
+
+                fromServer = in.readUTF();
+                Log.i(TAG, "doInBackground: from server = " + fromServer);
+                Type t = new TypeToken<ArrayList<AllMatchesForTeam>>(){}.getType();
+                arrayAllMatches = gson.fromJson(fromServer, t);
+                Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
+
+                out.writeUTF(queryClose);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
