@@ -72,7 +72,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         fragStatistic = new FragmentForTeamStatistic().newInstance(image.getNameImage());
         fragMatches = new FragmentForTeamMatches();
 
-        fragMatches = new FragmentForTeamMatches().newInstance();
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
 
@@ -139,6 +139,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            fragMatches = new FragmentForTeamMatches().newInstance(arrayAllMatches);
         }
     }
 
