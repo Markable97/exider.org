@@ -23,6 +23,10 @@ public class AllMatchesForTeam implements Serializable{
         return urlImageGuest;
     }
 
+    public PrevMatches getMatches() {
+        return matches;
+    }
+
     @Override
     public String toString() {
         return "AllMatches{" + "nameDivision=" + matches.nameDivision + ", idTour=" + matches.idTour + ", teamHome=" + matches.teamHome +
