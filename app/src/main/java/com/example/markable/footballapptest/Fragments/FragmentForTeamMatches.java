@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ public class FragmentForTeamMatches extends Fragment {
 
     private static final String TAG = "FragMatches";
     private ArrayList<AllMatchesForTeam> arrayAllMatches = new ArrayList<>();
+
+    RecyclerView recyclerView;
 
     public static FragmentForTeamMatches newInstance(ArrayList<AllMatchesForTeam> list){
         FragmentForTeamMatches fragment = new FragmentForTeamMatches();
@@ -38,6 +41,8 @@ public class FragmentForTeamMatches extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_matches, container, false);
+
+        recyclerView = view.findViewById(R.id.listAllMatches);
 
 
 
