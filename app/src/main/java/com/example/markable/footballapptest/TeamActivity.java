@@ -102,7 +102,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
-        final String IP = "192.168.0.105";
+        final String IP = "10.0.2.2";
         String fromServer = null;
         int countIm = 0;
 
@@ -129,11 +129,11 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
 
-                countIm = in.readInt();
+                /*countIm = in.readInt();
                 Log.i(TAG, "doInBackground: кол-во картинок = " + countIm);
                 if(countIm!=0){
 
-                }
+                }*/
 
                 out.writeUTF(queryClose);
             } catch (IOException e) {
