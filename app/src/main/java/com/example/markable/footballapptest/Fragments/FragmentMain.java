@@ -34,7 +34,7 @@ public class FragmentMain extends Fragment {
 
     View view;
 
-    final String IP = "192.168.0.105";
+    final String IP = "10.0.2.2";
 
     private ArrayList<ImageFromServer> imageArray = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();

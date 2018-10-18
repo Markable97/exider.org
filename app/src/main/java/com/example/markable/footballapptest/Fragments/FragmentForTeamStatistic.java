@@ -112,7 +112,7 @@ public class FragmentForTeamStatistic extends Fragment {
 
         String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
-        final String IP = "192.168.0.105";
+        final String IP = "10.0.2.2";
         String fromServer = null;
 
         @Override

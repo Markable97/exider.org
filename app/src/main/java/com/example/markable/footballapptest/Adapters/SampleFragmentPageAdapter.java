@@ -23,7 +23,7 @@ import com.example.markable.footballapptest.UpdateFragListener;
 import java.util.ArrayList;
 
 
-public class SampleFragmentPageAdapter extends FragmentStatePagerAdapter {
+public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
 
 
     //private final FragmentForTable fragmentForTable = new FragmentForTable().newInstance();
