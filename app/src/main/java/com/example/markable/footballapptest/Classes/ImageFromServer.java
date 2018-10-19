@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class ImageFromServer implements Parcelable, Serializable {
+public class ImageFromServer implements /*Parcelable,*/ Serializable {
 
     String nameImage;
     Bitmap bitmapImageBig;
@@ -33,7 +33,7 @@ public class ImageFromServer implements Parcelable, Serializable {
         return bitmapImageSmall;
     }
 
-    @Override
+   /* @Override
     public int describeContents() {
         return 0;
     }
@@ -56,5 +56,5 @@ public class ImageFromServer implements Parcelable, Serializable {
         public ImageFromServer[] newArray(int size) {
             return new ImageFromServer[size];
         }
-    };
+    };*/
 }
