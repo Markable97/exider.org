@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest;
 
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +60,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         nameTeam.setText(image.getNameImage());
 
         imageTeam = findViewById(R.id.teamActivity_im_image);
-        imageTeam.setImageBitmap(image.getBitmapImageBig());
+        //imageTeam.setImageBitmap(BitmapFactory.decodeByteArray(image.getBitmapImageBig(), 0, image.getBitmapImageBig().length));
 
         rb_statistic = findViewById(R.id.rb_statisticPlayers);
         rb_statistic.setChecked(true);

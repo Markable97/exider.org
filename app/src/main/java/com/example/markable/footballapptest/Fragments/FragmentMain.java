@@ -120,7 +120,7 @@ public class FragmentMain extends Fragment {
                     Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
                     imageArray.add(new ImageFromServer(nameImageFromServer,/*
                             BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
-                            BitmapFactory.decodeByteArray(byteArrayBig,0, byteArrayBig.length)));
+                            byteArrayBig));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
                 out.writeUTF("{\"messageLogic\":\"close\"}");
@@ -249,7 +249,7 @@ public class FragmentMain extends Fragment {
                     Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
                     imageArray.add(new ImageFromServer(nameImageFromServer,/*
                             BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
-                            BitmapFactory.decodeByteArray(byteArrayBig,0, byteArrayBig.length)));
+                           byteArrayBig));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 

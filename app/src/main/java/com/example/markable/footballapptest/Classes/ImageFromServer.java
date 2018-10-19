@@ -1,23 +1,20 @@
 package com.example.markable.footballapptest.Classes;
 
 import android.graphics.Bitmap;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.Serializable;
 
 public class ImageFromServer implements /*Parcelable,*/ Serializable {
 
     String nameImage;
-    Bitmap bitmapImageBig;
-    transient Bitmap bitmapImageSmall;
+    byte[] bitmapImageBig;
 
-    public ImageFromServer(String nameImage,Bitmap bitmapImageSmall ,Bitmap bitmapImageBig) {
+
+    public ImageFromServer(String nameImage,Bitmap bitmapImageSmall ,byte[] bitmapImageBig) {
         this.nameImage = nameImage;
-        this.bitmapImageSmall = bitmapImageSmall;
         this.bitmapImageBig = bitmapImageBig;
     }
-    public ImageFromServer(String nameImage, Bitmap bitmapImageBig){
+    public ImageFromServer(String nameImage, byte[] bitmapImageBig){
         this.nameImage = nameImage;
         this.bitmapImageBig = bitmapImageBig;
     }
@@ -25,13 +22,11 @@ public class ImageFromServer implements /*Parcelable,*/ Serializable {
         return nameImage;
     }
 
-    public Bitmap getBitmapImageBig() {
+    public byte[] getBitmapImageBig() {
         return bitmapImageBig;
     }
 
-    public Bitmap getBitmapImageSmall() {
-        return bitmapImageSmall;
-    }
+
 
    /* @Override
     public int describeContents() {
