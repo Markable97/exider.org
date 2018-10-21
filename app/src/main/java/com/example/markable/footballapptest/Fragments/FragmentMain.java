@@ -150,7 +150,7 @@ public class FragmentMain extends Fragment {
 
     public void update (String idDivision){
         Log.i(TAG, "Interface: Передаче Pager-у");
-        new ServerConnectTestDouble().execute(idDivision);
+        //new ServerConnectTestDouble().execute(idDivision);
        // mAdapter.update(table, prevResults);
     }
 
@@ -164,7 +164,7 @@ public class FragmentMain extends Fragment {
         tabLayout = view.findViewById(R.id.sliding_tabs);
 
 
-        new ServerConnectTest().execute("1");
+       // new ServerConnectTest().execute("1");
        // update("1");
         /*while (table.equals("")){
         }
