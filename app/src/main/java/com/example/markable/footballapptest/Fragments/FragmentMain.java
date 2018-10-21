@@ -18,6 +18,7 @@ import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
+import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -140,8 +141,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext(), tournamentTable, prevResultsMatch,
-                    nextResultsMatch, imageArray);
+            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext());
             viewPager.setAdapter(mAdapter);
             tabLayout.setupWithViewPager(viewPager);
         }
@@ -163,7 +163,16 @@ public class FragmentMain extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.sliding_tabs);
 
-
+        MainActivity activity = (MainActivity)getActivity();
+        nextResultsMatch = activity.getNextResultsMatch();
+        prevResultsMatch = activity.getPrevResultsMatch();
+        tournamentTable = activity.getTournamentTable();
+        Log.i(TAG, "onCreateView: Массив из Активности = " + nextResultsMatch.size());
+        Log.i(TAG, "onCreateView: Массив из Активности = " + prevResultsMatch.size());
+        Log.i(TAG, "onCreateView: Массив из Активности = " + tournamentTable.size());
+        mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext());
+        viewPager.setAdapter(mAdapter);
+        tabLayout.setupWithViewPager(viewPager);
        // new ServerConnectTest().execute("1");
        // update("1");
         /*while (table.equals("")){
