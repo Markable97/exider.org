@@ -39,13 +39,9 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     private ArrayList<NextMatches> calendar;
     private ArrayList<ImageFromServer> image;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, Context context, ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults,
-                                     ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image) {
+    public SampleFragmentPageAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
-        this.table = divTable;
-        this.results = prevResults;
-        this.calendar = calendar;
         this.image = image;
         Log.i(TAG, "Adapter Конструктор: " + "divTable = " + this.table + "\n prevResults =" + this.results
                 + "\n calendar = " + this.calendar + "image " + this.image);
@@ -55,10 +51,10 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Log.i(TAG, "GetItem: создание вкладок");
         switch (position){
-            case 0: return new FragmentForCalendar().newInstance(calendar, image);
-            case 1: return new FragmentForResults().newInstance(results, image);
-            case 2: return new FragmentForTable().newInstance(table, image);
-            default: return new FragmentForTable().newInstance(table, image);
+            case 0: return new FragmentForCalendar().newInstance();
+            case 1: return new FragmentForResults().newInstance();
+            case 2: return new FragmentForTable().newInstance();
+            default: return new FragmentForTable().newInstance();
         }
 
     }
