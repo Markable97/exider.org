@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new MainServerConnect().execute("1");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,10 +70,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        fragmentMain = new FragmentMain();
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
 
     }
 
@@ -167,6 +165,15 @@ public class MainActivity extends AppCompatActivity
         //String ipAdres = "10.0.2.2"
 
         @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            fragmentMain = new FragmentMain();
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
+        }
+
+        @Override
         protected String doInBackground(String... strings) {
 
             for(String s : strings){
@@ -240,9 +247,27 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+
             return null;
         }
     }
+
+    public ArrayList<NextMatches> getNextResultsMatch() {
+        return nextResultsMatch;
+    }
+
+    public ArrayList<TournamentTable> getTournamentTable() {
+        return tournamentTable;
+    }
+
+    public ArrayList<PrevMatches> getPrevResultsMatch() {
+        return prevResultsMatch;
+    }
+
+    public ArrayList<ImageFromServer> getImageArray() {
+        return imageArray;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
