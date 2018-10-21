@@ -29,13 +29,10 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
     private ArrayList<ImageFromServer> imageBitmap = new ArrayList<>();
 
-    public static FragmentForResults newInstance (ArrayList<PrevMatches> prevRes, ArrayList<ImageFromServer> image){
-        Log.i(TAG, "NewInstance: " + prevRes);
+    public static FragmentForResults newInstance (){
+
         FragmentForResults fragment = new FragmentForResults();
-        Bundle args = new Bundle();
-        args.putSerializable("results", prevRes);
-        args.putSerializable("imageForResults", image);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -43,8 +40,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        newPrevMatches = (ArrayList<PrevMatches>) getArguments().getSerializable("results");
-        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForResults");
+
         //fromActivity = getArguments().getString("results");
     }
 

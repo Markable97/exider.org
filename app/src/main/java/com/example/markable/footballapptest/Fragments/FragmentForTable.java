@@ -49,13 +49,10 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     TableLayout tableLay;
     //TextView textView;
 
-    public static FragmentForTable newInstance(ArrayList<TournamentTable> table, ArrayList<ImageFromServer> image){
-        Log.i(TAG, "NewInstance: " + table);
+    public static FragmentForTable newInstance(){
+
         FragmentForTable fragment = new FragmentForTable();
-        Bundle args = new Bundle();
-        args.putSerializable("table", table);
-        args.putSerializable("imageForTable", image);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -72,12 +69,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        newTournamentTable = (ArrayList<TournamentTable>) getArguments().getSerializable("table");
-        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForTable");
         //fromActivity = getArguments().getString("division","");
-        Log.i(TAG, "OnCreate: " + fromActivity);
-        Log.i(TAG, "OnCreate: длина массива " + newTournamentTable.size() );
-        Log.i(TAG, "OnCreate: длина массива image " + imageBitmap.size() );
         green = ContextCompat.getColor(getActivity(),R.color.nextDiv);
         yellow = ContextCompat.getColor(getActivity(),R.color.nextDivSt);
         red = ContextCompat.getColor(getActivity(),R.color.prevDiv);
