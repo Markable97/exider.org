@@ -57,7 +57,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
         MainActivity activity = (MainActivity)getActivity();
         newNextMatches = activity.getNextResultsMatch();
         imageBitmap = activity.getImageArray();
-        Log.i(TAG, "onCreateView: Длинна массива" + newNextMatches.size());
+        Log.i(TAG, "onCreateView: Список матчей" + newNextMatches.size());
         Log.i(TAG, "onCreateView: Длинна массива" + imageBitmap.size());
         recyclerView = (RecyclerView) view.findViewById(R.id.listForCalendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

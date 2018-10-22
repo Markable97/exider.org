@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.TournamentTable;
+import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.TeamActivity;
 import com.example.markable.footballapptest.UpdateFragListener;
@@ -84,6 +85,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreateView: переменная для JSON " + fromActivity);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
+        MainActivity activity = (MainActivity)getActivity();
+        newTournamentTable = activity.getTournamentTable();
+        imageBitmap = activity.getImageArray();
         Log.i(TAG, "onCreateView: Создание таблицы");
 
         tableLay = view.findViewById(R.id.tableForDiv);
