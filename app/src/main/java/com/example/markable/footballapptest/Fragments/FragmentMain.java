@@ -148,10 +148,10 @@ public class FragmentMain extends Fragment {
     }
 
 
-    public void update (String idDivision){
+    public void update (){
         Log.i(TAG, "Interface: Передаче Pager-у");
         //new ServerConnectTestDouble().execute(idDivision);
-       // mAdapter.update(table, prevResults);
+        mAdapter.update();
     }
 
     @Override
@@ -276,7 +276,7 @@ public class FragmentMain extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //передача адаптеру
-            mAdapter.update(tournamentTable, prevResultsMatch, nextResultsMatch, imageArray);
+            mAdapter.update();
         }
     }
 

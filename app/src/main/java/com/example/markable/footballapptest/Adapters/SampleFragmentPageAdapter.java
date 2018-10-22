@@ -69,13 +69,12 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
         return super.getItemPosition(object);
     }
 
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevReslts,
-                       ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image){
+    public void update(){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
-        this.table = divTable;
+        /*this.table = divTable;
         this.results = prevReslts;
         this.calendar = calendar;
-        this.image = image;
+        this.image = image;*/
         //обновляет - вызов getItemPosition
         notifyDataSetChanged();
     }
