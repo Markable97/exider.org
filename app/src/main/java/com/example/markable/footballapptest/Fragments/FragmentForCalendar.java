@@ -31,7 +31,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     private ArrayList<ImageFromServer> imageBitmap;
     RecyclerView recyclerView;
     AdapterForCalendar adapter;
-
+    MainActivity activity;
     public static FragmentForCalendar newInstance(){
 
         FragmentForCalendar fragment = new FragmentForCalendar();
@@ -54,10 +54,10 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " );
         Log.i(TAG, "onCreateView: Размер массива " + newNextMatches.size());
 
-        MainActivity activity = (MainActivity)getActivity();
+        activity = (MainActivity)getActivity();
         newNextMatches = activity.getNextResultsMatch();
         imageBitmap = activity.getImageArray();
-        Log.i(TAG, "onCreateView: Список матчей" + newNextMatches.size());
+        Log.i(TAG, "onCreateView: Список матчей" + newNextMatches.toString());
         Log.i(TAG, "onCreateView: Длинна массива" + imageBitmap.size());
         recyclerView = (RecyclerView) view.findViewById(R.id.listForCalendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -76,10 +76,11 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     @Override
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
         Log.i(TAG, "Interface: ");
-        this.newNextMatches = calendar;
+        newNextMatches = activity.getNextResultsMatch();
+        Log.i(TAG, "update: Обновленный список" + newNextMatches.toString());
+        imageBitmap = activity.getImageArray();
         adapter.update(newNextMatches, imageBitmap);
         //adapter.notifyDataSetChanged();
-        Log.i(TAG, "update: " + newNextMatches);
     }
     
     @Override

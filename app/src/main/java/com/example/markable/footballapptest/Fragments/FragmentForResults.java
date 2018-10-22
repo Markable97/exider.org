@@ -26,6 +26,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     RecyclerViewForResults adapter;
    // TextView textView;
 
+    MainActivity activity ;
 
     private ArrayList<PrevMatches> newPrevMatches;
     private ArrayList<ImageFromServer> imageBitmap;
@@ -52,7 +53,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         recyclerView = view.findViewById(R.id.listForResults);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
         Log.i(TAG, "onCreateView: Начало новой ветки c новым адаптером");
-        MainActivity activity = (MainActivity)getActivity();
+        activity = (MainActivity)getActivity();
         newPrevMatches = activity.getPrevResultsMatch();
         imageBitmap = activity.getImageArray();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -71,8 +72,9 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
 
     @Override
     public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
-        Log.i(TAG, "Interface: " + prevResults);
-        this.newPrevMatches = prevResults;
+        newPrevMatches = activity.getPrevResultsMatch();
+        Log.i(TAG, "update: Списка матчей" + newPrevMatches.toString());
+        imageBitmap = activity.getImageArray();
         adapter.update(newPrevMatches, imageBitmap);
         //RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
         //recyclerView.setAdapter(adapter);

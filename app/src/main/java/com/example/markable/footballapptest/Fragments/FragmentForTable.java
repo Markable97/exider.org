@@ -40,9 +40,10 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     int _50dp, _1dp;
     int green, yellow, pink, red;
 
-    Gson gson = new Gson();
 
     int whiteColor;
+
+    MainActivity activity;
 
     private ArrayList<TournamentTable> newTournamentTable = new ArrayList<>();
     private ArrayList<ImageFromServer> imageBitmap;
@@ -85,7 +86,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreateView: переменная для JSON " + fromActivity);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
-        MainActivity activity = (MainActivity)getActivity();
+        activity = (MainActivity)getActivity();
         newTournamentTable = activity.getTournamentTable();
         imageBitmap = activity.getImageArray();
         Log.i(TAG, "onCreateView: Создание таблицы");
@@ -190,7 +191,8 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     @Override
     public void update(ArrayList divTable, ArrayList prevResults, ArrayList calendar) {
         Log.i(TAG, "Interface: Сработал пустой метод");
-        this.newTournamentTable = divTable;
+        newTournamentTable = activity.getTournamentTable();
+        imageBitmap = activity.getImageArray();
         Log.i(TAG, "createTable: Создание таблицы");
         int countColumn = 7;
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());
