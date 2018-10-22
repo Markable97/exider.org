@@ -252,7 +252,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                         case 2:
                             tv.setText(newTournamentTable.get(i).getTeamName());
                             final int finalI = i;
-                            /*tv.setOnClickListener(new View.OnClickListener() {
+                            tv.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     ImageFromServer descriptionImage = imageBitmap.get(finalI);
@@ -260,7 +260,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                                     intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
                                     startActivity(intent);
                                 }
-                            });*/
+                            });
                             break;
                         case 3: tv.setText(newTournamentTable.get(i).getGames());break;
                         case 4: tv.setText(newTournamentTable.get(i).getGoalScored());break;

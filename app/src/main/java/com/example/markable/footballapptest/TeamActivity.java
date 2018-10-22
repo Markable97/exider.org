@@ -60,7 +60,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         nameTeam.setText(image.getNameImage());
 
         imageTeam = findViewById(R.id.teamActivity_im_image);
-        //imageTeam.setImageBitmap(BitmapFactory.decodeByteArray(image.getBitmapImageBig(), 0, image.getBitmapImageBig().length));
+        imageTeam.setImageBitmap(image.getBitmapImageBig());
 
         rb_statistic = findViewById(R.id.rb_statisticPlayers);
         rb_statistic.setChecked(true);
