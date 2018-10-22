@@ -38,10 +38,10 @@ public class AdapterForCalendar extends RecyclerView.Adapter<AdapterForCalendar.
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
-                if(match.getTeamHome().equalsIgnoreCase(image.getNameImage())){
-                    holder.imageHome.setImageBitmap(BitmapFactory.decodeByteArray(image.getBitmapImageBig(),0, image.getBitmapImageBig().length ));
+                if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                    holder.imageHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 } else if (match.getTeamVisit().equalsIgnoreCase(image.getNameImage())){
-                    holder.imageVisit.setImageBitmap(BitmapFactory.decodeByteArray(image.getBitmapImageBig(),0, image.getBitmapImageBig().length));
+                    holder.imageVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
         }

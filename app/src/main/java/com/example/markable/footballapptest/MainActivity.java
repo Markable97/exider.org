@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest;
 
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -223,9 +224,8 @@ public class MainActivity extends AppCompatActivity
                     byteArrayBig = new byte[countBytesBig];
                     in.readFully(byteArrayBig);
                     Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,/*
-                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
-                            byteArrayBig));
+                    imageArray.add(new ImageFromServer(nameImageFromServer,
+                            BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length) ));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 

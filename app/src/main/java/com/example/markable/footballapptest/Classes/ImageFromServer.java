@@ -7,14 +7,14 @@ import java.io.Serializable;
 public class ImageFromServer implements /*Parcelable,*/ Serializable {
 
     String nameImage;
-    byte[] bitmapImageBig;
+    Bitmap bitmapImageBig;
 
 
-    public ImageFromServer(String nameImage,Bitmap bitmapImageSmall ,byte[] bitmapImageBig) {
+    public ImageFromServer(String nameImage,Bitmap bitmapImageSmall ,Bitmap bitmapImageBig) {
         this.nameImage = nameImage;
         this.bitmapImageBig = bitmapImageBig;
     }
-    public ImageFromServer(String nameImage, byte[] bitmapImageBig){
+    public ImageFromServer(String nameImage, Bitmap bitmapImageBig){
         this.nameImage = nameImage;
         this.bitmapImageBig = bitmapImageBig;
     }
@@ -22,7 +22,7 @@ public class ImageFromServer implements /*Parcelable,*/ Serializable {
         return nameImage;
     }
 
-    public byte[] getBitmapImageBig() {
+    public Bitmap getBitmapImageBig() {
         return bitmapImageBig;
     }
 
