@@ -1,6 +1,7 @@
 package com.example.markable.footballapptest.Adapters;
 
 
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     @Override
     public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, int position) {
         PrevMatches match = list.get(position);
+        //ImageFromServer image = listImage.get(position);
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){

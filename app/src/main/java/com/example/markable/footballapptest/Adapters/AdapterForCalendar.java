@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest.Adapters;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +34,13 @@ public class AdapterForCalendar extends RecyclerView.Adapter<AdapterForCalendar.
     @Override
     public void onBindViewHolder(AdapterForCalendar.ViewHolder holder, int position) {
         NextMatches match = list.get(position);
+        ImageFromServer image = listImage.get(position);
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
                 if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
                     holder.imageHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
-                } else if (match.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                } else if (match.getTeamVisit().equalsIgnoreCase(image.getNameImage())){
                     holder.imageVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }

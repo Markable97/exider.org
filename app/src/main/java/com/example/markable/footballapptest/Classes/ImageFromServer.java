@@ -10,11 +10,10 @@ public class ImageFromServer implements Parcelable, Serializable {
 
     String nameImage;
     Bitmap bitmapImageBig;
-    transient Bitmap bitmapImageSmall;
+
 
     public ImageFromServer(String nameImage,Bitmap bitmapImageSmall ,Bitmap bitmapImageBig) {
         this.nameImage = nameImage;
-        this.bitmapImageSmall = bitmapImageSmall;
         this.bitmapImageBig = bitmapImageBig;
     }
     public ImageFromServer(String nameImage, Bitmap bitmapImageBig){
@@ -29,9 +28,7 @@ public class ImageFromServer implements Parcelable, Serializable {
         return bitmapImageBig;
     }
 
-    public Bitmap getBitmapImageSmall() {
-        return bitmapImageSmall;
-    }
+
 
     @Override
     public int describeContents() {

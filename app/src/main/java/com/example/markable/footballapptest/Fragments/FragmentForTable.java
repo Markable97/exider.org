@@ -2,6 +2,7 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.TournamentTable;
+import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.TeamActivity;
 import com.example.markable.footballapptest.UpdateFragListener;
@@ -38,9 +40,10 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     int _50dp, _1dp;
     int green, yellow, pink, red;
 
-    Gson gson = new Gson();
 
     int whiteColor;
+
+    MainActivity activity;
 
     private ArrayList<TournamentTable> newTournamentTable = new ArrayList<>();
     private ArrayList<ImageFromServer> imageBitmap;
@@ -48,13 +51,10 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     TableLayout tableLay;
     //TextView textView;
 
-    public static FragmentForTable newInstance(ArrayList<TournamentTable> table, ArrayList<ImageFromServer> image){
-        Log.i(TAG, "NewInstance: " + table);
+    public static FragmentForTable newInstance(){
+
         FragmentForTable fragment = new FragmentForTable();
-        Bundle args = new Bundle();
-        args.putSerializable("table", table);
-        args.putSerializable("imageForTable", image);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -71,12 +71,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        newTournamentTable = (ArrayList<TournamentTable>) getArguments().getSerializable("table");
-        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForTable");
         //fromActivity = getArguments().getString("division","");
-        Log.i(TAG, "OnCreate: " + fromActivity);
-        Log.i(TAG, "OnCreate: длина массива " + newTournamentTable.size() );
-        Log.i(TAG, "OnCreate: длина массива image " + imageBitmap.size() );
         green = ContextCompat.getColor(getActivity(),R.color.nextDiv);
         yellow = ContextCompat.getColor(getActivity(),R.color.nextDivSt);
         red = ContextCompat.getColor(getActivity(),R.color.prevDiv);
@@ -91,6 +86,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         Log.i(TAG, "OnCreateView: переменная для JSON " + fromActivity);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
 
+        activity = (MainActivity)getActivity();
+        newTournamentTable = activity.getTournamentTable();
+        imageBitmap = activity.getImageArray();
         Log.i(TAG, "onCreateView: Создание таблицы");
 
         tableLay = view.findViewById(R.id.tableForDiv);
@@ -107,7 +105,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         //image = view.findViewById(R.id.imageViewTest);
         //image.setImageBitmap(imageBitmap.get(0));
         if(newTournamentTable.size() != 0){
-            update(newTournamentTable, null, null);
+            update();
         }else {
             //textView.setText("Чисто проверить! ");
         }
@@ -191,9 +189,10 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     }
 
     @Override
-    public void update(ArrayList divTable, ArrayList prevResults, ArrayList calendar) {
+    public void update() {
         Log.i(TAG, "Interface: Сработал пустой метод");
-        this.newTournamentTable = divTable;
+        newTournamentTable = activity.getTournamentTable();
+        imageBitmap = activity.getImageArray();
         Log.i(TAG, "createTable: Создание таблицы");
         int countColumn = 7;
         Log.i(TAG, "createTable: размер = " + newTournamentTable.size());

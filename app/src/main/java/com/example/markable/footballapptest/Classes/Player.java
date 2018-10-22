@@ -112,7 +112,7 @@ public class Player implements Serializable, Parcelable{
                 '}'+"\n";
     }
 
-    protected Player(Parcel in) {
+   protected Player(Parcel in) {
         idPlayer = in.readInt();
         playerTeam = in.readString();
         playerName = in.readString();

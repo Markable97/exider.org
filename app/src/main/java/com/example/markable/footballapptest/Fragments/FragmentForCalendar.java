@@ -17,6 +17,7 @@ import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
+import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.UpdateFragListener;
 
@@ -30,14 +31,11 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     private ArrayList<ImageFromServer> imageBitmap;
     RecyclerView recyclerView;
     AdapterForCalendar adapter;
+    MainActivity activity;
+    public static FragmentForCalendar newInstance(){
 
-    public static FragmentForCalendar newInstance(ArrayList<NextMatches> calendar, ArrayList<ImageFromServer> image){
-        Log.i(TAG, "newInstance: " + calendar);
         FragmentForCalendar fragment = new FragmentForCalendar();
-        Bundle args = new Bundle();
-        args.putSerializable("calendar", calendar);
-        args.putSerializable("imageForCalendar", image);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -45,9 +43,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        newNextMatches = (ArrayList<NextMatches>) getArguments().getSerializable("calendar");
-        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForCalendar");
-        Log.i(TAG, "onCreate: Массив картинок = " + imageBitmap.size());
+
     }
 
     @Nullable
@@ -58,6 +54,11 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента " );
         Log.i(TAG, "onCreateView: Размер массива " + newNextMatches.size());
 
+        activity = (MainActivity)getActivity();
+        newNextMatches = activity.getNextResultsMatch();
+        imageBitmap = activity.getImageArray();
+        Log.i(TAG, "onCreateView: Список матчей" + newNextMatches.toString());
+        Log.i(TAG, "onCreateView: Длинна массива" + imageBitmap.size());
         recyclerView = (RecyclerView) view.findViewById(R.id.listForCalendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new AdapterForCalendar(newNextMatches, imageBitmap);
@@ -73,12 +74,13 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     }
 
     @Override
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
+    public void update() {
         Log.i(TAG, "Interface: ");
-        this.newNextMatches = calendar;
+        newNextMatches = activity.getNextResultsMatch();
+        Log.i(TAG, "update: Обновленный список" + newNextMatches.toString());
+        imageBitmap = activity.getImageArray();
         adapter.update(newNextMatches, imageBitmap);
         //adapter.notifyDataSetChanged();
-        Log.i(TAG, "update: " + newNextMatches);
     }
     
     @Override

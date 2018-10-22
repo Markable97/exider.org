@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface UpdateFragListener {
 
-    void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar);
+    void update();
 
 
 }

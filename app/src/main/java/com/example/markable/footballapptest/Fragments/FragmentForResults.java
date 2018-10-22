@@ -13,6 +13,7 @@ import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
+import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.UpdateFragListener;
 import java.util.ArrayList;
@@ -25,17 +26,15 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     RecyclerViewForResults adapter;
    // TextView textView;
 
+    MainActivity activity ;
 
-    private ArrayList<PrevMatches> newPrevMatches = new ArrayList<>();
-    private ArrayList<ImageFromServer> imageBitmap = new ArrayList<>();
+    private ArrayList<PrevMatches> newPrevMatches;
+    private ArrayList<ImageFromServer> imageBitmap;
 
-    public static FragmentForResults newInstance (ArrayList<PrevMatches> prevRes, ArrayList<ImageFromServer> image){
-        Log.i(TAG, "NewInstance: " + prevRes);
+    public static FragmentForResults newInstance (){
+
         FragmentForResults fragment = new FragmentForResults();
-        Bundle args = new Bundle();
-        args.putSerializable("results", prevRes);
-        args.putSerializable("imageForResults", image);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -43,8 +42,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "OnCreate:");
-        newPrevMatches = (ArrayList<PrevMatches>) getArguments().getSerializable("results");
-        imageBitmap = (ArrayList<ImageFromServer>) getArguments().getSerializable("imageForResults");
+
         //fromActivity = getArguments().getString("results");
     }
 
@@ -55,8 +53,9 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         recyclerView = view.findViewById(R.id.listForResults);
         Log.i(TAG, "OnCreateView: Загрузка окна фрагмента ");
         Log.i(TAG, "onCreateView: Начало новой ветки c новым адаптером");
-        //textView = view.findViewById(R.id.textView_results);
-        //textView.setText(fromActivity);
+        activity = (MainActivity)getActivity();
+        newPrevMatches = activity.getPrevResultsMatch();
+        imageBitmap = activity.getImageArray();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecyclerViewForResults(newPrevMatches, imageBitmap);
         recyclerView.setAdapter(adapter);
@@ -72,9 +71,10 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     }
 
     @Override
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
-        Log.i(TAG, "Interface: " + prevResults);
-        this.newPrevMatches = prevResults;
+    public void update() {
+        newPrevMatches = activity.getPrevResultsMatch();
+        Log.i(TAG, "update: Списка матчей" + newPrevMatches.toString());
+        imageBitmap = activity.getImageArray();
         adapter.update(newPrevMatches, imageBitmap);
         //RecyclerViewForResults adapter = new RecyclerViewForResults(getActivity(), newPrevMatches);
         //recyclerView.setAdapter(adapter);
