@@ -167,9 +167,6 @@ public class FragmentMain extends Fragment {
         nextResultsMatch = activity.getNextResultsMatch();
         prevResultsMatch = activity.getPrevResultsMatch();
         tournamentTable = activity.getTournamentTable();
-        Log.i(TAG, "onCreateView: Массив из Активности = " + nextResultsMatch.size());
-        Log.i(TAG, "onCreateView: Массив из Активности = " + prevResultsMatch.size());
-        Log.i(TAG, "onCreateView: Массив из Активности = " + tournamentTable.size());
         mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext());
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);

@@ -165,14 +165,6 @@ public class MainActivity extends AppCompatActivity
         //String ipAdres = "92.38.241.107";
         //String ipAdres = "10.0.2.2"
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            fragmentMain = new FragmentMain();
-
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
-        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -251,6 +243,16 @@ public class MainActivity extends AppCompatActivity
 
             return null;
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            fragmentMain = new FragmentMain();
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
+        }
+
     }
 
     public ArrayList<NextMatches> getNextResultsMatch() {
