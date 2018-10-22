@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.Player;
+import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamMatches;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamStatistic;
 import com.google.gson.Gson;
@@ -42,7 +43,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     FrameLayout container;
 
     ArrayList<Player> arrayPlayers = new ArrayList<>();
-    ArrayList<AllMatchesForTeam> arrayAllMatches = new ArrayList<>();
+    ArrayList<PrevMatches> arrayAllMatches = new ArrayList<>();
     ArrayList<ImageFromServer> arrayTeamImage = new ArrayList<>();
 
     FragmentForTeamStatistic fragStatistic;
@@ -147,7 +148,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 out.writeUTF(query);
                 fromServer = in.readUTF();
                 Log.i(TAG, "doInBackground: from server = " + fromServer);
-                Type t = new TypeToken<ArrayList<AllMatchesForTeam>>(){}.getType();
+                Type t = new TypeToken<ArrayList<PrevMatches>>(){}.getType();
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
                 countImage = in.readInt();
@@ -187,7 +188,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         return arrayPlayers;
     }
 
-    public ArrayList<AllMatchesForTeam> getArrayAllMatches() {
+    public ArrayList<PrevMatches> getArrayAllMatches() {
         return arrayAllMatches;
     }
 

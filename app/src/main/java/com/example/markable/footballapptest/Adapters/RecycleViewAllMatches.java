@@ -9,16 +9,17 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;
 
 import java.util.ArrayList;
 
 public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMatches.ViewHolder> {
 
-    private ArrayList<AllMatchesForTeam> list;
+    private ArrayList<PrevMatches> list;
     private ArrayList<ImageFromServer> listImage;
 
-    public RecycleViewAllMatches(ArrayList<AllMatchesForTeam> list, ArrayList<ImageFromServer> listImage) {
+    public RecycleViewAllMatches(ArrayList<PrevMatches> list, ArrayList<ImageFromServer> listImage) {
         this.list = list;
         this.listImage = listImage;
     }
@@ -31,22 +32,22 @@ public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMa
 
     @Override
     public void onBindViewHolder(RecycleViewAllMatches.ViewHolder holder, int position) {
-        AllMatchesForTeam allMatches = list.get(position);
-        holder.tour.setText("Тур" + String.valueOf(allMatches.getMatches().getIdTour()));
+        PrevMatches allMatches = list.get(position);
+        holder.tour.setText("Тур" + String.valueOf(allMatches.getIdTour()));
         //здесь будут картинки
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
-                if(allMatches.getMatches().getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                if(allMatches.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
                     holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
-                } else if (allMatches.getMatches().getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                } else if (allMatches.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
                     holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
         }
-        holder.nameTeamHome.setText(allMatches.getMatches().getTeamHome());
-        holder.nameTeamVisit.setText(allMatches.getMatches().getTeamVisit());
-        holder.goalTeamHome.setText(String.valueOf(allMatches.getMatches().getGoalHome()));
-        holder.goalTeamVisit.setText(String.valueOf(allMatches.getMatches().getGoalVisit()));
+        holder.nameTeamHome.setText(allMatches.getTeamHome());
+        holder.nameTeamVisit.setText(allMatches.getTeamVisit());
+        holder.goalTeamHome.setText(String.valueOf(allMatches.getGoalHome()));
+        holder.goalTeamVisit.setText(String.valueOf(allMatches.getGoalVisit()));
     }
 
     @Override
