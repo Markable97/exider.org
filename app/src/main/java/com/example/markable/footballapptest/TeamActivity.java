@@ -12,7 +12,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Classes.PrevMatches;
