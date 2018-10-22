@@ -63,7 +63,7 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     public int getItemPosition(@NonNull Object object) {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
-            ((UpdateFragListener) object).update(table, results,calendar);
+            ((UpdateFragListener) object).update();
         }
 
         return super.getItemPosition(object);
