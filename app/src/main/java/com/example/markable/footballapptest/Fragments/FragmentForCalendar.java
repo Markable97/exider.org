@@ -74,7 +74,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     }
 
     @Override
-    public void update(ArrayList<TournamentTable> divTable, ArrayList<PrevMatches> prevResults, ArrayList<NextMatches> calendar) {
+    public void update() {
         Log.i(TAG, "Interface: ");
         newNextMatches = activity.getNextResultsMatch();
         Log.i(TAG, "update: Обновленный список" + newNextMatches.toString());

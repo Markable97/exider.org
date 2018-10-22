@@ -105,7 +105,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         //image = view.findViewById(R.id.imageViewTest);
         //image.setImageBitmap(imageBitmap.get(0));
         if(newTournamentTable.size() != 0){
-            update(newTournamentTable, null, null);
+            update();
         }else {
             //textView.setText("Чисто проверить! ");
         }
@@ -189,7 +189,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     }
 
     @Override
-    public void update(ArrayList divTable, ArrayList prevResults, ArrayList calendar) {
+    public void update() {
         Log.i(TAG, "Interface: Сработал пустой метод");
         newTournamentTable = activity.getTournamentTable();
         imageBitmap = activity.getImageArray();
