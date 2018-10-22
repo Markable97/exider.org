@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    boolean flag = false;
     //final String IP = "10.0.2.2";
     final String IP = "192.168.0.105";
 
@@ -134,8 +135,8 @@ public class MainActivity extends AppCompatActivity
             dataForFragment = "6";
         }
 
-
-        fragmentMain.update(dataForFragment);
+        new MainServerConnect().execute(dataForFragment);
+        //fragmentMain.update(dataForFragment);
 
         /*try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -247,10 +248,15 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            fragmentMain = new FragmentMain();
 
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
+            if(flag == false){//проверка на запущенность активности
+                fragmentMain = new FragmentMain();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
+                flag = true;
+            }else{
+                fragmentMain.update();
+            }
         }
 
     }
