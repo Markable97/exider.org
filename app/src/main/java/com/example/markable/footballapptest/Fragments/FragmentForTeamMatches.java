@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import com.example.markable.footballapptest.Adapters.RecycleViewAllMatches;
 import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.TeamActivity;
 
 import java.util.ArrayList;
 
 public class FragmentForTeamMatches extends Fragment {
 
+    TeamActivity activity;
 
     private static final String TAG = "FragMatches";
     private ArrayList<AllMatchesForTeam> arrayAllMatches = new ArrayList<>();
@@ -26,26 +28,23 @@ public class FragmentForTeamMatches extends Fragment {
     RecyclerView recyclerView;
     RecycleViewAllMatches adapter;
 
-    public static FragmentForTeamMatches newInstance(ArrayList<AllMatchesForTeam> list){
+    public static FragmentForTeamMatches newInstance(){
         FragmentForTeamMatches fragment = new FragmentForTeamMatches();
-        Bundle args = new Bundle();
-        args.putSerializable("allMatches", list);
-        Log.i(TAG, "newInstance: " + list.toString());
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrayAllMatches = (ArrayList<AllMatchesForTeam>) getArguments().getSerializable("allMatches");
-        Log.i(TAG, "onCreate: длинна массива " + arrayAllMatches.size());
+        Log.i(TAG, "onCreate:");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_matches, container, false);
 
+        activity = (TeamActivity)getActivity();
+        arrayAllMatches = activity.getArrayAllMatches();
         recyclerView = view.findViewById(R.id.listAllMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecycleViewAllMatches(arrayAllMatches);
