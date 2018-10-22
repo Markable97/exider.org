@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class Player implements Serializable/*,Parcelable*/{
+public class Player implements Serializable, Parcelable{
 
     private int idPlayer;
     private String playerTeam;
@@ -112,7 +112,7 @@ public class Player implements Serializable/*,Parcelable*/{
                 '}'+"\n";
     }
 
-   /* protected Player(Parcel in) {
+   protected Player(Parcel in) {
         idPlayer = in.readInt();
         playerTeam = in.readString();
         playerName = in.readString();
@@ -159,7 +159,7 @@ public class Player implements Serializable/*,Parcelable*/{
         public Player[] newArray(int size) {
             return new Player[size];
         }
-    };*/
+    };
 /**
  *Если этот метод возвращает отрицательное число, то текущий объект будет располагаться перед тем,
  * который передается через параметр. Если метод вернет положительное число, то, наоборот, после второго объекта.
