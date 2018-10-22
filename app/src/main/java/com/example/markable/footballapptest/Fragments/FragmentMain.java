@@ -53,100 +53,6 @@ public class FragmentMain extends Fragment {
         Log.i(TAG, "OnCreate: ");
     }
 
-    public class ServerConnectTest extends AsyncTask<String, Void, String>{
-
-        //String query = "{\"id_division\":1,\"id_tour\":2}";
-        String query = "";
-        String fromServer = null, fromServerResultsPrevMatches = null, fromServerCalendar = null ;
-        //String ipAdres = "192.168.0.104";
-        //String ipAdres = "92.38.241.107";
-        //String ipAdres = "10.0.2.2";
-
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            for(String s : strings){
-                query = "{\"messageLogic\":\"division\",\"id_division\":"+ s + "}";
-            }
-
-            Log.i(TAG, "Поток запущен");
-            Socket socket;
-            Gson gson = new Gson();
-            try {
-                socket = new Socket(IP, 55555);
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
-                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                Log.i(TAG, "doInBackground: ServerTestConnect");
-                out.writeUTF(query);
-
-                fromServer = in.readUTF();
-                Log.i(TAG, "[1] Данные с сервера в виду JSON = " + fromServer);
-                tournamentTable.clear();
-                tournamentTable = gson.fromJson(fromServer, new TypeToken<ArrayList<TournamentTable>>(){}.getType());
-                for(int i = 0; i<tournamentTable.size(); i++){
-                    Log.i(TAG, "doInBackground: " + tournamentTable.get(i).toString());
-                }
-                fromServerResultsPrevMatches = in.readUTF();
-                prevResultsMatch.clear();
-                prevResultsMatch = gson.fromJson(fromServerResultsPrevMatches, new TypeToken<ArrayList<PrevMatches>>(){}.getType());
-                Log.i(TAG,"[2] Данные с сервера в виде JSON = " + fromServerResultsPrevMatches);
-                for(int i = 0; i<prevResultsMatch.size(); i++){
-                    Log.i(TAG, "doInBackground: " + prevResultsMatch.get(i).toString());
-                }
-                fromServerCalendar = in.readUTF();
-                nextResultsMatch.clear();
-                nextResultsMatch = gson.fromJson(fromServerCalendar, new TypeToken<ArrayList<NextMatches>>(){}.getType());
-                Log.i(TAG, "[3] Данные с сервера в виде JSON = " + fromServerCalendar);
-                Log.i(TAG, nextResultsMatch.toString());
-                imageArray.clear();
-                int countFiles = in.readInt();
-                Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
-                byte[] byteArray;
-                byte[] byteArrayBig;
-                for(int i = 0; i < countFiles; i++){
-                    String nameImageFromServer = in.readUTF();
-                    Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
-                    /*int countBytes = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
-                    byte[] byteArray = new byte[countBytes];
-                    //int countFromServer = in.read(byteArray, 0, countBytes);
-                    in.readFully(byteArray);
-                    Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);*/
-                    int countBytesBig = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
-                    byteArrayBig = new byte[countBytesBig];
-                    in.readFully(byteArrayBig);
-                    Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,/*
-                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
-                            byteArrayBig));
-                }
-                Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
-                out.writeUTF("{\"messageLogic\":\"close\"}");
-                out.close();
-                in.close();
-               // inResultsPrev.close();
-                socket.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            //передача адаптеру
-            mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext());
-            viewPager.setAdapter(mAdapter);
-            tabLayout.setupWithViewPager(viewPager);
-        }
-    }
-
 
     public void update (){
         Log.i(TAG, "Interface: Передаче Pager-у");
@@ -187,7 +93,7 @@ public class FragmentMain extends Fragment {
         return view;
     }
 
-    public class ServerConnectTestDouble extends AsyncTask<String, Void, String>{
+ public class ServerConnectTestDouble extends AsyncTask<String, Void, String>{
 
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
@@ -253,9 +159,9 @@ public class FragmentMain extends Fragment {
                     byteArrayBig = new byte[countBytesBig];
                     in.readFully(byteArrayBig);
                     Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,/*
-                            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length),*/
-                           byteArrayBig));
+                    imageArray.add(new ImageFromServer(nameImageFromServer,
+                            BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length)
+                           ));
                 }
                 Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 
