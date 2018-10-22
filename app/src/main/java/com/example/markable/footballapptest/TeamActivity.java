@@ -33,6 +33,8 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     private ImageFromServer image;
 
+    String logic = "team";
+
     TextView nameTeam;
     ImageView imageTeam;
     RadioButton rb_statistic, rb_matches;
@@ -70,12 +72,12 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         container = findViewById(R.id.container_frag_team);
 
-        fragStatistic = new FragmentForTeamStatistic().newInstance(image.getNameImage());
+        /*fragStatistic = new FragmentForTeamStatistic().newInstance();
         fragMatches = new FragmentForTeamMatches();
 
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
+        fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();*/
 
     }
 
@@ -83,18 +85,12 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
             case R.id.rb_statisticPlayers:
-                Log.i(TAG, "onCheckedChanged: Длина массива" + arrayPlayers.size());
-                if(arrayPlayers.size()!=0){
-                    fragStatistic = new FragmentForTeamStatistic().newInstance(arrayPlayers);
-                }
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.container_frag_team, fragStatistic);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
                 break;
             case R.id.rb_allMatches:
-
                 FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction1.replace(R.id.container_frag_team, fragMatches).commit();
+                fragmentTransaction1.replace(R.id.container_frag_team, fragMatches ).commit();
                 break;
         }
     }
@@ -103,6 +99,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         String queryClose = "{\"messageLogic\":\"close\"}";
         String query = "";
+        String teamName;
         //final String IP = "10.0.2.2";
         final String IP = "192.168.0.105";
         String fromServer = null;
@@ -112,32 +109,49 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         protected String doInBackground(String... strings) {
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             for(String s : strings){
-                query = "{\"messageLogic\":\"matches\",\"id_team\":\""+ s + "\"}";
+                teamName = s;
             }
 
             Socket socket;
             Gson gson = new Gson();
 
             try {
+                query = "{\"messageLogic\":\""+ logic +"\",\"id_team\":\""+ teamName + "\"}";
                 socket = new Socket(IP, 55555);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
+                //загрузка статистики
                 out.writeUTF(query);
+                fromServer = in.readUTF();
+                Log.i(TAG, "doInBackground: Данные от сервера" + fromServer);
+                Type t1 = new TypeToken<ArrayList<Player>>(){}.getType();
+                arrayPlayers = gson.fromJson(fromServer, t1);
+                Log.i(TAG, "doInBackground: \n" + arrayPlayers.toString());
 
+                int countImage = in.readInt();
+                Log.i(TAG, "doInBackground: кол-во фоток от сервера = " + countImage);
+                if(countImage != 0 && countImage==arrayPlayers.size()){
+                    byte[] byteArray;
+                    for(int i = 0; i < countImage; i++){
+                        int countBytes = in.readInt();
+                        byteArray = new byte[countBytes];
+                        in.readFully(byteArray);
+                        arrayPlayers.get(i).setPlayerImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
+                    }
+                }
+                //out.writeUTF(queryClose);
+                //загрузка матчей
+                logic = "matches";
+                query = "{\"messageLogic\":\""+ logic +"\",\"id_team\":\""+ teamName + "\"}";
+                out.writeUTF(query);
                 fromServer = in.readUTF();
                 Log.i(TAG, "doInBackground: from server = " + fromServer);
                 Type t = new TypeToken<ArrayList<AllMatchesForTeam>>(){}.getType();
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
 
-                /*countIm = in.readInt();
-                Log.i(TAG, "doInBackground: кол-во картинок = " + countIm);
-                if(countIm!=0){
-
-                }*/
-
                 out.writeUTF(queryClose);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -148,8 +162,19 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            fragMatches = new FragmentForTeamMatches().newInstance(arrayAllMatches);
+            fragStatistic = new FragmentForTeamStatistic().newInstance();
+            fragMatches = new FragmentForTeamMatches().newInstance();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
         }
+    }
+
+    public ArrayList<Player> getArrayPlayers() {
+        return arrayPlayers;
+    }
+
+    public ArrayList<AllMatchesForTeam> getArrayAllMatches() {
+        return arrayAllMatches;
     }
 
     @Override
