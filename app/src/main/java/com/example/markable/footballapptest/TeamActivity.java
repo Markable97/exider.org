@@ -43,6 +43,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     ArrayList<Player> arrayPlayers = new ArrayList<>();
     ArrayList<AllMatchesForTeam> arrayAllMatches = new ArrayList<>();
+    ArrayList<ImageFromServer> arrayTeamImage = new ArrayList<>();
 
     FragmentForTeamStatistic fragStatistic;
     FragmentForTeamMatches fragMatches;
@@ -149,7 +150,20 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 Type t = new TypeToken<ArrayList<AllMatchesForTeam>>(){}.getType();
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
-
+                countImage = in.readInt();
+                Log.i(TAG, "doInBackground: кол-во фоток от сервера [2]" + countImage);
+                if(countImage!=0){
+                    byte[] byteImage;
+                    for(int i = 0; i < countImage; i++){
+                        String nameImage = in.readUTF();
+                        int countBytes = in.readInt();
+                        byteImage = new byte[countBytes];
+                        in.readFully(byteImage);
+                        arrayTeamImage.add(new ImageFromServer(nameImage, BitmapFactory.decodeByteArray(byteImage, 0,
+                                byteImage.length)));
+                    }
+                }
+                Log.i(TAG, "doInBackground: Название картинок = " + arrayTeamImage.toString());
                 out.writeUTF(queryClose);
 
             } catch (IOException e) {
@@ -175,6 +189,10 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     public ArrayList<AllMatchesForTeam> getArrayAllMatches() {
         return arrayAllMatches;
+    }
+
+    public ArrayList<ImageFromServer> getArrayTeamImage() {
+        return arrayTeamImage;
     }
 
     @Override

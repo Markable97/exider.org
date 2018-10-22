@@ -18,8 +18,9 @@ public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMa
     private ArrayList<AllMatchesForTeam> list;
     private ArrayList<ImageFromServer> listImage;
 
-    public RecycleViewAllMatches(ArrayList<AllMatchesForTeam> list) {
+    public RecycleViewAllMatches(ArrayList<AllMatchesForTeam> list, ArrayList<ImageFromServer> listImage) {
         this.list = list;
+        this.listImage = listImage;
     }
 
     @Override
@@ -33,6 +34,15 @@ public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMa
         AllMatchesForTeam allMatches = list.get(position);
         holder.tour.setText("Тур" + String.valueOf(allMatches.getMatches().getIdTour()));
         //здесь будут картинки
+        for(int i = 0; i < list.size(); i++){
+            for(int j = 0; j < listImage.size(); j++){
+                if(allMatches.getMatches().getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
+                } else if (allMatches.getMatches().getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
+                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
+                }
+            }
+        }
         holder.nameTeamHome.setText(allMatches.getMatches().getTeamHome());
         holder.nameTeamVisit.setText(allMatches.getMatches().getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(allMatches.getMatches().getGoalHome()));

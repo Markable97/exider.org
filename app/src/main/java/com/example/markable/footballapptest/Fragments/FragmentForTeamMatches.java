@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.RecycleViewAllMatches;
 import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
+import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.TeamActivity;
 
@@ -24,6 +25,7 @@ public class FragmentForTeamMatches extends Fragment {
 
     private static final String TAG = "FragMatches";
     private ArrayList<AllMatchesForTeam> arrayAllMatches = new ArrayList<>();
+    private ArrayList<ImageFromServer> arrayImage;
 
     RecyclerView recyclerView;
     RecycleViewAllMatches adapter;
@@ -45,9 +47,10 @@ public class FragmentForTeamMatches extends Fragment {
 
         activity = (TeamActivity)getActivity();
         arrayAllMatches = activity.getArrayAllMatches();
+        arrayImage = activity.getArrayTeamImage();
         recyclerView = view.findViewById(R.id.listAllMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RecycleViewAllMatches(arrayAllMatches);
+        adapter = new RecycleViewAllMatches(arrayAllMatches, arrayImage);
         recyclerView.setAdapter(adapter);
 
 
