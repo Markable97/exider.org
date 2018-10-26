@@ -1,6 +1,8 @@
 package com.example.markable.footballapptest.Adapters;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.MainActivity;
+import com.example.markable.footballapptest.MatchActivity;
 import com.example.markable.footballapptest.R;
 
 import java.util.ArrayList;
@@ -25,11 +29,13 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
 
     private List<PrevMatches>  list;
     private ArrayList<ImageFromServer> listImage;
+    private Context context;
 
     //конструктов для адаптера
-    public RecyclerViewForResults(List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
+    public RecyclerViewForResults(Context context, List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
         this.list = list;
         this.listImage = listImage;
+        this.context = context;
     }
 
     @Override
@@ -56,6 +62,14 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));
         holder.goalTeamVisit.setText(String.valueOf(match.getGoalVisit()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MatchActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
 
