@@ -4,7 +4,9 @@ package com.example.markable.footballapptest.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +29,13 @@ import java.util.List;
 
 public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewForResults.ViewHolder> {
 
+    private static final String TAG = "AdapterResults";
+
     private List<PrevMatches>  list;
     private ArrayList<ImageFromServer> listImage;
     private Context context;
+    ImageFromServer imageHome;
+    ImageFromServer imageVisit;
 
     //конструктов для адаптера
     public RecyclerViewForResults(Context context, List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
@@ -46,8 +52,8 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
 
     @Override
     public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, int position) {
-        PrevMatches match = list.get(position);
-        //ImageFromServer image = listImage.get(position);
+        final PrevMatches match = list.get(position);
+
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
@@ -67,6 +73,18 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MatchActivity.class);
+                for(int i = 0; i < listImage.size(); i++){
+                    if(match.getTeamHome().equals(listImage.get(i).getNameImage())){
+                        imageHome = listImage.get(i);
+                    }
+                    if(match.getTeamVisit().equals(listImage.get(i).getNameImage())){
+                        imageVisit = listImage.get(i);
+                    }
+                }
+                Log.i(TAG, "onClick: " + imageHome.getNameImage() + imageVisit.getNameImage());
+                intent.putExtra("information", match);
+                intent.putExtra("imageHome", (Parcelable) imageHome);
+                intent.putExtra("imageVisit", (Parcelable) imageVisit);
                 context.startActivity(intent);
             }
         });
