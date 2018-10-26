@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
+
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;

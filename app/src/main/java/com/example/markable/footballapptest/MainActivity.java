@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
 
     boolean flag = false;
     //final String IP = "10.0.2.2";
-    final String IP = "192.168.0.105";
+    final String IP = "192.168.0.103";
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;

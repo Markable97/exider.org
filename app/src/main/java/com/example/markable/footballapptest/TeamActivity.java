@@ -102,7 +102,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         String query = "";
         String teamName;
         //final String IP = "10.0.2.2";
-        final String IP = "192.168.0.105";
+        final String IP = "192.168.0.103";
         String fromServer = null;
         int countIm = 0;
 

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.markable.footballapptest.Adapters.RecycleViewAllMatches;
-import com.example.markable.footballapptest.Classes.AllMatchesForTeam;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.R;
