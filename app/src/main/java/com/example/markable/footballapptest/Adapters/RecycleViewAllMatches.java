@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest.Adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +12,23 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.MatchActivity;
 import com.example.markable.footballapptest.R;
 
 import java.util.ArrayList;
+
+//не нужный адаптер!!! Можно удалить
 
 public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMatches.ViewHolder> {
 
     private ArrayList<PrevMatches> list;
     private ArrayList<ImageFromServer> listImage;
+    private Context context;
 
-    public RecycleViewAllMatches(ArrayList<PrevMatches> list, ArrayList<ImageFromServer> listImage) {
+    public RecycleViewAllMatches(Context context, ArrayList<PrevMatches> list, ArrayList<ImageFromServer> listImage) {
         this.list = list;
         this.listImage = listImage;
+        this.context = context;
     }
 
     @Override
@@ -31,7 +38,7 @@ public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMa
     }
 
     @Override
-    public void onBindViewHolder(RecycleViewAllMatches.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecycleViewAllMatches.ViewHolder holder, final int position) {
         PrevMatches allMatches = list.get(position);
         holder.tour.setText("Тур" + String.valueOf(allMatches.getIdTour()));
         //здесь будут картинки
@@ -48,6 +55,14 @@ public class RecycleViewAllMatches extends RecyclerView.Adapter<RecycleViewAllMa
         holder.nameTeamVisit.setText(allMatches.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(allMatches.getGoalHome()));
         holder.goalTeamVisit.setText(String.valueOf(allMatches.getGoalVisit()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrevMatches matches = list.get(position);
+                Intent intent = new Intent(context, MatchActivity.class);
+            }
+        });
     }
 
     @Override

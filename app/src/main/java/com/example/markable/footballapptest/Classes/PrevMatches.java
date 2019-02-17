@@ -3,6 +3,7 @@ package com.example.markable.footballapptest.Classes;
 import java.io.Serializable;
 
 public class PrevMatches implements Serializable {
+    int idMatch;
     String nameDivision;
     int idTour;
     String teamHome;
@@ -10,7 +11,8 @@ public class PrevMatches implements Serializable {
     int goalVisit;
     String teamVisit;
 
-    public PrevMatches(String nameDivision, int idTour, String teamHome, int goalHome, int goalVisit, String teamVisit) {
+    public PrevMatches(int idMatch, String nameDivision, int idTour, String teamHome, int goalHome, int goalVisit, String teamVisit) {
+        this.idMatch = idMatch;
         this.nameDivision = nameDivision;
         this.idTour = idTour;
         this.teamHome = teamHome;
@@ -19,6 +21,10 @@ public class PrevMatches implements Serializable {
         this.teamVisit = teamVisit;
     }
 
+    public int getIdMatch() {
+        return idMatch;
+    }
+    
     public String getNameDivision() {
         return nameDivision;
     }
@@ -45,7 +51,7 @@ public class PrevMatches implements Serializable {
 
     @Override
     public String toString() {
-        String result = nameDivision + " " + idTour + " " + teamHome + " " + goalHome + " " + goalVisit + " " + teamVisit;
+        String result =idMatch + " " + nameDivision + " " + idTour + " " + teamHome + " " + goalHome + " " + goalVisit + " " + teamVisit;
         return result;
     }
 }
