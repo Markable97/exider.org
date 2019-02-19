@@ -29,6 +29,8 @@ import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ReturnFromFragForAct {
 
+    final String IP = "192.168.0.105";
+
     private static final String TAG = "TeamAcrivity";
 
     private ImageFromServer image;
@@ -102,7 +104,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         String query = "";
         String teamName;
         //final String IP = "10.0.2.2";
-        final String IP = "192.168.0.105";
+
         String fromServer = null;
         int countIm = 0;
 

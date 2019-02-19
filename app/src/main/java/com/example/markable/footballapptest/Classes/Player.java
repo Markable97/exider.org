@@ -21,8 +21,30 @@ public class Player implements Serializable, Parcelable{
     private int yellowCard;
     private int redCard;
     Bitmap playerImage;
+    private int penalty;
+    private int penalty_out;
+    private int own_goal;
 
-    public Player(int idPlayer,String playerTeam, String playerName, String amplua, String birhtday, int number,
+    public Player(int idPlayer, String playerTeam, String playerName, String birhtday, String amplua, int number,
+                  int games, int goal, int assist, int yellowCard, int redCard, int penalty, int penalty_out,
+                  int own_goal) {
+        this.idPlayer = idPlayer;
+        this.playerTeam = playerTeam;
+        this.playerName = playerName;
+        this.birhtday = birhtday;
+        this.amplua = amplua;
+        this.number = number;
+        this.games = games;
+        this.goal = goal;
+        this.assist = assist;
+        this.yellowCard = yellowCard;
+        this.redCard = redCard;
+        this.penalty = penalty;
+        this.penalty_out = penalty_out;
+        this.own_goal = own_goal;
+    }
+
+    public Player(int idPlayer, String playerTeam, String playerName, String amplua, String birhtday, int number,
                   int games, int goal, int assist, int yellowCard, int redCard) {
         this.idPlayer = idPlayer;
         this.playerTeam = playerTeam;
