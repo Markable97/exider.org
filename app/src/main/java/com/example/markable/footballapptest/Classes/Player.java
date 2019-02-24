@@ -116,6 +116,18 @@ public class Player implements Serializable, Parcelable{
         return redCard;
     }
 
+    public int getPenalty() {
+        return penalty;
+    }
+
+    public int getPenalty_out() {
+        return penalty_out;
+    }
+
+    public int getOwn_goal() {
+        return own_goal;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
