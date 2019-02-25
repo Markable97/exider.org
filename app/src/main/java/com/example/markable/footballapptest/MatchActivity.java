@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,7 +78,7 @@ public class MatchActivity extends AppCompatActivity {
 
         textViewParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-
+        textViewParams.gravity = Gravity.CENTER;
         Log.i(TAG, "onCreate: id_match" + matches.getIdMatch());
 
         new MainServerConnect().execute(String.valueOf(matches.getIdMatch()));
@@ -138,6 +138,7 @@ public class MatchActivity extends AppCompatActivity {
                     textView.setGravity(11); //выравнивание по центру
                     textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
                     textView.setText(p.getPlayerName() + "(" + p.getGoal() + ")");
+                    textView.setLayoutParams(textViewParams);
                     layout_home.addView(textView);
                     /*int cnt = p.getGoal();
                     for(int i = 1; i <= cnt; i++){
@@ -150,21 +151,23 @@ public class MatchActivity extends AppCompatActivity {
                 }
                 if(p.getYellowCard()>0){
                     TextView textView = new TextView(context);
-                    textView.setText(p.getPlayerName() + "(" + p.getYellowCard() + ")");
+                    textView.setText(p.getPlayerName());
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.yellow_card,0);
-                    layout_home.addView(textView);
-                    /*if(p.getYellowCard() == 1){//Желтые карточки
+                    textView.setLayoutParams(textViewParams);
+                    //layout_home.addView(textView);
+                    if(p.getYellowCard() == 1){//Желтые карточки
+                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.yellow_card,0);
                         layout_home.addView(textView);
                     }else{
+                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.red_yellow_card,0);
                         layout_home.addView(textView);
-                        layout_home.addView(textView);
-                    }*/
+                    }
                 }
                 if(p.getRedCard() > 0){
                     TextView textView = new TextView(context);
                     textView.setText(p.getPlayerName());
                     textView.setGravity(11); //выравнивание по центру
+                    textView.setLayoutParams(textViewParams);
                     textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.red_card,0);
                     layout_home.addView(textView);
                 }
@@ -175,28 +178,32 @@ public class MatchActivity extends AppCompatActivity {
                     TextView textView = new TextView(context);
                     textView.setText(p.getPlayerName() + "(" + p.getPenalty() +")" + "(пен.)");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
+                    textView.setLayoutParams(textViewParams);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.penalty,0);
                     layout_home.addView(textView);
                 }
                 if(p.getPenalty_out() > 0){
-                    CharSequence text = Html.fromHtml("<s>" + p.getPlayerName() + "(" + p.getPenalty_out() +")" + "</s>");
+                    //CharSequence text = Html.fromHtml("<s>" + p.getPlayerName() + "(" + p.getPenalty_out() +")" + "</s>");
                     TextView textView = new TextView(context);
-                    textView.setText(text);
+                    textView.setText(p.getPlayerName() + "(" + p.getPenalty_out() +")(пен.)");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.penalty_out,0);
+                    textView.setLayoutParams(textViewParams);
                     layout_home.addView(textView);
                 }
                 if(p.getOwn_goal() > 0){
                     TextView textView = new TextView(context);
                     textView.setText(p.getPlayerName() + "(" + p.getOwn_goal() +")(авт.)");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
+                    textView.setLayoutParams(textViewParams);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.own_goal,0);
                     layout_home.addView(textView);
                 }
             }else{//конец домашний
                 if(p.getGoal() > 0){//если есть голы у игрока
                     TextView textView = new TextView(context);
                     textView.setGravity(11); //выравнивание по центру
+                    textView.setLayoutParams(textViewParams);
                     textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
                     textView.setText(p.getPlayerName() + "(" + p.getGoal() + ")");
                     layout_guest.addView(textView);
@@ -205,12 +212,19 @@ public class MatchActivity extends AppCompatActivity {
                     TextView textView = new TextView(context);
                     textView.setText(p.getPlayerName() + "(" + p.getYellowCard() + ")");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.yellow_card,0);
-                    layout_guest.addView(textView);
+                    textView.setLayoutParams(textViewParams);
+                    if(p.getYellowCard() == 1){//Желтые карточки
+                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.yellow_card,0);
+                        layout_guest.addView(textView);
+                    }else{
+                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.red_yellow_card,0);
+                        layout_guest.addView(textView);
+                    }
                 }
                 if(p.getRedCard() > 0){
                     TextView textView = new TextView(context);
                     textView.setText(p.getPlayerName());
+                    textView.setLayoutParams(textViewParams);
                     textView.setGravity(11); //выравнивание по центру
                     textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.red_card,0);
                     layout_guest.addView(textView);
@@ -220,35 +234,40 @@ public class MatchActivity extends AppCompatActivity {
                 }
                 if(p.getPenalty() > 0){
                     TextView textView = new TextView(context);
+                    textView.setLayoutParams(textViewParams);
                     textView.setText(p.getPlayerName() + "(" + p.getPenalty() +")" + "(пен.)");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.penalty,0);
                     layout_guest.addView(textView);
                 }
                 if(p.getPenalty_out() > 0){
-                    CharSequence text = Html.fromHtml("<s>" + p.getPlayerName() + "(" + p.getPenalty_out() +")" + "</s>");
+                    //CharSequence text = Html.fromHtml("<s>" + p.getPlayerName() + "(" + p.getPenalty_out() +")" + "</s>");
                     TextView textView = new TextView(context);
-                    textView.setText(text);
+                    textView.setLayoutParams(textViewParams);
+                    textView.setText(p.getPlayerName() + "(" + p.getPenalty_out() +")(пен.)");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.penalty_out,0);
                     layout_guest.addView(textView);
                 }
                 if(p.getOwn_goal() > 0){
                     TextView textView = new TextView(context);
+                    textView.setLayoutParams(textViewParams);
                     textView.setText(p.getPlayerName() + "(" + p.getOwn_goal() +")(авт.)");
                     textView.setGravity(11); //выравнивание по центру
-                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.footbal_icon,0);
+                    textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.own_goal,0);
                     layout_guest.addView(textView);
                 }
             }//конец гостевой команды
         }//Конец перебора игроков
         if(assistHome.length() > 0){
             TextView textView = new TextView(context);
+            textView.setLayoutParams(textViewParams);
             textView.setText("Ассистенты: " + assistHome);
             layout_home.addView(textView);
         }
         if(assistGuest.length() > 0){
             TextView textView = new TextView(context);
+            textView.setLayoutParams(textViewParams);
             textView.setText("Ассистенты: " + assistGuest);
             layout_guest.addView(textView);
         }
