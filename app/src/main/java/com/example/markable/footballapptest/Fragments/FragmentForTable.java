@@ -2,6 +2,7 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -246,7 +247,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             ImageView imageView = new ImageView(getActivity());
                             imageView.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                             imageView.setLayoutParams(paramsImage);
-                            imageView.setImageBitmap(imageBitmap.get(i).getBitmapImageBig());
+                            imageView.setImageBitmap(teamPicture(newTournamentTable.get(i).getTeamName()));
                             tableRow.addView(imageView, j);
                             break;
                         case 2:
@@ -284,6 +285,15 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     }
 
 
+    private Bitmap teamPicture(String nameTeam){
+
+        for(int i = 0; i < imageBitmap.size(); i++){
+            if(nameTeam.toLowerCase().equals(imageBitmap.get(i).getNameImage())){
+                return imageBitmap.get(i).getBitmapImageBig();
+            }
+        }
+        return BitmapFactory.decodeResource(getResources(),R.drawable.not_logo);
+    }
 
     @Override
     public void onStart() {

@@ -210,24 +210,26 @@ public class MainActivity extends AppCompatActivity
                 int countFiles = in.readInt();
                 byte[] byteArrayBig;
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
-                for(int i = 0; i < countFiles; i++){
-                    String nameImageFromServer = in.readUTF();
-                    Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
+                if(countFiles > 0){
+                    for(int i = 0; i < countFiles; i++){
+                        String nameImageFromServer = in.readUTF();
+                        Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
                     /*int countBytes = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
                     byte[] byteArray = new byte[countBytes];
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     in.readFully(byteArray);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);*/
-                    int countBytesBig = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
-                    byteArrayBig = new byte[countBytesBig];
-                    in.readFully(byteArrayBig);
-                    Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,
-                            BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length) ));
+                        int countBytesBig = in.readInt();
+                        Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
+                        byteArrayBig = new byte[countBytesBig];
+                        in.readFully(byteArrayBig);
+                        Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
+                        imageArray.add(new ImageFromServer(nameImageFromServer,
+                                BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length) ));
+                    }
+                    Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
                 }
-                Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 
                 out.writeUTF("{\"messageLogic\":\"close\"}");
                 out.close();
