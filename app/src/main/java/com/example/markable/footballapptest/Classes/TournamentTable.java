@@ -1,25 +1,25 @@
 package com.example.markable.footballapptest.Classes;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
 
 public class TournamentTable implements Serializable {
     private String divisionName;
     private String teamName;
     private int games;
-    private int point;
+    private int points;
     private int wins;
     private int draws;
     private int losses;
     private int goalScored;
     private int goalConceded;
+    private int sc_con;
+    private transient String urlImage;
 
-    public TournamentTable(String division, String team, int games, int point, int wins, int draws, int losses,
+    public TournamentTable(String division, String team, int games, int points, int wins, int draws, int losses,
                            int goalScored, int goalConceded){
         setDivision(division);
         setTeam(team);
-        setPoint(point);
+        setPoint(points);
         setGames(games);
         setWins(wins);
         setDraws(draws);
@@ -46,7 +46,7 @@ public class TournamentTable implements Serializable {
         this.games = games;
     }
     private void setPoint(int point) {
-        this.point = point;
+        this.points = point;
     }
     private void setWins(int wins) {
         this.wins = wins;
@@ -76,7 +76,7 @@ public class TournamentTable implements Serializable {
     }
 
     public String getPoint() {
-        return String.valueOf(point);
+        return String.valueOf(points);
     }
 
     public String getWins() {

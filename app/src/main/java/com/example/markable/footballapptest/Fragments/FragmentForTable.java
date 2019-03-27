@@ -2,8 +2,11 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -288,11 +291,12 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     private Bitmap teamPicture(String nameTeam){
 
         for(int i = 0; i < imageBitmap.size(); i++){
-            if(nameTeam.toLowerCase().equals(imageBitmap.get(i).getNameImage())){
+            if(nameTeam.equals(imageBitmap.get(i).getNameImage())){
                 return imageBitmap.get(i).getBitmapImageBig();
             }
         }
-        return BitmapFactory.decodeResource(getResources(),R.drawable.not_logo);
+
+        return null;
     }
 
     @Override

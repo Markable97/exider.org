@@ -79,7 +79,11 @@ public class Player implements Serializable, Parcelable{
 
 
     public String getPlayerName() {
-        return playerName;
+
+        String[] str = playerName.split(" ");
+
+
+        return str[0] + " " + str[1];
     }
 
 

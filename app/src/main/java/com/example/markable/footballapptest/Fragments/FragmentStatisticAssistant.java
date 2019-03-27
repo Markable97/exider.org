@@ -97,7 +97,7 @@ public class FragmentStatisticAssistant extends Fragment {
                     textView.setGravity(Gravity.CENTER);
                     textView.setBackgroundColor(whiteColor);
                     switch (j){
-                        case 0: textView.setText(String.valueOf(numberPlayer+1)); break;
+                        case 0: textView.setText(String.valueOf(i+1)); break;
                         case 1:
                             LinearLayout linearLayout = new LinearLayout(getActivity());
                             LinearLayout.LayoutParams paramsLa = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
