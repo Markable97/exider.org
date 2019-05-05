@@ -288,14 +288,16 @@ public class MainActivity extends AppCompatActivity
         return imageArray;
     }
 
-    public void okClicked() {
-        /*Toast.makeText(getApplicationContext(), "Вы выбрали кнопку OK!",
-                Toast.LENGTH_LONG).show();*/
+    public void okClicked(String tag) {
         MyDialogFragmentChooseDateTime myDialogFragment = new MyDialogFragmentChooseDateTime();
         FragmentManager manager = getSupportFragmentManager();
         //myDialogFragment.show(manager, "dialog");
         FragmentTransaction transaction = manager.beginTransaction();
-        myDialogFragment.show(transaction, "dialog_choose");
+        if (tag.equals("dialog")){
+            myDialogFragment.show(transaction, "dialog_choose");
+        }else{
+            //вернуть что нибудь;
+        }
     }
 
     public void cancelClicked() {

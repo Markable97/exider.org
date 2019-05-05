@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatDialogFragment;
 import com.example.markable.footballapptest.MainActivity;
 
 public class MyDialogFragment extends AppCompatDialogFragment {
+
+    final String TAG_DIALOG = "dialog";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -17,7 +20,7 @@ public class MyDialogFragment extends AppCompatDialogFragment {
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((MainActivity)getActivity()).okClicked();
+                        ((MainActivity)getActivity()).okClicked(TAG_DIALOG);
                     }
                 })
                 .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
