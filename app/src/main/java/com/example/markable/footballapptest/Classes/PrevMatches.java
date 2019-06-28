@@ -21,6 +21,12 @@ public class PrevMatches implements Serializable {
         this.teamVisit = teamVisit;
     }
 
+    public PrevMatches(int idTour, String nameHome, String teamVisit){
+        this.idTour = idTour;
+        this.teamHome = nameHome;
+        this.teamVisit = teamVisit;
+    }
+
     public int getIdMatch() {
         return id_match;
     }

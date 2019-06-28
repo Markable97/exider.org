@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         new MainServerConnect().execute(dataForFragment);
-        //fragmentMain.update(dataForFragment);
+    //fragmentMain.update(dataForFragment);
 
         /*try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -160,12 +160,12 @@ public class MainActivity extends AppCompatActivity
         FragmentForTable fragForDiv = new FragmentForTable().newInstance(dataForFragment);
         fragmentTransaction.replace(R.id.container, fragForDiv).commit();*/
         item.setChecked(true);
-        setTitle(item.getTitle());
+    setTitle(item.getTitle());
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+}
 
     public class MainServerConnect extends AsyncTask<String, Void, String>{
 
