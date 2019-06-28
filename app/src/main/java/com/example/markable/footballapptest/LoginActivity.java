@@ -2,6 +2,7 @@ package com.example.markable.footballapptest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,9 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.markable.footballapptest.Classes.MessageRegister;
+import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.google.gson.Gson;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String TAG = LoginActivity.class.getSimpleName();
+    private final String IP = "192.168.0.106";
     private Button btnLogin;
     private Button btnLinkToRegister;
     private EditText inputEmail;
@@ -36,14 +47,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             case R.id.btnLogin:
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+                MessageToJson message = new MessageToJson("login", new MessageRegister(email, password));
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
                     // login user
                     //checkLogin(email, password);
                     //Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
-                    startActivity(i);
-                    finish();
+                    /*Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
+                    startActivity(i);*/
+                    new MainServerConnect().execute(message);
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -58,6 +70,52 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 break;
         }
     }
+
+    public class MainServerConnect extends AsyncTask<MessageToJson, Void, String> {
+        String response;
+        MessageToJson messageToJson;
+        @Override
+        protected String doInBackground(MessageToJson... messageToJsons) {
+            for (MessageToJson message : messageToJsons){
+                messageToJson = message;
+            }
+            Socket socket;
+            Gson gson = new Gson();
+            try {
+                socket = new Socket(IP, 55555);
+
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                String json = gson.toJson(messageToJson);
+                out.writeUTF(json);
+                response = in.readUTF();
+                out.writeUTF("{\"messageLogic\":\"close\"}");
+                out.close();
+                in.close();
+                //inResultsPrev.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (response.equals("Password successfull")){
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                finish();
+            }else{
+                Toast.makeText(getApplicationContext(),
+                        "Неверный логин и пароль!", Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

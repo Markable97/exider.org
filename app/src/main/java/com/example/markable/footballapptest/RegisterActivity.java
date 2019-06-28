@@ -2,6 +2,7 @@ package com.example.markable.footballapptest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,9 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.markable.footballapptest.Classes.MessageRegister;
+import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.google.gson.Gson;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+
 public class RegisterActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
+    final String IP = "192.168.0.106";
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
@@ -42,13 +53,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 String name = inputFullName.getText().toString().trim();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-
-                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                String team = inputTeamName.getText().toString().trim();
+                MessageRegister register = new MessageRegister(name, email, team, password);
+                MessageToJson message = new MessageToJson("register", register);
+                if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !team.isEmpty()) {
                     //registerUser(name, email, password);
-                    Intent i = new Intent(getApplicationContext(),
-                            LoginActivity.class);
-                    startActivity(i);
-                    finish();
+                    new MainServerConnect().execute(message);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Заполните поля!", Toast.LENGTH_LONG)
@@ -61,6 +71,49 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 startActivity(i);
                 finish();
                 break;
+        }
+    }
+
+    public class MainServerConnect extends AsyncTask {
+        MessageToJson message;
+        String response;
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            message = (MessageToJson) objects[0];
+            Socket socket;
+            Gson gson = new Gson();
+            try {
+                socket = new Socket(IP, 55555);
+
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                String json = gson.toJson(message);
+                out.writeUTF(json);
+                response = in.readUTF();
+                out.writeUTF("{\"messageLogic\":\"close\"}");
+                out.close();
+                in.close();
+                //inResultsPrev.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            if (response.equals("Все нормасно")){
+                Toast.makeText(getApplicationContext(), "Введите логин и пароль", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getApplicationContext(),
+                        LoginActivity.class);
+                startActivity(i);
+                finish();
+            }else{
+                Toast.makeText(getApplicationContext(), "Неудача попробуйте снова!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
