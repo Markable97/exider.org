@@ -16,4 +16,23 @@
     <string name="descriptionTAble">И - игры, З - забито, П - пропущено, О - очки</string>
     <string name="state_player">Статистика игркоов</string>
     <string name="all_matches">Все матчи</string>>
+
+    <string name="name_organization">Любительская футбольная лига</string>
+    <string name="name_division">Зона Восток</string>
+
+    <string name="btn_sent_result">Отправить</string>>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Пароль</string>
+    <string name="hint_name">Имя</string>
+    <string name="btn_login">Войти</string>
+    <string name="btn_register">Зарегистрироваться</string>
+    <string name="btn_link_to_register">Регистрация</string>
+    <string name="btn_link_to_login">Уже есть аккаунт</string>
+    <string name="welcome">Welcome</string>
+    <string name="btn_logout">LOGOUT</string>
+    <string name="name">Fullname</string>
+    <string name="hint_teamName">Команда</string>
+
+
 </resources>

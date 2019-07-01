@@ -51,8 +51,8 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, int position) {
-        final PrevMatches match = list.get(position);
+    public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, final int position) {
+        PrevMatches match = list.get(position);
 
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         for(int i = 0; i < list.size(); i++){
@@ -70,19 +70,24 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         holder.goalTeamVisit.setText(String.valueOf(match.getGoalVisit()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                PrevMatches matches = list.get(position);
                 Intent intent = new Intent(context, MatchActivity.class);
+                Log.i(TAG, "onClick: Картинки" + listImage.size());
                 for(int i = 0; i < listImage.size(); i++){
-                    if(match.getTeamHome().equals(listImage.get(i).getNameImage())){
+                    if(matches.getTeamHome().equalsIgnoreCase(listImage.get(i).getNameImage())){
+                        Log.i(TAG, "onClick: Зашел в If для дома");
                         imageHome = listImage.get(i);
                     }
-                    if(match.getTeamVisit().equals(listImage.get(i).getNameImage())){
+                    if(matches.getTeamVisit().equalsIgnoreCase(listImage.get(i).getNameImage())){
+                        Log.i(TAG, "onClick: Зашел в If для гостей");
                         imageVisit = listImage.get(i);
                     }
                 }
                 Log.i(TAG, "onClick: " + imageHome.getNameImage() + imageVisit.getNameImage());
-                intent.putExtra("information", match);
+                intent.putExtra("information", matches);
                 intent.putExtra("imageHome", (Parcelable) imageHome);
                 intent.putExtra("imageVisit", (Parcelable) imageVisit);
                 context.startActivity(intent);

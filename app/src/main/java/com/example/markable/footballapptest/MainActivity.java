@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentMain;
+import com.example.markable.footballapptest.Fragments.MyDialogFragment;
+import com.example.markable.footballapptest.Fragments.MyDialogFragmentChooseDateTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 
     boolean flag = false;
     //final String IP = "10.0.2.2";
-    final String IP = "192.168.0.103";
+    final String IP = "192.168.0.106";
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
@@ -58,8 +62,13 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Отправка заявки на игру", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                MyDialogFragment myDialogFragment = new MyDialogFragment();
+                FragmentManager manager = getSupportFragmentManager();
+                //myDialogFragment.show(manager, "dialog");
+                FragmentTransaction transaction = manager.beginTransaction();
+                myDialogFragment.show(transaction, "dialog");
             }
         });
 
@@ -137,7 +146,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         new MainServerConnect().execute(dataForFragment);
-        //fragmentMain.update(dataForFragment);
+    //fragmentMain.update(dataForFragment);
 
         /*try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -151,12 +160,12 @@ public class MainActivity extends AppCompatActivity
         FragmentForTable fragForDiv = new FragmentForTable().newInstance(dataForFragment);
         fragmentTransaction.replace(R.id.container, fragForDiv).commit();*/
         item.setChecked(true);
-        setTitle(item.getTitle());
+    setTitle(item.getTitle());
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+}
 
     public class MainServerConnect extends AsyncTask<String, Void, String>{
 
@@ -210,24 +219,26 @@ public class MainActivity extends AppCompatActivity
                 int countFiles = in.readInt();
                 byte[] byteArrayBig;
                 Log.i(TAG, "doInBackground ServerTest: Кол-во файлов " + countFiles);
-                for(int i = 0; i < countFiles; i++){
-                    String nameImageFromServer = in.readUTF();
-                    Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
+                if(countFiles > 0){
+                    for(int i = 0; i < countFiles; i++){
+                        String nameImageFromServer = in.readUTF();
+                        Log.i(TAG, "doInBackground: название картинки = " + nameImageFromServer);
                     /*int countBytes = in.readInt();
                     Log.i(TAG, "doInBackground: кол-во байтов = " + countBytes );
                     byte[] byteArray = new byte[countBytes];
                     //int countFromServer = in.read(byteArray, 0, countBytes);
                     in.readFully(byteArray);
                     Log.i(TAG, "doInBackground: размер массива байтов " + byteArray.length);*/
-                    int countBytesBig = in.readInt();
-                    Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
-                    byteArrayBig = new byte[countBytesBig];
-                    in.readFully(byteArrayBig);
-                    Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
-                    imageArray.add(new ImageFromServer(nameImageFromServer,
-                            BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length) ));
+                        int countBytesBig = in.readInt();
+                        Log.i(TAG, "doInBackground: кол-во байтов большой картинки" + countBytesBig);
+                        byteArrayBig = new byte[countBytesBig];
+                        in.readFully(byteArrayBig);
+                        Log.i(TAG, "doInBackground: размер массива большой картинки байтов " + byteArrayBig.length);
+                        imageArray.add(new ImageFromServer(nameImageFromServer,
+                                BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length) ));
+                    }
+                    Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
                 }
-                Log.i(TAG, "doInBackground: ImageFromServer = " + imageArray.size());
 
                 out.writeUTF("{\"messageLogic\":\"close\"}");
                 out.close();
@@ -275,6 +286,23 @@ public class MainActivity extends AppCompatActivity
 
     public ArrayList<ImageFromServer> getImageArray() {
         return imageArray;
+    }
+
+    public void okClicked(String tag) {
+        MyDialogFragmentChooseDateTime myDialogFragment = new MyDialogFragmentChooseDateTime();
+        FragmentManager manager = getSupportFragmentManager();
+        //myDialogFragment.show(manager, "dialog");
+        FragmentTransaction transaction = manager.beginTransaction();
+        if (tag.equals("dialog")){
+            myDialogFragment.show(transaction, "dialog_choose");
+        }else{
+            //вернуть что нибудь;
+        }
+    }
+
+    public void cancelClicked() {
+        Toast.makeText(getApplicationContext(), "Вы выбрали кнопку отмены!",
+                Toast.LENGTH_LONG).show();
     }
 
     @Override
