@@ -58,6 +58,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 MessageToJson message = new MessageToJson("register", register);
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !team.isEmpty()) {
                     //registerUser(name, email, password);
+                    MessageToJson connection = new MainServerConnect().message;
+                    if (connection == null){
+                        Toast.makeText(getApplicationContext(),
+                                "Нет соединения с интернетом", Toast.LENGTH_LONG)
+                                .show();
+                    }
                     new MainServerConnect().execute(message);
                 } else {
                     Toast.makeText(getApplicationContext(),
@@ -74,6 +80,19 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         }
     }
 
+
+    public boolean isConecctedToInternet() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
+    }
+
     public class MainServerConnect extends AsyncTask {
         MessageToJson message;
         String response;
@@ -85,6 +104,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             Gson gson = new Gson();
             try {
                 socket = new Socket(IP, 55555);
+                boolean internetconnect = isConecctedToInternet();
+                if(internetconnect == false){
+                    return null;
+                }
 
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
