@@ -65,7 +65,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                                 "Нет соединения с интернетом", Toast.LENGTH_LONG)
                                 .show();
                     }
-                    new MainServerConnect().execute(message);
+                    else {
+                    new MainServerConnect().execute(message);}
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Заполните поля!", Toast.LENGTH_LONG)

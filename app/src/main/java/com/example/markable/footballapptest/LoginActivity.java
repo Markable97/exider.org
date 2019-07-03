@@ -62,7 +62,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                                 "Нет соединения с интернетом", Toast.LENGTH_LONG)
                                 .show();
                     }
-                    new MainServerConnect().execute(message);
+                    else{
+                    new MainServerConnect().execute(message);}
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
