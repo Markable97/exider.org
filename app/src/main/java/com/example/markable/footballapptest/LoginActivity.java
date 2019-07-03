@@ -74,13 +74,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public class MainServerConnect extends AsyncTask<MessageToJson, Void, String> {
         String response;
         MessageToJson messageToJson;
+        Gson gson = new Gson();
         @Override
         protected String doInBackground(MessageToJson... messageToJsons) {
             for (MessageToJson message : messageToJsons){
                 messageToJson = message;
             }
             Socket socket;
-            Gson gson = new Gson();
+
             try {
                 socket = new Socket(IP, 55555);
 
@@ -104,13 +105,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (response.equals("Password successfull")){
+            MessageToJson response = gson.fromJson(this.response,MessageToJson.class);
+            if (response.getResponseFromServer().equals("Password successfull")){
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 finish();
             }else{
                 Toast.makeText(getApplicationContext(),
-                        "Неверный логин и пароль!", Toast.LENGTH_LONG)
+                        "Неверный логин и пароль! " + response.getResponseFromServer(), Toast.LENGTH_LONG)
                         .show();
             }
         }
