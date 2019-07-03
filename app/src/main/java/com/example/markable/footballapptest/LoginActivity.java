@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.example.markable.footballapptest.Classes.TestConnection;
 import com.google.gson.Gson;
 
 import java.io.DataInputStream;
@@ -55,6 +56,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     //Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     /*Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
                     startActivity(i);*/
+                    boolean connection = new TestConnection().isConecctedToInternet();
+                    if (connection == false){
+                        Toast.makeText(getApplicationContext(),
+                                "Нет соединения с интернетом", Toast.LENGTH_LONG)
+                                .show();
+                    }
                     new MainServerConnect().execute(message);
                 } else {
                     // Prompt user to enter credentials
