@@ -11,17 +11,19 @@ import java.util.HashMap;
 
 public class SessionManager {
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    public SharedPreferences pref;
+    public SharedPreferences.Editor editor;
     Context context;
     int PRIVATE_MODE = 0;
-    private static final String PREF_NAME = "AndroidUserPref";
+    public static final String PREF_NAME = "AndroidUserPref";
     private static final String KEY_LOGIN = "loggedIN";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
 
     public SessionManager(Context context) {
         this.context = context;
+        pref = this.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        editor = pref.edit();
     }
    //Создание настроек
     public void createSetting(String email, String password){
@@ -32,11 +34,11 @@ public class SessionManager {
     }
     //проверяем залогинился ли пользователь
     public boolean checkLogin(){
-        Intent intent;
         if(!this.isLoggedIn()){
             Toast.makeText(this.context,"Необходимо войти", Toast.LENGTH_LONG).show();
             return isLoggedIn();
         }else{
+            Toast.makeText(this.context,"Пользователь уже зашел. Email = " + emailSetting(), Toast.LENGTH_LONG).show();
             return isLoggedIn();
         }
     }
@@ -67,5 +69,8 @@ public class SessionManager {
     //Вытаскивания ключа входа
     public boolean isLoggedIn(){
         return pref.getBoolean(KEY_LOGIN, false);
+    }
+    public String emailSetting(){
+        return pref.getString(KEY_EMAIL, "Пусто");
     }
 }

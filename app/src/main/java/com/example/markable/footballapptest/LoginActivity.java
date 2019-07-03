@@ -1,7 +1,9 @@
 package com.example.markable.footballapptest;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +14,14 @@ import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.example.markable.footballapptest.Classes.SessionManager;
 import com.google.gson.Gson;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.HashMap;
 
 
 public class LoginActivity extends Activity implements View.OnClickListener{
@@ -27,18 +31,34 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private Button btnLinkToRegister;
     private EditText inputEmail;
     private EditText inputPassword;
+    SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        session = new SessionManager(getApplicationContext());
+        /*boolean hasVisited = session.pref.getBoolean("hasVisited", false);
+        if (!hasVisited) {
+            session.editor.putBoolean("hasVisited", true);
+            session.editor.commit();
+        }else {
+        }*/
+        if (session.checkLogin()){
+            HashMap<String, String> user_info = session.getUserDetails();
+            MessageToJson message = new MessageToJson("login",
+                    new MessageRegister(user_info.get(session.KEY_EMAIL),
+                            user_info.get(session.KEY_PASSWORD)));
+            new MainServerConnect().execute(message);
+        }else{
+            inputEmail = (EditText) findViewById(R.id.email);
+            inputPassword = (EditText) findViewById(R.id.password);
+            btnLogin = (Button) findViewById(R.id.btnLogin);
+            btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+            btnLogin.setOnClickListener(this);
+            btnLinkToRegister.setOnClickListener(this);
+        }
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-        btnLogin.setOnClickListener(this);
-        btnLinkToRegister.setOnClickListener(this);
     }
 
     @Override
@@ -55,6 +75,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     //Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     /*Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
                     startActivity(i);*/
+                    session.createSetting(email,password);
                     new MainServerConnect().execute(message);
                 } else {
                     // Prompt user to enter credentials
