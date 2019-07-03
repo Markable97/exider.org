@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TestConnection;
 import com.google.gson.Gson;
 
@@ -23,7 +24,7 @@ import java.net.Socket;
 public class RegisterActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    final String IP = "192.168.0.106";
+    final String IP = new PublicConstants().getIP();
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;

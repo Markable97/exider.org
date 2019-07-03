@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentMain;
 import com.example.markable.footballapptest.Fragments.MyDialogFragment;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity
 
     boolean flag = false;
     //final String IP = "10.0.2.2";
-    final String IP = "192.168.0.106";
+    final String IP = new PublicConstants().getIP();
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
