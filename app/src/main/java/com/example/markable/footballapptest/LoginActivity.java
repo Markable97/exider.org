@@ -26,7 +26,8 @@ import java.util.HashMap;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private final String IP = "192.168.0.106";
+    //private final String IP = "192.168.0.106";
+    final String IP = "10.0.2.2";
     private Button btnLogin;
     private Button btnLinkToRegister;
     private EditText inputEmail;
