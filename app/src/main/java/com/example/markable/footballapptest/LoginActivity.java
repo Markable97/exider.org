@@ -62,7 +62,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         }
 
     }
-    //Изменения Марка
+
+//new test
     @Override
     public void onClick(View v) {
         switch (v.getId()){
