@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.example.markable.footballapptest.Classes.PublicConstants;
+import com.example.markable.footballapptest.Classes.TestConnection;
 import com.google.gson.Gson;
 
 import java.io.DataInputStream;
@@ -22,7 +24,7 @@ import java.net.Socket;
 public class RegisterActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    final String IP = "192.168.0.106";
+    final String IP = PublicConstants.IP;
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
@@ -58,7 +60,21 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 MessageToJson message = new MessageToJson("register", register);
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !team.isEmpty()) {
                     //registerUser(name, email, password);
-                    new MainServerConnect().execute(message);
+                    boolean connection = new TestConnection().isConecctedToInternet();
+                    if (connection == false){
+                        Toast.makeText(getApplicationContext(),
+                                "Нет соединения с интернетом", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    else {
+                    boolean connectPort = new TestConnection().isPortOpen(PublicConstants.IP,PublicConstants.port);
+                    if(connectPort== false){
+                        Toast.makeText(getApplicationContext(),
+                                "Нет соединения с сервером", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    else{
+                    new MainServerConnect().execute(message);}}
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Заполните поля!", Toast.LENGTH_LONG)
@@ -74,6 +90,8 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         }
     }
 
+
+
     public class MainServerConnect extends AsyncTask {
         MessageToJson message;
         String response;
@@ -84,8 +102,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(IP, 55555);
-
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 String json = gson.toJson(message);

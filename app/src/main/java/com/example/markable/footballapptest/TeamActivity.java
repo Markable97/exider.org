@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamMatches;
 import com.example.markable.footballapptest.Fragments.FragmentForTeamStatistic;
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ReturnFromFragForAct {
 
-    final String IP = "192.168.0.106";
+    final String IP = PublicConstants.IP;
 
     private static final String TAG = "TeamAcrivity";
 
@@ -120,7 +121,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
             try {
                 query = "{\"messageLogic\":\""+ logic +"\",\"id_team\":\""+ teamName + "\"}";
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 //загрузка статистики

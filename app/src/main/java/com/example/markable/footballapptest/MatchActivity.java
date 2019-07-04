@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 public class MatchActivity extends AppCompatActivity {
 
     //final String IP = "10.0.2.2";
-    final String IP = "192.168.0.106";
+    final String IP = PublicConstants.IP;
 
     private static final String TAG = "MatchAcrivity";
 
@@ -101,7 +102,7 @@ public class MatchActivity extends AppCompatActivity {
             Gson gson = new Gson();
 
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
