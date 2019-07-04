@@ -79,7 +79,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(getApplicationContext(),
                             "Заполните поля!", Toast.LENGTH_LONG)
                             .show();
-                }
+                }// mark loh
                 break;
             case R.id.btnLinkToLoginScreen:
                 Intent i = new Intent(getApplicationContext(),
