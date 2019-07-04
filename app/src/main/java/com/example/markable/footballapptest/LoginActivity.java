@@ -62,7 +62,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         }
 
     }
-
+//new test
     @Override
     public void onClick(View v) {
         switch (v.getId()){
