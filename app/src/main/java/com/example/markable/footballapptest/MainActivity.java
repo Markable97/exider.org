@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.SessionManager;
 import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentMain;
@@ -112,7 +113,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_clear) {
+            Toast.makeText(getApplicationContext(),"Нажата кнопка сброса", Toast.LENGTH_SHORT).show();
+            SessionManager session = new SessionManager(getApplicationContext());
+            session.logoutUser();
             return true;
         }
 
