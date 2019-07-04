@@ -24,7 +24,7 @@ import java.net.Socket;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private final String IP = new PublicConstants().getIP();
+    private final String IP = PublicConstants.IP;
     private Button btnLogin;
     private Button btnLinkToRegister;
     private EditText inputEmail;
@@ -63,8 +63,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                                 "Нет соединения с интернетом", Toast.LENGTH_LONG)
                                 .show();
                     }
-                    else{
-                    new MainServerConnect().execute(message);}
+                    else{boolean connectPort = new TestConnection().isPortOpen(PublicConstants.IP,PublicConstants.port);
+                        if(connectPort== false){
+                            Toast.makeText(getApplicationContext(),
+                                    "Нет соединения с сервером", Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                        else{
+                            new MainServerConnect().execute(message);}}
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -91,7 +97,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
 
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());

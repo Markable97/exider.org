@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class MatchActivity extends AppCompatActivity {
 
     //final String IP = "10.0.2.2";
-    final String IP = new PublicConstants().getIP();
+    final String IP = PublicConstants.IP;
 
     private static final String TAG = "MatchAcrivity";
 
@@ -102,7 +102,7 @@ public class MatchActivity extends AppCompatActivity {
             Gson gson = new Gson();
 
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 

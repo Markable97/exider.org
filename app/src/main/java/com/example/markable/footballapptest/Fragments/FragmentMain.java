@@ -17,6 +17,7 @@ import com.example.markable.footballapptest.Adapters.SampleFragmentPageAdapter;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
@@ -34,8 +35,6 @@ public class FragmentMain extends Fragment {
     private static final String TAG = "FragMain";
 
     View view;
-
-    final String IP = "192.168.0.105";
 
     private ArrayList<ImageFromServer> imageArray = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
@@ -115,7 +114,7 @@ public class FragmentMain extends Fragment {
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(PublicConstants.IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());

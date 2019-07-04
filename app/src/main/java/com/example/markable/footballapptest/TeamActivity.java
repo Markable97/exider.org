@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ReturnFromFragForAct {
 
-    final String IP = new PublicConstants().getIP();
+    final String IP = PublicConstants.IP;
 
     private static final String TAG = "TeamAcrivity";
 
@@ -121,7 +121,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
             try {
                 query = "{\"messageLogic\":\""+ logic +"\",\"id_team\":\""+ teamName + "\"}";
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 //загрузка статистики

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
 
     boolean flag = false;
     //final String IP = "10.0.2.2";
-    final String IP = new PublicConstants().getIP();
+    final String IP = PublicConstants.IP;
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
