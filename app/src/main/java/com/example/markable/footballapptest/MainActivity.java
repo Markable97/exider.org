@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
+import com.example.markable.footballapptest.Classes.SessionManager;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentMain;
 import com.example.markable.footballapptest.Fragments.MyDialogFragment;
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean flag = false;
-    //final String IP = "10.0.2.2";
-    final String IP = "192.168.0.106";
+    final String IP = "10.0.2.2";
+    //final String IP = "192.168.0.106";
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
@@ -111,7 +112,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_clear) {
+            Toast.makeText(getApplicationContext(),"Нажата кнопка сброса", Toast.LENGTH_SHORT).show();
+            SessionManager session = new SessionManager(getApplicationContext());
+            session.logoutUser();
             return true;
         }
 
