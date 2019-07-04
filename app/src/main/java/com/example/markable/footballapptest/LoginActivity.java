@@ -62,6 +62,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         }
 
     }
+
 //new test
     @Override
     public void onClick(View v) {
@@ -91,7 +92,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         }
                         else{
                         	session.createSetting(email,password);
-                            new MainServerConnect().execute(message);}}
+                            new MainServerConnect().execute(message);
+                        }
+                    }
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
