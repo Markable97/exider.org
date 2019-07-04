@@ -72,7 +72,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                         Toast.makeText(getApplicationContext(),
                                 "Нет соединения с сервером", Toast.LENGTH_LONG)
                                 .show();
-                    }//add commit
+                    }
                     else{
                     new MainServerConnect().execute(message);}}
                 } else {
