@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.example.markable.footballapptest.Classes.PublicConstants;
+import com.example.markable.footballapptest.Classes.TestConnection;
 import com.example.markable.footballapptest.Classes.SessionManager;
 import com.google.gson.Gson;
 
@@ -26,8 +28,7 @@ import java.util.HashMap;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String TAG = LoginActivity.class.getSimpleName();
-    //private final String IP = "192.168.0.106";
-    final String IP = "10.0.2.2";
+    private final String IP = PublicConstants.IP;
     private Button btnLogin;
     private Button btnLinkToRegister;
     private EditText inputEmail;
@@ -76,8 +77,21 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     //Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     /*Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
                     startActivity(i);*/
-                    session.createSetting(email,password);
-                    new MainServerConnect().execute(message);
+                    boolean connection = new TestConnection().isConecctedToInternet();
+                    if (connection == false){
+                        Toast.makeText(getApplicationContext(),
+                                "Нет соединения с интернетом", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    else{boolean connectPort = new TestConnection().isPortOpen(PublicConstants.IP,PublicConstants.port);
+                        if(connectPort== false){
+                            Toast.makeText(getApplicationContext(),
+                                    "Нет соединения с сервером", Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                        else{
+                        	session.createSetting(email,password);
+                            new MainServerConnect().execute(message);}}
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -103,9 +117,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 messageToJson = message;
             }
             Socket socket;
-
+            Gson gson = new Gson();
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
 
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());

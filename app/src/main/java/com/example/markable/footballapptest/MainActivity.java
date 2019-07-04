@@ -23,6 +23,7 @@ import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.SessionManager;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.Fragments.FragmentMain;
 import com.example.markable.footballapptest.Fragments.MyDialogFragment;
@@ -40,8 +41,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean flag = false;
-    final String IP = "10.0.2.2";
-    //final String IP = "192.168.0.106";
+    //final String IP = "10.0.2.2";
+    final String IP = PublicConstants.IP;
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity
             Socket socket;
             Gson gson = new Gson();
             try {
-                socket = new Socket(IP, 55555);
+                socket = new Socket(IP, PublicConstants.port);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 //DataInputStream inResultsPrev = new DataInputStream((socket.getInputStream()));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
