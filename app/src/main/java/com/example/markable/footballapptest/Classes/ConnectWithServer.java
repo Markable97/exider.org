@@ -5,7 +5,10 @@ import android.util.Log;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.sql.Struct;
 
 public class ConnectWithServer {
@@ -30,10 +33,16 @@ public class ConnectWithServer {
             /*
              Создаем новый сокет. Указываем на каком компютере и порту запущен наш процесс,
                           который будет принамать наше соединение.         */
-            socket = new Socket(IP, PORT);
-            Log.v(TAG,  "Сокет создан");
+            SocketAddress address = new InetSocketAddress(IP, PORT);
+            socket = new Socket();
+            socket.connect(address, 5000);
+            Log.i(TAG,  "Сокет создан");
+        } catch (SocketTimeoutException ex){
+            Log.i(TAG, "Закончено время");
+            socket = null;
+            throw new Exception("Невозможно создать сокет: "+ex.getMessage());
         } catch (IOException e) {
-            Log.v(TAG,  "Сокет закрыт");
+            Log.i(TAG,  "Сокет закрыт");
             socket = null;
             throw new Exception("Невозможно создать сокет: "+e.getMessage());
         }
@@ -41,18 +50,18 @@ public class ConnectWithServer {
 
     public void onlySendDate(String message) throws Exception {
         if (socket == null||socket.isClosed() ){
-            Log.v(TAG, "Невозмоэно отправить данные \n" );
+            Log.i(TAG, "Невозмоэно отправить данные \n" );
             throw new Exception("Невозможно отправить данные. Сокет не создан или закрыт");
         }
         DataOutputStream out = null;
         try{
             out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF(message);
-            Log.v(TAG,  "Данные отправлены \n" + message);
+            Log.i(TAG,  "Данные отправлены \n" + message);
             /**Закрытие сокета**/
             closeConnection();
         }catch (IOException e){
-            Log.v(TAG, "Невозможно отправить данные");
+            Log.i(TAG, "Невозможно отправить данные");
             out.close();
             throw new Exception("Невозможно отправить данные");
         }
@@ -70,12 +79,14 @@ public class ConnectWithServer {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             String response = in.readUTF();
             Log.v(TAG,  "Данные от сервера \n" + response);
+            closeConnection();
+            return response;
 
         }catch (IOException e){
             Log.v(TAG, "Невозможно отправить данные");
             throw new Exception("Невозможно отправить данные");
         }
-        return null;
+
     }
 
     /**  * Метод для закрытия сокета, по которому мы общались.  */
