@@ -1,9 +1,7 @@
 package com.example.markable.footballapptest;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.PublicConstants;
@@ -34,6 +33,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private EditText inputEmail;
     private EditText inputPassword;
     SessionManager session;
+    ConnectWithServer connect;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,14 +62,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         }
 
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnLogin:
+                connect = new ConnectWithServer();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                MessageToJson message = new MessageToJson("login", new MessageRegister(email, password));
+                final MessageToJson message = new MessageToJson("login", new MessageRegister(email, password));
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
                     // login user
@@ -78,20 +78,27 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     /*Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
                     startActivity(i);*/
                     boolean connection = new TestConnection().isConecctedToInternet();
-                    if (connection == false){
+                    if (!connection == false){
                         Toast.makeText(getApplicationContext(),
                                 "Нет соединения с интернетом", Toast.LENGTH_LONG)
                                 .show();
                     }
-                    else{boolean connectPort = new TestConnection().isPortOpen(PublicConstants.IP,PublicConstants.port);
-                        if(connectPort== false){
-                            Toast.makeText(getApplicationContext(),
-                                    "Нет соединения с сервером", Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                        else{
-                        	session.createSetting(email,password);
-                            new MainServerConnect().execute(message);}}
+                    else{
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    connect.openConnection();
+                                    connect.onlySendDate(new Gson().toJson(message));
+                                    Log.v(TAG,  "Данные успешно ушли. Закрытие********");
+                                }catch (Exception e){
+                                    Log.v(TAG, "ERROR \n" + e.getMessage());
+                                    connect = null;
+                                    Toast.makeText(getApplicationContext(), "Ошибка доступа к серверу", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }).start();
+                    }
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
