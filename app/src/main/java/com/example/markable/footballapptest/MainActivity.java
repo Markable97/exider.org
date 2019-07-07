@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(),"Нажата кнопка сброса", Toast.LENGTH_SHORT).show();
             SessionManager session = new SessionManager(getApplicationContext());
             session.logoutUser();
+            finish();
             return true;
         }
 
