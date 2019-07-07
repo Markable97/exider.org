@@ -1,9 +1,7 @@
 package com.example.markable.footballapptest;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,14 +15,9 @@ import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.PublicConstants;
-import com.example.markable.footballapptest.Classes.TestConnection;
 import com.example.markable.footballapptest.Classes.SessionManager;
 import com.google.gson.Gson;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.HashMap;
 
 
@@ -43,12 +36,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         session = new SessionManager(getApplicationContext());
-        /*boolean hasVisited = session.pref.getBoolean("hasVisited", false);
-        if (!hasVisited) {
-            session.editor.putBoolean("hasVisited", true);
-            session.editor.commit();
-        }else {
-        }*/
         if (session.checkLogin()){
             HashMap<String, String> user_info = session.getUserDetails();
             String mEmail = user_info.get(session.KEY_EMAIL);
@@ -56,7 +43,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             MessageToJson message = new MessageToJson("login",
                     new MessageRegister(mEmail,
                            mPassword));
-            Thread thread = new Thread(new ThreadRequest(getApplicationContext(),mEmail, mPassword, message));
+            Thread thread = new Thread(new ThreadLogin(mEmail, mPassword, message));
             thread.start();
         }
         inputEmail = (EditText) findViewById(R.id.email);
@@ -95,15 +82,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 Log.i(TAG, "Нажата кнопка btnLogin");
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                MessageToJson message = new MessageToJson("login", new MessageRegister(email, password));
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
-                    // login user
-                    //checkLogin(email, password);
-                    //Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    /*Intent i = new Intent(getApplicationContext(), AddResultsActivity.class);
-                    startActivity(i);*/
-                    Thread thread = new Thread(new ThreadRequest(getApplicationContext(),email, password, message));
+                    MessageToJson message = new MessageToJson("login", new MessageRegister(email, password));
+                    Thread thread = new Thread(new ThreadLogin(email, password, message));
                     thread.start();
                     btnLogin.setEnabled(false);
                 } else {
@@ -121,19 +103,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    class ThreadRequest implements Runnable{
+    class ThreadLogin implements Runnable{
 
-        Context context;
+
         MessageToJson message;
         String email;
         String password;
         ConnectWithServer connect = new ConnectWithServer();
 
-        public ThreadRequest(Context context, String email, String password, MessageToJson message) {
+        public ThreadLogin(String email, String password, MessageToJson message) {
             this.email = email;
             this.password = password;
             this.message = message;
-            this.context = context;
+
         }
 
         @Override
@@ -151,17 +133,18 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     @Override
                     public void run() {
                         if(response.getResponseFromServer().equals("Password successfull")){
-                            if(!session.checkLogin()){
+                            if(!session.isLoggedIn()){
                                 session.createSetting(email,password);
                                 Log.i(TAG, "Пароль подошел! Сохраняем в настрйоки email = " +email+" password = " + password);
                             }else{
                                 Log.i(TAG, "Пароль подошел");
                             }
-
-                            handler.sendMessage(getMessageFromString("success","msg"));
+                            //Отправка в GUI поток
+                            handler.sendMessage(PublicConstants.getMessage("success","msg"));
                         }
                         else {
-                            handler.sendMessage(getMessageFromString("not_success","msg"));
+                            //Отправка в GUI поток
+                            handler.sendMessage(PublicConstants.getMessage("not_success","msg"));
                         }
                     }
                 });
@@ -170,20 +153,11 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             }catch (Exception e){
                 Log.i(TAG, "ERROR \n" + e.getMessage());
                 connect = null;
-                handler.sendMessage(getMessageFromString("bad","msg"));
+                handler.sendMessage(PublicConstants.getMessage("bad","msg"));
             }
         }
-
-        public Message getMessageFromString(String str, String key) {
-            Bundle messageBundle = new Bundle();
-            messageBundle.putString(key, str);
-
-            Message message = new Message();
-            message.setData(messageBundle);
-            return message;
-        }
     }
-    Ы
+
 
     @Override
     protected void onStart() {

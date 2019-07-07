@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageRegister;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.PublicConstants;
@@ -31,7 +34,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private EditText inputTeamName;
     private EditText inputEmail;
     private EditText inputPassword;
-
+    Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,28 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
         btnRegister.setOnClickListener(this);
         btnLinkToLogin.setOnClickListener(this);
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                String msgHandler = msg.getData().getString("msg");
+                if(msgHandler.equals("bad")){
+                    Log.i(TAG, msgHandler);
+                    Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу",
+                            Toast.LENGTH_SHORT).show();
+                    btnRegister.setEnabled(true);
+                }else if(msgHandler.equals("success")){
+                    Log.i(TAG, msgHandler);
+                    Toast.makeText(getApplicationContext(), "Введите логин и пароль", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Log.i(TAG, msgHandler + " Что-то пощло не так");
+                    btnRegister.setEnabled(true);
+                    Toast.makeText(getApplicationContext(), "Что-то пошло не так попробуйте снова ", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
     }
 
     @Override
@@ -56,25 +81,12 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 String team = inputTeamName.getText().toString().trim();
-                MessageRegister register = new MessageRegister(name, email, team, password);
-                MessageToJson message = new MessageToJson("register", register);
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty() && !team.isEmpty()) {
-                    //registerUser(name, email, password);
-                    boolean connection = new TestConnection().isConecctedToInternet();
-                    if (connection == false){
-                        Toast.makeText(getApplicationContext(),
-                                "Нет соединения с интернетом", Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    else {
-                    boolean connectPort = new TestConnection().isPortOpen(PublicConstants.IP,PublicConstants.port);
-                    if(connectPort== false){
-                        Toast.makeText(getApplicationContext(),
-                                "Нет соединения с сервером", Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    else{
-                    new MainServerConnect().execute(message);}}
+                    MessageRegister register = new MessageRegister(name, email, team, password);
+                    MessageToJson message = new MessageToJson("register", register);
+                    Thread thread = new Thread(new ThreadRegister(message));
+                    thread.start();
+                    btnRegister.setEnabled(false);
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Заполните поля!", Toast.LENGTH_LONG)
@@ -90,49 +102,44 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    class ThreadRegister implements Runnable{
 
-
-    public class MainServerConnect extends AsyncTask {
         MessageToJson message;
-        String response;
-        @Override
-        protected Object doInBackground(Object[] objects) {
+        ConnectWithServer connect = new ConnectWithServer();
 
-            message = (MessageToJson) objects[0];
-            Socket socket;
-            Gson gson = new Gson();
-            try {
-                socket = new Socket(IP, PublicConstants.port);
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                String json = gson.toJson(message);
-                out.writeUTF(json);
-                response = in.readUTF();
-                out.writeUTF("{\"messageLogic\":\"close\"}");
-                out.close();
-                in.close();
-                //inResultsPrev.close();
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+        public ThreadRegister(MessageToJson message) {
+            this.message = message;
         }
 
         @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            if (response.equals("Все нормасно")){
-                Toast.makeText(getApplicationContext(), "Введите логин и пароль", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(),
-                        LoginActivity.class);
-                startActivity(i);
-                finish();
-            }else{
-                Toast.makeText(getApplicationContext(), "Неудача попробуйте снова!", Toast.LENGTH_LONG).show();
+        public void run() {
+            Log.v(TAG, "************************Поток запущен*******************************");
+            Gson gson = new Gson();
+            try{
+                connect.openConnection();
+                String responseServer = connect.responseFromServer(gson.toJson(message));
+                Log.i(TAG, "Данные успешно ушли и пришли. Закрытие******** \n Ответ сервера: " + responseServer);
+                final MessageToJson response = gson.fromJson(responseServer, MessageToJson.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(response.getResponseFromServer().equals("SUCCESS")){
+                            Log.i(TAG, "Пользователь зарегистрирован");
+                            handler.sendMessage(PublicConstants.getMessage("success", "msg"));
+                        }else{
+                            Log.i(TAG, "Что-то пошло не так. Ошибка БД");
+                            handler.sendMessage(PublicConstants.getMessage("not_success", "msg"));
+                        }
+                    }
+                });
+            }catch (Exception e){
+                Log.i(TAG, "ERROR \n" + e.getMessage());
+                connect = null;
+                handler.sendMessage(PublicConstants.getMessage("bad","msg"));
             }
         }
     }
+
 
     @Override
     protected void onStart() {
