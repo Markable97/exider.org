@@ -17,6 +17,11 @@ public class MessageToJson {
 
     }
 
+    public MessageToJson(String mesageLogic, int id_division){
+        this.messageLogic = mesageLogic;
+        this.id_division = id_division;
+    }
+
     public MessageToJson(String messageLogic, MessageRegister user_info){
         this.messageLogic = messageLogic;
         this.user_info = user_info;
