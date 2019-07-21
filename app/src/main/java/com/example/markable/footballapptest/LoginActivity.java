@@ -140,10 +140,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                                 Log.i(TAG, "Пароль подошел");
                             }
                             //Отправка в GUI поток
+                            connect.closeConnection();
                             handler.sendMessage(PublicConstants.getMessage("success","msg"));
                         }
                         else {
                             //Отправка в GUI поток
+                            connect.closeConnection();
                             handler.sendMessage(PublicConstants.getMessage("not_success","msg"));
                         }
                     }
@@ -152,6 +154,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
             }catch (Exception e){
                 Log.i(TAG, "ERROR \n" + e.getMessage());
+                connect.closeConnection();
                 connect = null;
                 handler.sendMessage(PublicConstants.getMessage("bad","msg"));
             }

@@ -125,15 +125,18 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                     public void run() {
                         if(response.getResponseFromServer().equals("SUCCESS")){
                             Log.i(TAG, "Пользователь зарегистрирован");
+                            connect.closeConnection();
                             handler.sendMessage(PublicConstants.getMessage("success", "msg"));
                         }else{
                             Log.i(TAG, "Что-то пошло не так. Ошибка БД");
+                            connect.closeConnection();
                             handler.sendMessage(PublicConstants.getMessage("not_success", "msg"));
                         }
                     }
                 });
             }catch (Exception e){
                 Log.i(TAG, "ERROR \n" + e.getMessage());
+                connect.closeConnection();
                 connect = null;
                 handler.sendMessage(PublicConstants.getMessage("bad","msg"));
             }

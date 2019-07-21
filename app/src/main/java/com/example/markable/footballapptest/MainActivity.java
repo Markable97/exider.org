@@ -219,6 +219,9 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
                 imageArray = connect.fileFromServer();
+                if(imageArray == null){
+                    Log.i(TAG, "Нет фотографий");
+                }
                 connect.closeConnection();
                 return "success"; //все хорошо
 

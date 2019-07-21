@@ -81,7 +81,7 @@ public class ConnectWithServer {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             String response = in.readUTF();
             Log.v(TAG,  "Данные от сервера \n" + response);
-            closeConnection();
+            //closeConnection();
             return response;
 
         }catch (IOException e){
@@ -161,7 +161,8 @@ public class ConnectWithServer {
                 return imageArray;
             }else{
                 Log.i(TAG, "Файлы не пришли");
-                throw new Exception("Файлы не пришли");
+                return null;
+                //throw new Exception("Файлы не пришли");
             }
         }catch (Exception e){
             Log.i(TAG, "Связь с сервером потеряна");
