@@ -118,38 +118,6 @@ public class MatchActivity extends AppCompatActivity {
             }
         }
 
-
-
-        /*@Override
-        protected String doInBackground(String... strings) {
-
-            for(String s : strings){
-                query = "{\"messageLogic\":\"player\",\"id_division\":"+ s + "}";
-                //query = "{\"id_division\":" + s + ",\"id_tour\":2}";
-            }
-
-            Socket socket;
-            Gson gson = new Gson();
-
-            try {
-                socket = new Socket(IP, PublicConstants.port);
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
-                out.writeUTF(query);
-                fromServer = in.readUTF();
-                Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
-                playersInMatch.clear();
-                playersInMatch = gson.fromJson(fromServer, new TypeToken<ArrayList<Player>>(){}.getType());
-                Log.i(TAG, "Массив = " + playersInMatch.get(2));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }*/
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
