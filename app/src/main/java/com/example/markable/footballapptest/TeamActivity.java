@@ -146,73 +146,6 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         }
 
-       /* @Override
-        protected String doInBackground(String... strings) {
-            Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
-            for(String s : strings){
-                teamName = s;
-            }
-
-            Socket socket;
-            Gson gson = new Gson();
-
-            try {
-                query = "{\"messageLogic\":\""+ logic +"\",\"id_team\":\""+ teamName + "\"}";
-                socket = new Socket(IP, PublicConstants.port);
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-                //загрузка статистики
-                out.writeUTF(query);
-                fromServer = in.readUTF();
-                Log.i(TAG, "doInBackground: Данные от сервера" + fromServer);
-                Type t1 = new TypeToken<ArrayList<Player>>(){}.getType();
-                arrayPlayers = gson.fromJson(fromServer, t1);
-                Log.i(TAG, "doInBackground: \n" + arrayPlayers.toString());
-
-                int countImage = in.readInt();
-                Log.i(TAG, "doInBackground: кол-во фоток от сервера = " + countImage);
-                if(countImage != 0 && countImage==arrayPlayers.size()){
-                    byte[] byteArray;
-                    for(int i = 0; i < countImage; i++){
-                        int countBytes = in.readInt();
-                        byteArray = new byte[countBytes];
-                        in.readFully(byteArray);
-                        arrayPlayers.get(i).setPlayerImage(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length));
-                    }
-                }
-                //out.writeUTF(queryClose);
-                //загрузка матчей
-                logic = "matches";
-                query = "{\"messageLogic\":\""+ logic +"\",\"id_team\":\""+ teamName + "\"}";
-                out.writeUTF(query);
-                fromServer = in.readUTF();
-                Log.i(TAG, "doInBackground: from server = " + fromServer);
-                Type t = new TypeToken<ArrayList<PrevMatches>>(){}.getType();
-                arrayAllMatches = gson.fromJson(fromServer, t);
-                Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
-                countImage = in.readInt();
-                Log.i(TAG, "doInBackground: кол-во фоток от сервера [2]" + countImage);
-                if(countImage!=0){
-                    byte[] byteImage;
-                    for(int i = 0; i < countImage; i++){
-                        String nameImage = in.readUTF();
-                        int countBytes = in.readInt();
-                        byteImage = new byte[countBytes];
-                        in.readFully(byteImage);
-                        arrayTeamImage.add(new ImageFromServer(nameImage, BitmapFactory.decodeByteArray(byteImage, 0,
-                                byteImage.length)));
-                    }
-                }
-                Log.i(TAG, "doInBackground: Название картинок = " + arrayTeamImage.toString());
-                out.writeUTF(queryClose);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }*/
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -222,7 +155,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
             }else{
-                Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Не удалось получить данные", Toast.LENGTH_LONG).show();
             }
         }
     }

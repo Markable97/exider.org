@@ -3,15 +3,15 @@ package com.example.markable.footballapptest.Classes;
 public class MessageToJson {
 
     public String messageLogic;
-    private int id_division;
+    private int id;
     private String team_name;
     private MessageRegister user_info;
     String responseFromServer;
     int settingForApp;
 
-    public MessageToJson(String messageLogic, int id_division, String team_name, MessageRegister user_info) {
+    public MessageToJson(String messageLogic, int id, String team_name, MessageRegister user_info) {
         this.messageLogic = messageLogic;
-        this.id_division = id_division;
+        this.id = id;
         this.team_name = team_name;
         this.user_info = user_info;
 
@@ -21,9 +21,9 @@ public class MessageToJson {
         this.messageLogic = messageLogic;
         this.team_name = team_name;
     }
-    public MessageToJson(String mesageLogic, int id_division){
+    public MessageToJson(String mesageLogic, int id){
         this.messageLogic = mesageLogic;
-        this.id_division = id_division;
+        this.id = id;
     }
 
     public MessageToJson(String messageLogic, MessageRegister user_info){
@@ -35,8 +35,8 @@ public class MessageToJson {
         return messageLogic;
     }
 
-    public int getId_division() {
-        return id_division;
+    public int getId() {
+        return id;
     }
 
     public String getTeam_name() {
@@ -59,7 +59,7 @@ public class MessageToJson {
     public String toString() {
         return "MessageToJson{" +
                 "messageLogic='" + messageLogic + '\'' +
-                ", id_division=" + id_division +
+                ", id=" + id +
                 ", team_name='" + team_name + '\'' +
                 ", user_info=" + user_info +
                 ", responseFromServer='" + responseFromServer + '\'' +
