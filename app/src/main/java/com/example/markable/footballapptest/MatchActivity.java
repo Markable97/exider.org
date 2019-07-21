@@ -10,8 +10,11 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.PublicConstants;
@@ -82,15 +85,42 @@ public class MatchActivity extends AppCompatActivity {
         textViewParams.gravity = Gravity.CENTER;
         Log.i(TAG, "onCreate: id_match" + matches.getIdMatch());
 
-        new MainServerConnect().execute(String.valueOf(matches.getIdMatch()));
+        new MainServerConnect().execute(matches.getIdMatch());
     }
 
-    public class MainServerConnect extends AsyncTask<String, Void, String> {
+    public class MainServerConnect extends AsyncTask<Integer, Void, String> {
 
-        String  query = "",
-                fromServer;
+        ConnectWithServer connect = new ConnectWithServer();
+        Gson gson = new Gson();
+        int idMatch;
+        String  fromServer;
 
         @Override
+        protected String doInBackground(Integer... integers) {
+            Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
+            idMatch = integers[0];
+            Log.i(TAG, "Матч id = " + idMatch);
+            MessageToJson message = new MessageToJson("player", idMatch);
+            try{
+                connect.openConnection();
+                fromServer = connect.responseFromServer(gson.toJson(message));
+                Log.i(TAG, "Данные от сервера \n" + fromServer);
+                playersInMatch.clear();
+                playersInMatch = gson.fromJson(fromServer, new TypeToken<ArrayList<Player>>(){}.getType());
+                Log.i(TAG, "Массив = " + playersInMatch.size());
+                connect.closeConnection();
+                return "success";
+            }catch (Exception e) {
+                Log.i(TAG, "ERROR \n" + e.getMessage());
+                connect.closeConnection();
+                connect = null;
+                return "bad"; //если какакя-то ошибка возвращаем плохо
+            }
+        }
+
+
+
+        /*@Override
         protected String doInBackground(String... strings) {
 
             for(String s : strings){
@@ -118,12 +148,16 @@ public class MatchActivity extends AppCompatActivity {
             }
 
             return null;
-        }
+        }*/
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            addLayout(playersInMatch);
+            if (s.equals("success")){
+                addLayout(playersInMatch);
+            }else{
+                Toast.makeText(getApplicationContext(),"Не удалось получить данные", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

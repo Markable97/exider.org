@@ -92,6 +92,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
         activity = (MainActivity)getActivity();
         newTournamentTable = activity.getTournamentTable();
+        Log.i(TAG, "Размер массива" + newTournamentTable.size());
         imageBitmap = activity.getImageArray();
         Log.i(TAG, "onCreateView: Создание таблицы");
 

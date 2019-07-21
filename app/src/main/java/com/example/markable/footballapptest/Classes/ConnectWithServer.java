@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest.Classes;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.DataInputStream;
@@ -10,6 +11,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.sql.Struct;
+import java.util.ArrayList;
 
 public class ConnectWithServer {
 
@@ -79,7 +81,7 @@ public class ConnectWithServer {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             String response = in.readUTF();
             Log.v(TAG,  "Данные от сервера \n" + response);
-            closeConnection();
+            //closeConnection();
             return response;
 
         }catch (IOException e){
@@ -87,6 +89,85 @@ public class ConnectWithServer {
             throw new Exception("Невозможно отправить данные");
         }
 
+    }
+
+    public ArrayList<String> responseFromServerArray(String messageForServer) throws Exception{
+
+        if(socket == null || socket.isClosed()){
+            Log.v(TAG, "Невозмоэно отправить данные \n" );
+            throw new Exception("Невозможно отправить данные. Сокет не создан или закрыт");
+        }
+        ArrayList<String> arrayJsonsString = new ArrayList<>();
+        String response;
+        try {
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF(messageForServer);
+            Log.v(TAG,  "Данные отправлены \n" + messageForServer);
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            response = in.readUTF();//турнирная таблица в виде JSON
+            Log.i(TAG, "Турнирная таблица в виде JSON'\n" + response);
+            if(!response.isEmpty()){
+                arrayJsonsString.add(response);
+            }
+            response = in.readUTF();//Предыдущие матчи (Результаты)
+            Log.i(TAG, "Результаты в формате JSON \n" + response);
+            if(!response.isEmpty()){
+                arrayJsonsString.add(response);
+            }
+            response = in.readUTF();
+            Log.i(TAG, "Каленжарь в формате JSON \n" + response);
+            if(!response.isEmpty()){
+                arrayJsonsString.add(response);
+            }
+            //closeConnection();
+            return arrayJsonsString;
+
+
+        }catch (IOException e){
+            Log.v(TAG, "Невозможно отправить или поулчить данные");
+            throw new Exception("Невозможно отправить или получить данные " +  e.getMessage());
+        }
+
+    }
+
+    public ArrayList<ImageFromServer> fileFromServer () throws Exception{
+        if(socket == null || socket.isClosed()){
+            Log.v(TAG, "Невозмоэно отправить данные \n" );
+            throw new Exception("Невозможно отправить данные. Сокет не создан или закрыт");
+        }
+        try {
+            ArrayList<ImageFromServer> imageArray = new ArrayList<>();
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            int countFiles = in.readInt(); //число файлов с сервер
+            Log.i(TAG, "Кол-во файлов " + countFiles);
+            byte[] byteArrayBig;
+            if (countFiles > 0){
+                for(int i = 0; i < countFiles; i++){
+                    String nameImageFromServer = in.readUTF();
+                    Log.i(TAG, "Название картинки = " + nameImageFromServer);
+                    int countBytesBig = in.readInt();
+                    Log.i(TAG, "Кол-во байтов большой картинки" + countBytesBig);
+                    byteArrayBig = new byte[countBytesBig];
+                    in.readFully(byteArrayBig);
+                    Log.i(TAG, "Размер массива большой картинки байтов " + byteArrayBig.length);
+                    imageArray.add(new ImageFromServer(nameImageFromServer,
+                            BitmapFactory.decodeByteArray(byteArrayBig, 0, byteArrayBig.length) ));
+                }
+                Log.i(TAG, " ImageFromServer = " + imageArray.size());
+            }
+            //closeConnection();
+            if(imageArray.size() > 0 ){
+                Log.i(TAG, "кол-во файлов от сервара = " + imageArray.size());
+                return imageArray;
+            }else{
+                Log.i(TAG, "Файлы не пришли");
+                return null;
+                //throw new Exception("Файлы не пришли");
+            }
+        }catch (Exception e){
+            Log.i(TAG, "Связь с сервером потеряна");
+            throw new Exception("Связь с сервером потеряна"+ e.getMessage());
+        }
     }
 
     /**  * Метод для закрытия сокета, по которому мы общались.  */
