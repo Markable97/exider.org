@@ -134,9 +134,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     public void run() {
                         if(response.getResponseFromServer().equals("Password successfull")){
                             if(!session.isLoggedIn()){
-                                session.createSetting(email,password);
+                                session.createSetting(email,password,response.getSettingForApp());
                                 Log.i(TAG, "Пароль подошел! Сохраняем в настрйоки email = " +email+" password = " + password);
                             }else{
+                                Log.i(TAG, "Старые настрйоки = " + session.settingApp());
+                                session.changeSetting(response.getSettingForApp());
+                                Log.i(TAG, "Новые настройки = " + session.settingApp());
                                 Log.i(TAG, "Пароль подошел");
                             }
                             //Отправка в GUI поток

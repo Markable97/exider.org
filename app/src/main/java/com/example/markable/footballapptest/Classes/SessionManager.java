@@ -19,6 +19,7 @@ public class SessionManager {
     private static final String KEY_LOGIN = "loggedIN";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_SETTING = "setting";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -26,10 +27,11 @@ public class SessionManager {
         editor = pref.edit();
     }
    //Создание настроек
-    public void createSetting(String email, String password){
+    public void createSetting(String email, String password, int setting){
         editor.putBoolean(KEY_LOGIN, true);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_PASSWORD, password);
+        editor.putInt(KEY_SETTING, setting);
         editor.commit();
     }
     //проверяем залогинился ли пользователь
@@ -64,6 +66,8 @@ public class SessionManager {
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         // Пароль
         user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
+        //настройки
+        user.put(KEY_SETTING, String.valueOf(pref.getInt(KEY_SETTING, 0)));
         return user;
     }
     //Вытаскивания ключа входа
@@ -72,5 +76,16 @@ public class SessionManager {
     }
     public String emailSetting(){
         return pref.getString(KEY_EMAIL, "Пусто");
+    }
+    public int settingApp(){
+        return pref.getInt(KEY_SETTING, 0);
+    }
+    //заменя настрйоки если они отличаются
+    public void changeSetting(int setting){
+        int alreadySetting = pref.getInt(KEY_SETTING,0);
+        if(setting != alreadySetting){
+            editor.putInt(KEY_SETTING, setting);
+            editor.commit();
+        }
     }
 }
