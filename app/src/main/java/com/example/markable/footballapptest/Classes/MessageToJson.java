@@ -4,6 +4,7 @@ public class MessageToJson {
 
     public String messageLogic;
     private int id;
+    private int tour;
     private String team_name;
     private MessageRegister user_info;
     String responseFromServer;
@@ -15,6 +16,12 @@ public class MessageToJson {
         this.team_name = team_name;
         this.user_info = user_info;
 
+    }
+
+    public MessageToJson(String messageLogic, int id, int tour) {
+        this.messageLogic = messageLogic;
+        this.id = id;
+        this.tour = tour;
     }
 
     public MessageToJson(String messageLogic, String team_name){

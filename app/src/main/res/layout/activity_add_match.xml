@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/input_login_hint"
     android:orientation="vertical">
 
     <Spinner
         android:id="@+id/spinner_diviisions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dropDownWidth="wrap_content"
-        android:entries="@array/divisions_list" />
+        android:dropDownWidth="wrap_content" />
 
     <Spinner
         android:id="@+id/spinner_tour"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
 </LinearLayout>
