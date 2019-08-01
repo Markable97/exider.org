@@ -61,9 +61,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу",
                             Toast.LENGTH_SHORT).show();
                     btnLogin.setEnabled(true);
-                    Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
+                    /*Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
                     startActivity(intent);
-                    finish();
+                    finish();*/
                 }else if (msgHandler.equals("success")){
                     Log.i(TAG, msgHandler);
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);

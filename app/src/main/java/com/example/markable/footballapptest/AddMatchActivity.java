@@ -47,26 +47,29 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        ArrayAdapter<String> arrayTour = (ArrayAdapter<String>) spTour.getAdapter();
+        ArrayAdapter<String> arrayDiv = (ArrayAdapter<String>) spDivision.getAdapter();
         switch (parent.getId()){
             case R.id.spinner_diviisions:
                 Toast.makeText(getApplicationContext(),"Выбрано - " + parent.getItemAtPosition(position)
                         + " номер - " + position,Toast.LENGTH_SHORT).show();
-                forServer[0] = position + 1;
-                ArrayAdapter<String> array = (ArrayAdapter<String>) spTour.getAdapter();
+                //forServer[0] = position + 1;
+
                 switch (position){
                     case 0:
                         changeTour(11);
-                        array.notifyDataSetChanged();
+                        arrayTour.notifyDataSetChanged();
                         break;
                     case 1:
                         changeTour(21);
-                        array.notifyDataSetChanged();
+                        arrayTour.notifyDataSetChanged();
                         break;
                 }
                 break;
             case R.id.spinner_tour:
                 Toast.makeText(this, "Выбран тур = " + parent.getItemAtPosition(position),
                         Toast.LENGTH_SHORT).show();
+                forServer[0] = spDivision.getSelectedItemPosition() + 1;
                 forServer[1] = position + 1;
                 new MainServerConnect().execute(forServer[0], forServer[1]);
                 break;
@@ -88,11 +91,12 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         protected String doInBackground(Integer... integers) {
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             Log.i(TAG,"Дивизион = " + integers[0] + " Тур = " + integers[1]);
-            MessageToJson message = new MessageToJson("addMatch",integers[0], integers[1]);
+            MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
             try{
                 connect.openConnection(); //открывваем соединение
                 fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игроков
-                Log.i(TAG, "Данные от сервера состав\n" + fromServer);
+                connect.closeConnection();
+                return "success";
             }catch (Exception e){
                 Log.i(TAG, "ERROR \n" + e.getMessage());
                 connect.closeConnection();
@@ -100,12 +104,19 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                 return "bad"; //если какакя-то ошибка возвращаем плохо
             }
 
-            return null;
+
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            forServer[0] = 0;
+            forServer[1] = 0;
+            if (s.equals("success")){
+                Log.i(TAG, "Данные от сервера \n" + fromServer);
+            }else{
+                Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

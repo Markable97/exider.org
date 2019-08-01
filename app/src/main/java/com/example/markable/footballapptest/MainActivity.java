@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
 
+    SessionManager manager;
+
     private ArrayList<ImageFromServer> imageArray = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
     private ArrayList<PrevMatches> prevResultsMatch = new ArrayList<>();
@@ -64,17 +67,24 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        manager = new SessionManager(getApplicationContext());
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*Snackbar.make(view, "Отправка заявки на игру", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                MyDialogFragment myDialogFragment = new MyDialogFragment();
-                FragmentManager manager = getSupportFragmentManager();
-                //myDialogFragment.show(manager, "dialog");
-                FragmentTransaction transaction = manager.beginTransaction();
-                myDialogFragment.show(transaction, "dialog");
+                if(manager.settingApp() == 1){
+                    Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
+                    startActivity(intent);
+                }else{
+                    MyDialogFragment myDialogFragment = new MyDialogFragment();
+                    FragmentManager manager = getSupportFragmentManager();
+                    //myDialogFragment.show(manager, "dialog");
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    myDialogFragment.show(transaction, "dialog");
+                }
             }
         });
 
