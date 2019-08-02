@@ -135,6 +135,17 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
                 arrayTeamImage = connect.fileFromServer();
+
+                for(PrevMatches match : arrayAllMatches){
+                    for(ImageFromServer image : arrayTeamImage){
+                        if(image.getNameImage().equals(match.getTeamHome())){
+                            match.setImageHome(image);
+                        }else if (image.getNameImage().equals(match.getTeamVisit())){
+                            match.setImageVisit(image);
+                        }
+                    }
+                }
+
                 connect.closeConnection();
                 return "success"; //все хорошо
             }catch (Exception e){

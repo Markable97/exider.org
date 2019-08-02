@@ -18,6 +18,7 @@ import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.MatchActivity;
 import com.example.markable.footballapptest.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +39,10 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     ImageFromServer imageVisit;
 
     //конструктов для адаптера
-    public RecyclerViewForResults(Context context, List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
+    public RecyclerViewForResults(/*Context context,*/ List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
         this.list = list;
         this.listImage = listImage;
-        this.context = context;
+        //this.context = context;
     }
 
     @Override
@@ -51,11 +52,17 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewForResults.ViewHolder holder, final int position) {
+    public boolean onFailedToRecycleView(ViewHolder holder) {
+        return true;
+    }
+    @Override
+    public void onBindViewHolder(final RecyclerViewForResults.ViewHolder holder, final int position) {
         PrevMatches match = list.get(position);
 
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
-        for(int i = 0; i < list.size(); i++){
+        holder.imageTeamHome.setImageBitmap(match.getImageHome().getBitmapImageBig());
+        holder.imageTeamVisit.setImageBitmap(match.getImageVisit().getBitmapImageBig());
+        /*for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
                 if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
                     holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
@@ -63,18 +70,18 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
                     holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
-        }
+        }*/
         holder.nameTeamHome.setText(match.getTeamHome());
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));
         holder.goalTeamVisit.setText(String.valueOf(match.getGoalVisit()));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+       /*holder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 PrevMatches matches = list.get(position);
-                Intent intent = new Intent(context, MatchActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), MatchActivity.class);
                 Log.i(TAG, "onClick: Картинки" + listImage.size());
                 for(int i = 0; i < listImage.size(); i++){
                     if(matches.getTeamHome().equalsIgnoreCase(listImage.get(i).getNameImage())){
@@ -90,9 +97,9 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
                 intent.putExtra("information", matches);
                 intent.putExtra("imageHome", (Parcelable) imageHome);
                 intent.putExtra("imageVisit", (Parcelable) imageVisit);
-                context.startActivity(intent);
+                holder.itemView.getContext().startActivity(intent);
             }
-        });
+        });*/
     }
 
 

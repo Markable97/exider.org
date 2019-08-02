@@ -232,6 +232,17 @@ public class MainActivity extends AppCompatActivity
                 if(imageArray == null){
                     Log.i(TAG, "Нет фотографий");
                 }
+
+                for(PrevMatches match : prevResultsMatch){
+                    for(ImageFromServer image : imageArray){
+                        if(image.getNameImage().equals(match.getTeamHome())){
+                            match.setImageHome(image);
+                        }else if (image.getNameImage().equals(match.getTeamVisit())){
+                            match.setImageVisit(image);
+                        }
+                    }
+                }
+
                 connect.closeConnection();
                 return "success"; //все хорошо
 
