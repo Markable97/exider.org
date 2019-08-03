@@ -15,10 +15,8 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.PrevMatches;
-import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.MatchActivity;
 import com.example.markable.footballapptest.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +31,11 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     private static final String TAG = "AdapterResults";
 
     private List<PrevMatches>  list;
-    private ArrayList<ImageFromServer> listImage;
-    private Context context;
-    ImageFromServer imageHome;
-    ImageFromServer imageVisit;
 
     //конструктов для адаптера
-    public RecyclerViewForResults(/*Context context,*/ List<PrevMatches> list, ArrayList<ImageFromServer> listImage){
+    public RecyclerViewForResults(/*Context context,*/ List<PrevMatches> list){
         this.list = list;
-        this.listImage = listImage;
-        //this.context = context;
+
     }
 
     @Override
@@ -62,27 +55,18 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
         holder.imageTeamHome.setImageBitmap(match.getImageHome().getBitmapImageBig());
         holder.imageTeamVisit.setImageBitmap(match.getImageVisit().getBitmapImageBig());
-        /*for(int i = 0; i < list.size(); i++){
-            for(int j = 0; j < listImage.size(); j++){
-                if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageTeamHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
-                } else if (match.getTeamVisit().equalsIgnoreCase(listImage.get(j).getNameImage())){
-                    holder.imageTeamVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
-                }
-            }
-        }*/
         holder.nameTeamHome.setText(match.getTeamHome());
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));
         holder.goalTeamVisit.setText(String.valueOf(match.getGoalVisit()));
 
-       /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+       holder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 PrevMatches matches = list.get(position);
                 Intent intent = new Intent(holder.itemView.getContext(), MatchActivity.class);
-                Log.i(TAG, "onClick: Картинки" + listImage.size());
+                /*Log.i(TAG, "onClick: Картинки" + listImage.size());
                 for(int i = 0; i < listImage.size(); i++){
                     if(matches.getTeamHome().equalsIgnoreCase(listImage.get(i).getNameImage())){
                         Log.i(TAG, "onClick: Зашел в If для дома");
@@ -93,13 +77,13 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
                         imageVisit = listImage.get(i);
                     }
                 }
-                Log.i(TAG, "onClick: " + imageHome.getNameImage() + imageVisit.getNameImage());
+                Log.i(TAG, "onClick: " + imageHome.getNameImage() + imageVisit.getNameImage());*/
                 intent.putExtra("information", matches);
-                intent.putExtra("imageHome", (Parcelable) imageHome);
-                intent.putExtra("imageVisit", (Parcelable) imageVisit);
+                //intent.putExtra("imageHome", (Parcelable) imageHome);
+                //intent.putExtra("imageVisit", (Parcelable) imageVisit);
                 holder.itemView.getContext().startActivity(intent);
             }
-        });*/
+        });
     }
 
 
@@ -110,7 +94,6 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
 
     public void update(ArrayList<PrevMatches> prevMatches, ArrayList<ImageFromServer> image){
         this.list = prevMatches;
-        this.listImage = image;
         notifyDataSetChanged();
     }
     /**

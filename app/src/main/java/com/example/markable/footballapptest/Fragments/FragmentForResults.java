@@ -57,7 +57,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
         newPrevMatches = activity.getPrevResultsMatch();
         imageBitmap = activity.getImageArray();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RecyclerViewForResults(/*getActivity(),*/newPrevMatches, imageBitmap);
+        adapter = new RecyclerViewForResults(/*getActivity(),*/newPrevMatches);
         recyclerView.setAdapter(adapter);
         /*if(newPrevMatches.size() != 0){
             update(null, newPrevMatches, null);
