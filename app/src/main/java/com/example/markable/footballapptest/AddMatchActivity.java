@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,18 +13,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.markable.footballapptest.Adapters.RecyclerViewAddMatches;
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
+import com.example.markable.footballapptest.Classes.NextMatches;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+
 
 public class AddMatchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AddMatchActivity.class.getSimpleName();
     ArrayList<String> tours = new ArrayList<>();
+    private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
+    RecyclerViewAddMatches adapter;
+    boolean firsLaunch = true;
     Spinner spDivision;
     Spinner spTour;
+    RecyclerView recyclerView;
     int[] forServer = new int[2];
 
     @Override
@@ -32,6 +42,10 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         addInformation(11);
         spDivision = (Spinner) findViewById(R.id.spinner_diviisions);
         spTour = (Spinner) findViewById(R.id.spinner_tour);
+        recyclerView = (RecyclerView) findViewById(R.id.listAddMatches);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new RecyclerViewAddMatches(gamesInTour);
+        recyclerView.setAdapter(adapter);
 
         ArrayAdapter<String> adapterTour = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
                 tours);
@@ -48,11 +62,11 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         ArrayAdapter<String> arrayTour = (ArrayAdapter<String>) spTour.getAdapter();
-        ArrayAdapter<String> arrayDiv = (ArrayAdapter<String>) spDivision.getAdapter();
+        //ArrayAdapter<String> arrayDiv = (ArrayAdapter<String>) spDivision.getAdapter();
         switch (parent.getId()){
             case R.id.spinner_diviisions:
-                Toast.makeText(getApplicationContext(),"Выбрано - " + parent.getItemAtPosition(position)
-                        + " номер - " + position,Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getApplicationContext(),"Выбрано - " + parent.getItemAtPosition(position)
+                        + " номер - " + position,Toast.LENGTH_SHORT).show();*/
                 //forServer[0] = position + 1;
 
                 switch (position){
@@ -65,13 +79,22 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                         arrayTour.notifyDataSetChanged();
                         break;
                 }
+                if(!firsLaunch){
+                    forServer[0] = position + 1;
+                    forServer[1] = spTour.getSelectedItemPosition() + 1;
+                    new MainServerConnect().execute(forServer[0], forServer[1]);
+                    spDivision.setEnabled(false);
+                    spTour.setEnabled(false);
+                }
                 break;
             case R.id.spinner_tour:
-                Toast.makeText(this, "Выбран тур = " + parent.getItemAtPosition(position),
-                        Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(this, "Выбран тур = " + parent.getItemAtPosition(position),
+                        Toast.LENGTH_SHORT).show();*/
                 forServer[0] = spDivision.getSelectedItemPosition() + 1;
                 forServer[1] = position + 1;
                 new MainServerConnect().execute(forServer[0], forServer[1]);
+                spDivision.setEnabled(false);
+                spTour.setEnabled(false);
                 break;
         }
     }
@@ -94,7 +117,9 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
             try{
                 connect.openConnection(); //открывваем соединение
-                fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игроков
+                fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игро
+                gamesInTour.clear();
+                gamesInTour = gson.fromJson(fromServer, new TypeToken<ArrayList<NextMatches>>(){}.getType());
                 connect.closeConnection();
                 return "success";
             }catch (Exception e){
@@ -113,10 +138,14 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             forServer[0] = 0;
             forServer[1] = 0;
             if (s.equals("success")){
-                Log.i(TAG, "Данные от сервера \n" + fromServer);
+                Log.i(TAG,"Игры в туре: \n" + gamesInTour.toString());
+                adapter.update(gamesInTour);
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }
+            firsLaunch =false;
+            spDivision.setEnabled(true);
+            spTour.setEnabled(true);
         }
     }
 
