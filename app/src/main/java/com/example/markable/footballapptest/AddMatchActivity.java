@@ -44,7 +44,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         spTour = (Spinner) findViewById(R.id.spinner_tour);
         recyclerView = (RecyclerView) findViewById(R.id.listAddMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAddMatches(gamesInTour);
+        adapter = new RecyclerViewAddMatches(gamesInTour, getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
 
         ArrayAdapter<String> adapterTour = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
@@ -104,6 +104,9 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
+    public void test(String test){
+        Toast.makeText(getApplicationContext(),test, Toast.LENGTH_LONG).show();
+    }
     public class MainServerConnect  extends AsyncTask<Integer, Void, String>{
 
         ConnectWithServer connect = new ConnectWithServer();
