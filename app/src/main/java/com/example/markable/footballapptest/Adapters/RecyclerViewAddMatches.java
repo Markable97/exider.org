@@ -60,9 +60,6 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
         notifyDataSetChanged();
     }
 
-    public void test(){
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

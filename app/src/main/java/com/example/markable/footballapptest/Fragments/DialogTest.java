@@ -3,6 +3,7 @@ package com.example.markable.footballapptest.Fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -25,9 +26,12 @@ import com.example.markable.footballapptest.Adapters.RecyclerViewAddMatches;
 import com.example.markable.footballapptest.AddMatchActivity;
 import com.example.markable.footballapptest.R;
 
+import java.util.ArrayList;
+
 public class DialogTest extends DialogFragment implements DialogInterface.OnClickListener {
     LinearLayout layoutMain;
     Context context;
+    ArrayList<View> listView = new ArrayList<>();
     String[] data = {"10:20","11:50","12:40","13:20","16:00","20:20","17:10","18:40","19:50"};
     String test = "Что-то";
     final String TAG_DIALOG = "dialog_add_time_match";
@@ -60,9 +64,14 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                 for(int colum = 0; colum < 4; colum++){
                     if(k != data.length){
                         final Button tv = new Button(getActivity());
+                        tv.setBackgroundColor(Color.parseColor("#FFE8F5E9")); //FFFFEBEE
+                        listView.add(tv);
                         tv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                tv.setEnabled(false);
+                                tv.setBackgroundColor(Color.parseColor("#FFFFEBEE"));
+                                btnActiv(tv);
                                 test = "Спартак - " +pole +"\nВремя "+tv.getText();
                                 //Toast.makeText(getContext(),"Спартак - " +pole +"\nВремя "+tv.getText(), Toast.LENGTH_LONG).show();
                             }
@@ -102,6 +111,16 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
             case Dialog.BUTTON_NEGATIVE:
                 dismiss();
                 break;
+        }
+    }
+
+    void btnActiv(View btnActiv){
+        for(int i = 0; i < listView.size(); i++){
+            if(!btnActiv.equals(listView.get(i))){
+                Button btn = (Button) listView.get(i);
+                btn.setBackgroundColor(Color.parseColor("#FFE8F5E9"));
+                btn.setEnabled(true);
+            }
         }
     }
 }
