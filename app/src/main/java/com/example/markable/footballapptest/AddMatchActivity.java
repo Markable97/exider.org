@@ -17,6 +17,8 @@ import com.example.markable.footballapptest.Adapters.RecyclerViewAddMatches;
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
+import com.example.markable.footballapptest.Classes.Schedule;
+import com.example.markable.footballapptest.Classes.Stadiums;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,6 +30,8 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     private static final String TAG = AddMatchActivity.class.getSimpleName();
     ArrayList<String> tours = new ArrayList<>();
     private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
+    ArrayList<Stadiums> stadiumsList = new ArrayList<>();
+    ArrayList<Schedule> scheduleList = new ArrayList<>();
     RecyclerViewAddMatches adapter;
     boolean firsLaunch = true;
     Spinner spDivision;
@@ -140,9 +144,12 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             super.onPostExecute(s);
             forServer[0] = 0;
             forServer[1] = 0;
+            addStadiums(4);
+            addSchedule(9);
             if (s.equals("success")){
                 Log.i(TAG,"Игры в туре: \n" + gamesInTour.toString());
-                adapter.update(gamesInTour);
+                Log.i(TAG,"Расписвник: \n" + scheduleList.toString());
+                adapter.update(gamesInTour, scheduleList, stadiumsList);
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }
@@ -162,6 +169,35 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         for(int i = 1; i <= n; i++){
             tours.add("Тур " + i);
         }
+    }
+
+    void addStadiums(int n){
+        for(int i = 1; i <= n; i++){
+            stadiumsList.add(new Stadiums(i, "Спартак - " + i));
+        }
+    }
+
+    void addSchedule(int n){
+        int time = 9;
+        int checked = 0;
+        for(int i = 1; i <= stadiumsList.size(); i++){
+            for(int j = 1; j <= n; j++){
+                if(j % 2 == 0){
+                    checked = 0;
+                }else{
+                    checked = 1;
+                }
+                scheduleList.add(new Schedule(String.valueOf(9+j) + ": 20",
+                        new Stadiums(i, "Спартак - " + i), checked));
+            }
+        }
+    }
+
+    public ArrayList<Schedule> getScheduleList(){
+        return scheduleList;
+    }
+    public ArrayList<Stadiums> getStadiumsList(){
+        return stadiumsList;
     }
     @Override
     protected void onStart() {

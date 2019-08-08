@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.NextMatches;
+import com.example.markable.footballapptest.Classes.Schedule;
+import com.example.markable.footballapptest.Classes.Stadiums;
 import com.example.markable.footballapptest.Fragments.DialogTest;
 import com.example.markable.footballapptest.Fragments.MyDialogFragment;
 import com.example.markable.footballapptest.Fragments.MyDialogFragmentAddMatchTime;
@@ -24,6 +26,8 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
 
     ArrayList<NextMatches> list;
     FragmentManager manager;
+    ArrayList<Stadiums> stadiumsList = new ArrayList<>();
+    ArrayList<Schedule> scheduleList = new ArrayList<>();
 
     public RecyclerViewAddMatches(ArrayList<NextMatches> gamesInTour, FragmentManager manager) {
         this.list = gamesInTour;
@@ -55,8 +59,10 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
         return list.size();
     }
 
-    public void update(ArrayList<NextMatches> gamesInTour){
+    public void update(ArrayList<NextMatches> gamesInTour, ArrayList<Schedule> scheduleList, ArrayList<Stadiums> stadiumsList ){
         this.list = gamesInTour;
+        this.scheduleList = scheduleList;
+        this.stadiumsList = stadiumsList;
         notifyDataSetChanged();
     }
 
