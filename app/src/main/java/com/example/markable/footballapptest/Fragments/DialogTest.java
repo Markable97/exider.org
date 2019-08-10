@@ -8,21 +8,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.markable.footballapptest.Adapters.RecyclerViewAddMatches;
 import com.example.markable.footballapptest.AddMatchActivity;
 import com.example.markable.footballapptest.Classes.Schedule;
 import com.example.markable.footballapptest.Classes.Stadiums;
@@ -82,13 +77,13 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                     if(k != time.size()){
                         final Button tv = new Button(getActivity());
                         tv.setLayoutParams(params);
-                        if (time.get(k).getChecked() == 1){
+                        if (time.get(k).getBusy_time() == 1){
                             tv.setEnabled(false);
                             tv.setBackgroundColor(Color.parseColor("#FFFFEBEE"));
                         }else{
                             tv.setBackgroundColor(Color.parseColor("#FFE8F5E9")); //FFFFEBEE
                         }
-                        tv.setText(time.get(k).getTime());
+                        tv.setText(time.get(k).getMatch_time());
                         k++;
                         scheduleList.get(k_main).setView(tv);
                         listView.add(tv);
@@ -96,7 +91,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                             @Override
                             public void onClick(View view) {
                                 tv.setEnabled(false);
-                                tv.setBackgroundColor(Color.parseColor("#FFFFEBEE"));
+                                tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
                                 btnActiv(tv);
                                 test = "Спартак - " +pole +"\nВремя "+tv.getText();
                                 //Toast.makeText(getContext(),"Спартак - " +pole +"\nВремя "+tv.getText(), Toast.LENGTH_LONG).show();
@@ -130,7 +125,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         ArrayList<Schedule> time = new ArrayList<>();
         for(Schedule s : scheduleList){
             if(s.getStadium().getNameStadium().equals(nameStadium)){
-                time.add(new Schedule(s.getTime(), s.getChecked()));
+                time.add(new Schedule(s.getMatch_time(), s.getBusy_time()));
             }
         }
         return time;
@@ -150,7 +145,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
 
     void btnActiv(View btnActiv){
         for(int i = 0; i < scheduleList.size(); i++){
-            if(!btnActiv.equals(scheduleList.get(i).getView()) && scheduleList.get(i).getChecked()!= 1){
+            if(!btnActiv.equals(scheduleList.get(i).getView()) && scheduleList.get(i).getBusy_time()!= 1){
                 Button btn = (Button) listView.get(i);
                 btn.setBackgroundColor(Color.parseColor("#FFE8F5E9"));
                 btn.setEnabled(true);

@@ -1,25 +1,44 @@
 package com.example.markable.footballapptest.Classes;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.View;
 
 public class Schedule {
 
-    String time;
-    Stadiums stadium;
-    int checked;
-    View view;
+    String match_date;
+    String match_time;
+    int id_stadium;
+    int id_tour;
+    String name_stadium;
+    int id_match;
+    String team_home;
+    String team_guest;
+    int busy_time;
 
-    public Schedule(String time, Stadiums stadium, int checked) {
-        this.time = time;
-        this.stadium = stadium;
-        this.checked = checked;
+    transient Stadiums stadium;
+    transient View view;
+
+    public Schedule(String match_date, String match_time, int id_stadium, int id_tour, String name_stadium,
+                    int id_match, String team_home, String team_guest, int busy_time) {
+        this.match_date = match_date;
+        this.match_time = match_time;
+        this.id_stadium = id_stadium;
+        this.id_tour = id_tour;
+        this.name_stadium = name_stadium;
+        this.id_match = id_match;
+        this.team_home = team_home;
+        this.team_guest = team_guest;
+        this.busy_time = busy_time;
     }
 
-    public Schedule(String time, int checked) {
-        this.time = time;
-        this.checked = checked;
+    public Schedule(String match_time, Stadiums stadium, int busy_time) {
+        this.match_time = match_time;
+        this.stadium = stadium;
+        this.busy_time = busy_time;
+    }
+
+    public Schedule(String match_time, int busy_time) {
+        this.match_time = match_time;
+        this.busy_time = busy_time;
     }
 
     public View getView() {
@@ -30,12 +49,12 @@ public class Schedule {
         this.view = view;
     }
 
-    public String getTime() {
-        return time;
+    public String getMatch_time() {
+        return match_time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setMatch_time(String match_time) {
+        this.match_time = match_time;
     }
 
     public Stadiums getStadium() {
@@ -46,21 +65,28 @@ public class Schedule {
         this.stadium = stadium;
     }
 
-    public int getChecked() {
-        return checked;
+    public int getBusy_time() {
+        return busy_time;
     }
 
-    public void setChecked(int checked) {
-        this.checked = checked;
+    public void setBusy_time(int busy_time) {
+        this.busy_time = busy_time;
     }
 
     @Override
     public String toString() {
         return "Schedule{" +
-                "time='" + time + '\'' +
+                "match_date='" + match_date + '\'' +
+                ", match_time='" + match_time + '\'' +
+                ", id_stadium=" + id_stadium +
+                ", id_tour=" + id_tour +
+                ", name_stadium='" + name_stadium + '\'' +
+                ", id_match=" + id_match +
+                ", team_home='" + team_home + '\'' +
+                ", team_guest='" + team_guest + '\'' +
+                ", busy_time=" + busy_time +
                 ", stadium=" + stadium +
-                ", checked=" + checked +
-                "}\n";
+                ", view=" + view +
+                '}' + "\n";
     }
-
 }

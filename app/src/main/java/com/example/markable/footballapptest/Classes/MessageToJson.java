@@ -46,6 +46,10 @@ public class MessageToJson {
         return id;
     }
 
+    public void setMessageLogic(String messageLogic) {
+        this.messageLogic = messageLogic;
+    }
+
     public String getTeam_name() {
         return team_name;
     }

@@ -32,6 +32,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
     ArrayList<Stadiums> stadiumsList = new ArrayList<>();
     ArrayList<Schedule> scheduleList = new ArrayList<>();
+    int countStadium = 0;
     RecyclerViewAddMatches adapter;
     boolean firsLaunch = true;
     Spinner spDivision;
@@ -124,9 +125,20 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
             try{
                 connect.openConnection(); //открывваем соединение
-                fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игро
+                fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игр
                 gamesInTour.clear();
                 gamesInTour = gson.fromJson(fromServer, new TypeToken<ArrayList<NextMatches>>(){}.getType());
+                /*message.setMessageLogic("getCntStadium");
+                fromServer = connect.responseFromServer(gson.toJson(message));
+                countStadium = Integer.valueOf(fromServer);*/
+                message.setMessageLogic("getStadiumList");
+                fromServer = connect.responseFromServer(gson.toJson(message));
+                stadiumsList.clear();
+                stadiumsList = gson.fromJson(fromServer, new TypeToken<ArrayList<Stadiums>>(){}.getType());
+                message.setMessageLogic("getScheduleList");
+                fromServer = connect.responseFromServer(gson.toJson(message));
+                scheduleList.clear();
+                scheduleList = gson.fromJson(fromServer, new TypeToken<ArrayList<Schedule>>(){}.getType());
                 connect.closeConnection();
                 return "success";
             }catch (Exception e){
@@ -144,10 +156,11 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             super.onPostExecute(s);
             forServer[0] = 0;
             forServer[1] = 0;
-            addStadiums(4);
-            addSchedule(9);
+            //addStadiums(4);
+            //addSchedule(9);
             if (s.equals("success")){
                 Log.i(TAG,"Игры в туре: \n" + gamesInTour.toString());
+                Log.i(TAG,"Список стадионов: \n" + stadiumsList.toString());
                 Log.i(TAG,"Расписвник: \n" + scheduleList.toString());
                 adapter.update(gamesInTour, scheduleList, stadiumsList);
             }else{
