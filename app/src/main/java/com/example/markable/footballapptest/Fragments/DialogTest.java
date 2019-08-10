@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.markable.footballapptest.AddMatchActivity;
 import com.example.markable.footballapptest.Classes.Schedule;
@@ -74,10 +75,11 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                 params.setMargins(5, 5, 5, 5);
                 for(int colum = 0; colum < 4; colum++){
                     if(k != time.size()){
+                        final Schedule s = time.get(k);
                         final Button tv = new Button(getActivity());
                         tv.setLayoutParams(params);
                         if (time.get(k).getBusy_time() == 1){
-                            tv.setEnabled(false);
+                            //tv.setEnabled(false);
                             tv.setBackgroundColor(Color.parseColor("#FFFFEBEE"));
                         }else{
                             tv.setBackgroundColor(Color.parseColor("#FFE8F5E9")); //FFFFEBEE
@@ -88,13 +90,15 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                         tv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                /*if(time.get(k).getBusy_time()==1){
-
-                                }*/
-                                tv.setEnabled(false);
-                                tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
-                                btnActiv(tv);
-                                test = "Спартак - " +pole +"\nВремя "+tv.getText();
+                                if(s.getBusy_time()==1){
+                                    Toast.makeText(context, "Время занято!\n" + "Играют: " + s.getTeam_home()
+                                            + " - " + s.getTeam_guest(),Toast.LENGTH_LONG).show();
+                                }else{
+                                    tv.setEnabled(false);
+                                    tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
+                                    btnActiv(tv);
+                                    test = "Спартак - " +pole +"\nВремя "+tv.getText();
+                                }
                                 //Toast.makeText(getContext(),"Спартак - " +pole +"\nВремя "+tv.getText(), Toast.LENGTH_LONG).show();
                             }
                         });
