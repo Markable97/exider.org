@@ -184,13 +184,13 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    void addStadiums(int n){
+    /*void addStadiums(int n){
         for(int i = 1; i <= n; i++){
             stadiumsList.add(new Stadiums(i, "Спартак - " + i));
         }
-    }
+    }*/
 
-    void addSchedule(int n){
+    /*void addSchedule(int n){
         int time = 9;
         int checked = 0;
         for(int i = 1; i <= stadiumsList.size(); i++){
@@ -204,7 +204,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                         new Stadiums(i, "Спартак - " + i), checked));
             }
         }
-    }
+    }*/
 
     public ArrayList<Schedule> getScheduleList(){
         return scheduleList;

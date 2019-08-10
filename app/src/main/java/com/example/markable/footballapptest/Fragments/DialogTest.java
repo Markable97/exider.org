@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.example.markable.footballapptest.R;
 import java.util.ArrayList;
 
 public class DialogTest extends DialogFragment implements DialogInterface.OnClickListener {
+    private static final String TAG = AddMatchActivity.class.getSimpleName();
     LinearLayout layoutMain;
     Context context;
     ArrayList<View> listView = new ArrayList<>();
@@ -56,17 +58,14 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         stadiumsList = activity.getStadiumsList();
         scheduleList = activity.getScheduleList();
         int k = 0;
-        int k_main = 0;
         for(int i = 0; i < stadiumsList.size(); i++){
             TextView textView = new TextView(getActivity());
             final int pole = i+1;
             textView.setText(stadiumsList.get(i).getNameStadium());
             TableLayout tableLayout = new TableLayout(getActivity());
-            /*tableLayout.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));*/
             tableLayout.setPadding(10,10,10,10);
-            ArrayList<Schedule> time = getTime(stadiumsList.get(i).getNameStadium());
-            //tableLayout.setGravity(Gravity.CENTER);
+            final ArrayList<Schedule> time = getTime(stadiumsList.get(i).getNameStadium());
+            Log.i(TAG, "Для поля " + i + "Расписание: \n" + time);
             for(int row = 0; row <= time.size() % 4 + 1; row++ ){
                 TableRow tableRow = new TableRow(getActivity());
                 tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -84,12 +83,14 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                             tv.setBackgroundColor(Color.parseColor("#FFE8F5E9")); //FFFFEBEE
                         }
                         tv.setText(time.get(k).getMatch_time());
+                        addSchedule(tv, time.get(k));
                         k++;
-                        scheduleList.get(k_main).setView(tv);
-                        listView.add(tv);
                         tv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                /*if(time.get(k).getBusy_time()==1){
+
+                                }*/
                                 tv.setEnabled(false);
                                 tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
                                 btnActiv(tv);
@@ -97,22 +98,16 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                                 //Toast.makeText(getContext(),"Спартак - " +pole +"\nВремя "+tv.getText(), Toast.LENGTH_LONG).show();
                             }
                         });
-                        k_main++;
                         tableRow.addView(tv);
                     }
                 }
                 tableLayout.addView(tableRow);
             }
-            /*GridView gridView = new GridView(getActivity());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, data);
-            gridView.setAdapter(adapter);
-            gridView.setNumColumns(3);*/
             layoutMain.addView(textView);
             layoutMain.addView(tableLayout);
             k=0;
-            //layoutMain.addView(gridView);
         }
-
+        Log.i(TAG, "Расписание с кнпками: \n" + scheduleList.toString());
         return builder.setTitle("Выберите расписания матча")
                 .setView(view)
                 .setPositiveButton("OK", this)
@@ -124,8 +119,8 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
     private ArrayList<Schedule> getTime(String nameStadium) {
         ArrayList<Schedule> time = new ArrayList<>();
         for(Schedule s : scheduleList){
-            if(s.getStadium().getNameStadium().equals(nameStadium)){
-                time.add(new Schedule(s.getMatch_time(), s.getBusy_time()));
+            if(s.getName_stadium().equals(nameStadium)){
+                time.add(s);
             }
         }
         return time;
@@ -142,11 +137,21 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                 break;
         }
     }
-
+    void addSchedule(View view, Schedule s){
+        for(Schedule e : scheduleList){
+            if(e.getMatch_time().equals(s.getMatch_time())&&e.getId_stadium() == s.getId_stadium() ){
+                Button b = (Button) view;
+                Log.i(TAG, "Нажата кнопка " + b.getText() + "поместитьь в " + e.getMatch_time());
+                e.setView(view);
+            }
+        }
+    }
     void btnActiv(View btnActiv){
-        for(int i = 0; i < scheduleList.size(); i++){
-            if(!btnActiv.equals(scheduleList.get(i).getView()) && scheduleList.get(i).getBusy_time()!= 1){
-                Button btn = (Button) listView.get(i);
+        Button b = (Button) btnActiv;
+        Log.i(TAG, "Время кнопки" + b.getText());
+        for(Schedule s : scheduleList){
+            if(!s.getView().equals(btnActiv) && s.getBusy_time()!=1){
+                Button btn = (Button)s.getView();
                 btn.setBackgroundColor(Color.parseColor("#FFE8F5E9"));
                 btn.setEnabled(true);
             }
