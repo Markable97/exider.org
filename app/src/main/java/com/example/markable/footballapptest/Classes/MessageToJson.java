@@ -5,6 +5,7 @@ public class MessageToJson {
     public String messageLogic;
     private int id;
     private int tour;
+    String date;
     private String team_name;
     private MessageRegister user_info;
     String responseFromServer;
@@ -64,6 +65,14 @@ public class MessageToJson {
 
     public int getSettingForApp() {
         return settingForApp;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override

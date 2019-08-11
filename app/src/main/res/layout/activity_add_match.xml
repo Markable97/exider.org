@@ -16,6 +16,14 @@
         android:layout_height="wrap_content"
         android:visibility="visible" />
 
+    <EditText
+        android:id="@+id/editText_dateTour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Дата тура"
+        android:textSize="18sp" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listAddMatches"
         android:layout_width="match_parent"

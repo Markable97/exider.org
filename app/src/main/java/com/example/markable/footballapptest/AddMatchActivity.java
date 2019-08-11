@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest;
 
+import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,9 +27,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
-public class AddMatchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AddMatchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
 
     private static final String TAG = AddMatchActivity.class.getSimpleName();
     ArrayList<String> tours = new ArrayList<>();
@@ -38,7 +43,34 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     Spinner spDivision;
     Spinner spTour;
     RecyclerView recyclerView;
+    EditText dateTour;
     int[] forServer = new int[2];
+    String strDB;
+
+    DatePickerDialog beginPicker;
+    private int mYear, mMonth, mDay;
+    DatePickerDialog.OnDateSetListener beginDateLister = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            String monthNew = "", dayNew = "";
+            if (month + 1 < 10){
+                monthNew = "0" + (month + 1);
+            }else {
+                monthNew = String.valueOf(month + 1);
+            }
+            if (dayOfMonth < 10){
+                dayNew = "0" + dayOfMonth;
+            }else{
+                dayNew = String.valueOf(dayOfMonth);
+            }
+            String str = dayNew + "." + monthNew + "." + year;
+            strDB = year + "-" + monthNew + "-" + dayNew;
+            Log.i(TAG, "Строка для телефона: " + str +
+                    "\n Строка для БД: " + strDB);
+            dateTour.setText(str);
+            new MainServerConnect().execute(forServer[0], forServer[1]);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +94,14 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         spDivision.setAdapter(adapter);
         spDivision.setOnItemSelectedListener(this);
         spTour.setOnItemSelectedListener(this);
+
+        dateTour = (EditText)findViewById(R.id.editText_dateTour);
+        dateTour.setOnTouchListener(this);
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+        beginPicker = new DatePickerDialog(AddMatchActivity.this, beginDateLister, mYear, mMonth, mDay );
     }
 
     @Override
@@ -85,21 +125,23 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                         break;
                 }
                 if(!firsLaunch){
-                    forServer[0] = position + 1;
-                    forServer[1] = spTour.getSelectedItemPosition() + 1;
+                    if(dateTour.getText().length()!=0){
+                        forServer[0] = position + 1;
+                        forServer[1] = spTour.getSelectedItemPosition() + 1;
+                        new MainServerConnect().execute(forServer[0], forServer[1]);
+                        spDivision.setEnabled(false);
+                        spTour.setEnabled(false);
+                    }
+                }
+                break;
+            case R.id.spinner_tour:
+                if(dateTour.getText().length()!=0){
+                    forServer[0] = spDivision.getSelectedItemPosition() + 1;
+                    forServer[1] = position + 1;
                     new MainServerConnect().execute(forServer[0], forServer[1]);
                     spDivision.setEnabled(false);
                     spTour.setEnabled(false);
                 }
-                break;
-            case R.id.spinner_tour:
-                /*Toast.makeText(this, "Выбран тур = " + parent.getItemAtPosition(position),
-                        Toast.LENGTH_SHORT).show();*/
-                forServer[0] = spDivision.getSelectedItemPosition() + 1;
-                forServer[1] = position + 1;
-                new MainServerConnect().execute(forServer[0], forServer[1]);
-                spDivision.setEnabled(false);
-                spTour.setEnabled(false);
                 break;
         }
     }
@@ -112,6 +154,16 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     public void test(String test){
         Toast.makeText(getApplicationContext(),test, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        beginPicker.show();
+        forServer[0] = spDivision.getSelectedItemPosition() + 1;
+        forServer[1] = spTour.getSelectedItemPosition() + 1;
+
+        return true;
+    }
+
     public class MainServerConnect  extends AsyncTask<Integer, Void, String>{
 
         ConnectWithServer connect = new ConnectWithServer();
@@ -123,6 +175,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             Log.i(TAG,"Дивизион = " + integers[0] + " Тур = " + integers[1]);
             MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
+            message.setDate(strDB);
             try{
                 connect.openConnection(); //открывваем соединение
                 fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игр
