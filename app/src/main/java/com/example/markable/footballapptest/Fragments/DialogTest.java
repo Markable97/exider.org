@@ -91,8 +91,10 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                             @Override
                             public void onClick(View view) {
                                 if(s.getBusy_time()==1){
-                                    Toast.makeText(context, "Время занято!\n" + "Играют: " + s.getTeam_home()
-                                            + " - " + s.getTeam_guest(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, "Время занято!\n" +
+                                            "Играют: " +s.getName_division() + " тур - " +
+                                            s.getId_tour() + "\n" +
+                                            s.getTeam_home() + " - " + s.getTeam_guest(),Toast.LENGTH_LONG).show();
                                 }else{
                                     tv.setEnabled(false);
                                     tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
