@@ -151,8 +151,24 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
-    public void test(String test){
-        Toast.makeText(getApplicationContext(),test, Toast.LENGTH_LONG).show();
+    public void test(Schedule test){
+        if(test == null){
+            Log.i(TAG, "Время занято!!");
+        }else{
+            Log.i(TAG, "Выбрано время из доступного расписания: \n" + test.toString());
+            addInfoInMatch(test);
+        }
+        //Toast.makeText(getApplicationContext(),test.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    private void addInfoInMatch(Schedule test) {
+        for(NextMatches match : gamesInTour){
+            if(match.getIdMatch() == test.getId_match()){
+                match.setNameStadium(test.getName_stadium());
+                match.setDate(test.getMatch_date() + " " + test.getMatch_time());
+            }
+        }
+        adapter.updateMatches(gamesInTour);
     }
 
     @Override

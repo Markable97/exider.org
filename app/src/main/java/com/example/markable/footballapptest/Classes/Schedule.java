@@ -10,6 +10,7 @@ public class Schedule {
     int id_tour;
     String name_stadium;
     int id_match;
+    int id_division;
     String name_division;
     String team_home;
     String team_guest;
@@ -116,6 +117,50 @@ public class Schedule {
         return id_tour;
     }
 
+    public int getId_division() {
+        return id_division;
+    }
+
+    public void setId_division(int id_division) {
+        this.id_division = id_division;
+    }
+
+    public void setMatch_date(String match_date) {
+        this.match_date = match_date;
+    }
+
+    public void setId_stadium(int id_stadium) {
+        this.id_stadium = id_stadium;
+    }
+
+    public void setId_tour(int id_tour) {
+        this.id_tour = id_tour;
+    }
+
+    public void setName_stadium(String name_stadium) {
+        this.name_stadium = name_stadium;
+    }
+
+    public void setId_match(int id_match) {
+        this.id_match = id_match;
+    }
+
+    public void setName_division(String name_division) {
+        this.name_division = name_division;
+    }
+
+    public void setTeam_home(String team_home) {
+        this.team_home = team_home;
+    }
+
+    public void setTeam_guest(String team_guest) {
+        this.team_guest = team_guest;
+    }
+
+    public void setBusy_time(int busy_time) {
+        this.busy_time = busy_time;
+    }
+
     @Override
     public String toString() {
         return "Schedule{" +
@@ -125,10 +170,11 @@ public class Schedule {
                 ", id_tour=" + id_tour +
                 ", name_stadium='" + name_stadium + '\'' +
                 ", id_match=" + id_match +
+                ", name_division='" + name_division + '\'' +
                 ", team_home='" + team_home + '\'' +
                 ", team_guest='" + team_guest + '\'' +
                 ", busy_time=" + busy_time +
                 ", view=" + view +
-                '}' + "\n";
+                '}'+"\n";
     }
 }

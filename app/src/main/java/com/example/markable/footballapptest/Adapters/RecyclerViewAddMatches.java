@@ -47,10 +47,10 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
             holder.tour.setText("Тур " + match.getIdTour());
             holder.nameHome.setText(match.getTeamHome());
             holder.nameVisit.setText(match.getTeamVisit());
-            holder.date.setText("");
-            holder.stadium.setText("");
+            holder.date.setText(match.getDate());
+            holder.stadium.setText(match.getNameStadium());
             holder.refere.setText("Судья матча: ");
-
+            holder.bind(match);
         }
     }
 
@@ -66,6 +66,10 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
         notifyDataSetChanged();
     }
 
+    public void updateMatches(ArrayList<NextMatches> gamesInTour){
+        this.list =  gamesInTour;
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -76,7 +80,9 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
         TextView stadium;
         TextView refere;
 
-        public ViewHolder(View itemView) {
+        NextMatches match;
+
+        public ViewHolder(final View itemView) {
             super(itemView);
             tour = (TextView) itemView.findViewById(R.id.addMatchTour);
             nameHome = (TextView) itemView.findViewById(R.id.addMatchHome);
@@ -88,13 +94,19 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
-                    DialogTest test = new DialogTest();
-                    FragmentTransaction transaction = manager.beginTransaction();
-                    //dialog.show(transaction, "dlgAddMatch");
-                    test.show(transaction, "dlgAddMatch");
+                    if(stadium.getText().length()==0){
+                        //MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
+                        DialogTest test = DialogTest.newInstance(match);
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        //dialog.show(transaction, "dlgAddMatch");
+                        test.show(transaction, "dlgAddMatch");
+                    }
                 }
             });
+
+        }
+        public void bind(NextMatches matchClick){
+            this.match = matchClick;
         }
     }
 }

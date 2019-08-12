@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.markable.footballapptest.AddMatchActivity;
+import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.Schedule;
 import com.example.markable.footballapptest.Classes.Stadiums;
 import com.example.markable.footballapptest.R;
@@ -34,7 +35,9 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
     ArrayList<View> listView = new ArrayList<>();
     ArrayList<Stadiums> stadiumsList = new ArrayList<>();
     ArrayList<Schedule> scheduleList = new ArrayList<>();
-    String[] data = {"10:20","11:50","12:40","13:20","16:00","20:20","17:10","18:40","19:50"};
+    //String[] data = {"10:20","11:50","12:40","13:20","16:00","20:20","17:10","18:40","19:50"};
+    Schedule returnDialog;
+    NextMatches matchForSchedule;
     String test = "Что-то";
     final String TAG_DIALOG = "dialog_add_time_match";
     AddMatchActivity activity;
@@ -44,11 +47,18 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         DialogTest dialogTest = new DialogTest();
         return dialogTest;
     }*/
-
+    public static DialogTest newInstance(NextMatches match){
+        Bundle args = new Bundle();
+        args.putSerializable("match_schedule", match);
+        DialogTest fragment = new DialogTest();
+        fragment.setArguments(args);
+        return fragment;
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        matchForSchedule = (NextMatches) getArguments().getSerializable("match_schedule");
         context = getActivity();
         activity = (AddMatchActivity)getActivity();
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -60,7 +70,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         scheduleList = activity.getScheduleList();
         int k = 0;
         for(int i = 0; i < stadiumsList.size(); i++){
-            TextView textView = new TextView(getActivity());
+            final TextView textView = new TextView(getActivity());
             final int pole = i+1;
             textView.setText(stadiumsList.get(i).getNameStadium());
             TableLayout tableLayout = new TableLayout(getActivity());
@@ -91,6 +101,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                             @Override
                             public void onClick(View view) {
                                 if(s.getBusy_time()==1){
+                                    returnDialog = null;
                                     Toast.makeText(context, "Время занято!\n" +
                                             "Играют: " +s.getName_division() + " тур - " +
                                             s.getId_tour() + "\n" +
@@ -98,6 +109,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                                 }else{
                                     tv.setEnabled(false);
                                     tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
+                                    returnDialog = s;
                                     btnActiv(tv);
                                     test = "Спартак - " +pole +"\nВремя "+tv.getText();
                                 }
@@ -136,7 +148,16 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
     public void onClick(DialogInterface dialogInterface, int i) {
         switch (i){
             case Dialog.BUTTON_POSITIVE:
-                ((AddMatchActivity)getActivity()).test(test);
+                if(returnDialog != null){
+                    returnDialog.setId_match(matchForSchedule.getIdMatch());
+                    returnDialog.setId_tour(matchForSchedule.getIdTour());
+                    returnDialog.setId_division(matchForSchedule.getIdDivision());
+                    returnDialog.setName_division(matchForSchedule.getNameDivision());
+                    returnDialog.setTeam_home(matchForSchedule.getTeamHome());
+                    returnDialog.setTeam_guest(matchForSchedule.getTeamVisit());
+                    returnDialog.setBusy_time(1);
+                }
+                ((AddMatchActivity)getActivity()).test(returnDialog);
                 break;
             case Dialog.BUTTON_NEGATIVE:
                 dismiss();

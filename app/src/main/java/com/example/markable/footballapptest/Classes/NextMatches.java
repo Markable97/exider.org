@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class NextMatches implements Serializable {
 
     private String nameDivision;
+    private int idMatch;
+    private int idDivision;
     private int idTour;
     private String teamHome;
     private String teamVisit;
@@ -44,15 +46,33 @@ public class NextMatches implements Serializable {
         return nameStadium;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setNameStadium(String nameStadium) {
+        this.nameStadium = nameStadium;
+    }
+
+    public int getIdMatch() {
+        return idMatch;
+    }
+
+    public int getIdDivision() {
+        return idDivision;
+    }
+
     @Override
     public String toString() {
         return "NextMatches{" +
                 "nameDivision='" + nameDivision + '\'' +
+                ", idMatch=" + idMatch +
+                ", idDivision=" + idDivision +
                 ", idTour=" + idTour +
                 ", teamHome='" + teamHome + '\'' +
                 ", teamVisit='" + teamVisit + '\'' +
                 ", date='" + date + '\'' +
                 ", nameStadium='" + nameStadium + '\'' +
-                "}\n";
+                '}' + "\n";
     }
 }
