@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.Schedule;
 import com.example.markable.footballapptest.Classes.Stadiums;
+import com.example.markable.footballapptest.Fragments.DialogTest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,7 +39,6 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
     ArrayList<Stadiums> stadiumsList = new ArrayList<>();
     ArrayList<Schedule> scheduleList = new ArrayList<>();
-    int countStadium = 0;
     RecyclerViewAddMatches adapter;
     boolean firsLaunch = true;
     Spinner spDivision;
@@ -81,7 +82,17 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         spTour = (Spinner) findViewById(R.id.spinner_tour);
         recyclerView = (RecyclerView) findViewById(R.id.listAddMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAddMatches(gamesInTour, getSupportFragmentManager());
+        RecyclerViewAddMatches.OnAddMatchClickListener listener = new RecyclerViewAddMatches.OnAddMatchClickListener(){
+            @Override
+            public void onMatchClick(NextMatches match) {
+                //MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
+                DialogTest test = DialogTest.newInstance(match);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                //dialog.show(transaction, "dlgAddMatch");
+                test.show(transaction, "dlgAddMatch");
+            }
+        };
+        adapter = new RecyclerViewAddMatches(gamesInTour, listener/*getSupportFragmentManager()*/);
         recyclerView.setAdapter(adapter);
 
         ArrayAdapter<String> adapterTour = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,

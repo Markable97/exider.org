@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,10 +29,12 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
     FragmentManager manager;
     ArrayList<Stadiums> stadiumsList = new ArrayList<>();
     ArrayList<Schedule> scheduleList = new ArrayList<>();
+    private OnAddMatchClickListener onAddMatchClickListener;
 
-    public RecyclerViewAddMatches(ArrayList<NextMatches> gamesInTour, FragmentManager manager) {
+    public RecyclerViewAddMatches(ArrayList<NextMatches> gamesInTour, OnAddMatchClickListener listener/*, FragmentManager manager*/) {
         this.list = gamesInTour;
-        this.manager = manager;
+        this.onAddMatchClickListener = listener;
+        //this.manager = manager;
     }
 
     @Override
@@ -71,6 +74,9 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
         notifyDataSetChanged();
     }
 
+    public interface OnAddMatchClickListener{
+        void onMatchClick(NextMatches match);
+    }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tour;
@@ -95,11 +101,13 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
                 @Override
                 public void onClick(View view) {
                     if(stadium.getText().length()==0){
-                        //MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
+                        match = list.get(getLayoutPosition());
+                        onAddMatchClickListener.onMatchClick(match);
+                        /*//MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
                         DialogTest test = DialogTest.newInstance(match);
                         FragmentTransaction transaction = manager.beginTransaction();
                         //dialog.show(transaction, "dlgAddMatch");
-                        test.show(transaction, "dlgAddMatch");
+                        test.show(transaction, "dlgAddMatch");*/
                     }
                 }
             });
