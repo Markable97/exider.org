@@ -64,7 +64,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_dialog_add_match_time, null);
         layoutMain = (LinearLayout) view.findViewById(R.id.liner_dialog_add_match);
-        layoutMain.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        layoutMain.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         stadiumsList = activity.getStadiumsList();
         scheduleList = activity.getScheduleList();
@@ -77,17 +77,24 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
             tableLayout.setPadding(10,10,10,10);
             final ArrayList<Schedule> time = getTime(stadiumsList.get(i).getNameStadium());
             Log.i(TAG, "Для поля " + i + "Расписание: \n" + time);
-            for(int row = 0; row <= time.size() % 4 + 1; row++ ){
+            for(int row = 0; row <= time.size() / 4; row++ ){
                 TableRow tableRow = new TableRow(getActivity());
                 tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT, 1);
+                TableRow.LayoutParams params2 = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
                 params.setMargins(5, 5, 5, 5);
+                params2.setMargins(5, 5, 5, 5);
                 for(int colum = 0; colum < 4; colum++){
                     if(k != time.size()){
                         final Schedule s = time.get(k);
                         final Button tv = new Button(getActivity());
                         tv.setLayoutParams(params);
+                        /*if(time.size()-k+1 < 3 && colum!=3 ){
+                        }else{
+                            tv.setLayoutParams(params);
+                        }*/
                         if (time.get(k).getBusy_time() == 1){
                             //tv.setEnabled(false);
                             tv.setBackgroundColor(Color.parseColor("#FFFFEBEE"));
@@ -117,6 +124,11 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                             }
                         });
                         tableRow.addView(tv);
+                    }else{
+                        Button dummy = new Button(getActivity());
+                        dummy.setLayoutParams(params);
+                        dummy.setVisibility(View.INVISIBLE);
+                        tableRow.addView(dummy);
                     }
                 }
                 tableLayout.addView(tableRow);
@@ -157,7 +169,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                     returnDialog.setTeam_guest(matchForSchedule.getTeamVisit());
                     returnDialog.setBusy_time(1);
                 }
-                ((AddMatchActivity)getActivity()).cliclScheduale(returnDialog);
+                ((AddMatchActivity)getActivity()).clickSchedule(returnDialog);
                 break;
             case Dialog.BUTTON_NEGATIVE:
                 dismiss();

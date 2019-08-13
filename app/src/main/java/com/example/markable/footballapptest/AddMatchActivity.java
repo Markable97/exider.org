@@ -1,11 +1,14 @@
 package com.example.markable.footballapptest;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -32,13 +36,16 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.function.Predicate;
 
 
-public class AddMatchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
+public class AddMatchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnTouchListener, View.OnClickListener {
 
     private static final String TAG = AddMatchActivity.class.getSimpleName();
     ArrayList<String> tours = new ArrayList<>();
     private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
+    ArrayList<Schedule> forServerDB = new ArrayList<>();
     ArrayList<Stadiums> stadiumsList = new ArrayList<>();
     ArrayList<Schedule> scheduleList = new ArrayList<>();
     RecyclerViewAddMatches adapter;
@@ -47,6 +54,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     Spinner spTour;
     RecyclerView recyclerView;
     EditText dateTour;
+    Button btnSend;
     int[] forServer = new int[2];
     String strDB;
 
@@ -107,6 +115,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                                         if(s.getMatch_date().equals(date) && s.getMatch_time().equals(time)
                                                 && s.getName_stadium().equals(match.getNameStadium())){
                                             s.setBusy_time(0);
+                                            deleteScheduleForServer(s);
                                         }
                                     }
                                     for(NextMatches m : gamesInTour){
@@ -149,6 +158,9 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         mMonth = cal.get(Calendar.MONTH);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
         beginPicker = new DatePickerDialog(AddMatchActivity.this, beginDateLister, mYear, mMonth, mDay );
+
+        btnSend = (Button)findViewById(R.id.btn_sendSchedule);
+        btnSend.setOnClickListener(this);
     }
 
     @Override
@@ -198,7 +210,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
 
     }
     //Здесь возвращается то, что было выбрано в диалоговом окне с расписанием
-    public void cliclScheduale(Schedule test){
+    public void clickSchedule(Schedule test){
         if(test == null){
             Log.i(TAG, "Время занято!!");
         }else{
@@ -216,6 +228,52 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             }
         }
         adapter.update(gamesInTour);
+        addScheduleForServer(test);
+    }
+
+    //@RequiresApi(api = Build.VERSION_CODES.N)
+    @TargetApi(Build.VERSION_CODES.N)
+    void deleteScheduleForServer(final Schedule test){
+        if (Build.VERSION.SDK_INT >= 23){
+            Log.i(TAG, "Выполнилось API >= 23");
+            forServerDB.removeIf(new Predicate<Schedule>() {
+                @Override
+                public boolean test(Schedule x) {
+                    return x.getMatch_time().equals(test.getMatch_time()) && x.getMatch_date().equals(test.getMatch_date()) &&
+                            x.getName_stadium().equals(test.getName_stadium());
+                }
+            });
+        }else{
+            Log.i(TAG, "Выполнилось API < 23");
+            Iterator<Schedule> iterator = forServerDB.iterator();
+            while (iterator.hasNext()){
+                Schedule s = iterator.next();
+                if(s.getMatch_date().equals(test.getMatch_date()) && s.getMatch_time().equals(test.getMatch_time())
+                        && s.getName_stadium().equals(test.getName_stadium()) ){
+                    iterator.remove();
+                }
+            }
+        }
+
+    }
+
+    void addScheduleForServer(Schedule test){
+        if(!forServerDB.isEmpty()){
+            boolean f = true;
+            for(Schedule s : forServerDB){
+                if(s.getMatch_date().equals(test.getMatch_date()) && s.getMatch_time().equals(test.getMatch_time())
+                        && s.getName_stadium().equals(s.getName_stadium())){
+                    s = test;
+                    forServerDB.add(s);
+                    f = false;
+                }
+            }
+            if(f){
+                forServerDB.add(test);
+            }
+        }else{
+            forServerDB.add(test);
+        }
     }
 
     @Override
@@ -225,6 +283,13 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         forServer[1] = spTour.getSelectedItemPosition() + 1;
 
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.btn_sendSchedule){
+            Log.i(TAG, "Отправка для сервера новыых значений: \n" + forServerDB);
+        }
     }
 
     public class MainServerConnect  extends AsyncTask<Integer, Void, String>{
@@ -272,6 +337,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             super.onPostExecute(s);
             forServer[0] = 0;
             forServer[1] = 0;
+            forServerDB.clear();
             //addStadiums(4);
             //addSchedule(9);
             if (s.equals("success")){
