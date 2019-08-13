@@ -157,7 +157,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                     returnDialog.setTeam_guest(matchForSchedule.getTeamVisit());
                     returnDialog.setBusy_time(1);
                 }
-                ((AddMatchActivity)getActivity()).test(returnDialog);
+                ((AddMatchActivity)getActivity()).cliclScheduale(returnDialog);
                 break;
             case Dialog.BUTTON_NEGATIVE:
                 dismiss();

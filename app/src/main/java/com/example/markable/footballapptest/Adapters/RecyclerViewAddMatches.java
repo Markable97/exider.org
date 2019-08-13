@@ -69,13 +69,19 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
         notifyDataSetChanged();
     }
 
-    public void updateMatches(ArrayList<NextMatches> gamesInTour){
+    public void update(ArrayList<NextMatches> gamesInTour){
         this.list =  gamesInTour;
         notifyDataSetChanged();
     }
 
+    public void update(ArrayList<NextMatches> matches, ArrayList<Schedule> schedule){
+        this.list = matches;
+        this.scheduleList = schedule;
+        notifyDataSetChanged();
+    }
+
     public interface OnAddMatchClickListener{
-        void onMatchClick(NextMatches match);
+        void onMatchClick(NextMatches match, int check);
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -102,12 +108,10 @@ public class RecyclerViewAddMatches extends RecyclerView.Adapter<RecyclerViewAdd
                 public void onClick(View view) {
                     if(stadium.getText().length()==0){
                         match = list.get(getLayoutPosition());
-                        onAddMatchClickListener.onMatchClick(match);
-                        /*//MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
-                        DialogTest test = DialogTest.newInstance(match);
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        //dialog.show(transaction, "dlgAddMatch");
-                        test.show(transaction, "dlgAddMatch");*/
+                        onAddMatchClickListener.onMatchClick(match, 1);
+                    }else{
+                        match = list.get(getLayoutPosition());
+                        onAddMatchClickListener.onMatchClick(match, 0);
                     }
                 }
             });

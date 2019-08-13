@@ -1,6 +1,8 @@
 package com.example.markable.footballapptest;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -82,14 +84,48 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         spTour = (Spinner) findViewById(R.id.spinner_tour);
         recyclerView = (RecyclerView) findViewById(R.id.listAddMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Обработка нажатия на список в RecyclerView
         RecyclerViewAddMatches.OnAddMatchClickListener listener = new RecyclerViewAddMatches.OnAddMatchClickListener(){
             @Override
-            public void onMatchClick(NextMatches match) {
-                //MyDialogFragmentAddMatchTime dialog = new MyDialogFragmentAddMatchTime();
-                DialogTest test = DialogTest.newInstance(match);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                //dialog.show(transaction, "dlgAddMatch");
-                test.show(transaction, "dlgAddMatch");
+            public void onMatchClick(final NextMatches match, int check) {
+                if (check == 1){
+                    DialogTest test = DialogTest.newInstance(match);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    test.show(transaction, "dlgAddMatch");
+                }else{
+                    AlertDialog.Builder bulder = new AlertDialog.Builder(AddMatchActivity.this);
+                    bulder.setTitle("Изменить?")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String str[] = match.getDate().split(" ");
+                                    String date = str[0];
+                                    String time = str[1];
+                                    Log.i(TAG, "Данные по клику: \n" + match.toString());
+                                    Log.i(TAG, "Расписание: \n " + scheduleList.toString());
+                                    for(Schedule s : scheduleList){
+                                        if(s.getMatch_date().equals(date) && s.getMatch_time().equals(time)
+                                                && s.getName_stadium().equals(match.getNameStadium())){
+                                            s.setBusy_time(0);
+                                        }
+                                    }
+                                    for(NextMatches m : gamesInTour){
+                                        if(m.getIdMatch() == match.getIdMatch()){
+                                            match.setDate("");
+                                            match.setNameStadium("");
+                                        }
+                                    }
+                                    adapter.update(gamesInTour, scheduleList);
+                                }
+                            })
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .show();
+                }
             }
         };
         adapter = new RecyclerViewAddMatches(gamesInTour, listener/*getSupportFragmentManager()*/);
@@ -161,8 +197,8 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-    public void test(Schedule test){
+    //Здесь возвращается то, что было выбрано в диалоговом окне с расписанием
+    public void cliclScheduale(Schedule test){
         if(test == null){
             Log.i(TAG, "Время занято!!");
         }else{
@@ -179,7 +215,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                 match.setDate(test.getMatch_date() + " " + test.getMatch_time());
             }
         }
-        adapter.updateMatches(gamesInTour);
+        adapter.update(gamesInTour);
     }
 
     @Override
