@@ -42,6 +42,9 @@ import java.util.function.Predicate;
 
 public class AddMatchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnTouchListener, View.OnClickListener {
 
+    ConnectWithServer connect = new ConnectWithServer();
+    Gson gson = new Gson();
+
     private static final String TAG = AddMatchActivity.class.getSimpleName();
     ArrayList<String> tours = new ArrayList<>();
     private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
@@ -289,13 +292,58 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     public void onClick(View view) {
         if(view.getId() == R.id.btn_sendSchedule){
             Log.i(TAG, "Отправка для сервера новыых значений: \n" + forServerDB);
+            new MainServerConneсеSentSchedule().execute();
+        }
+    }
+
+    public class MainServerConneсеSentSchedule extends AsyncTask<Integer, Void, String>{
+
+        String fromServer;
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+            Log.i(TAG, "doInBackground: начало потока отправки расписани!!!!!!!!!!!!!!!!!!!!!");
+            if(!forServerDB.isEmpty()){
+                MessageToJson message = new MessageToJson("setSchedule", forServerDB);
+                try{
+                    connect.openConnection();
+                    Log.i(TAG, "Для сервера в виде JSON" + gson.toJson(message));
+                    fromServer = connect.responseFromServer(gson.toJson(message));
+                    connect.closeConnection();
+                    return fromServer;
+                }catch (Exception e){
+                    Log.i(TAG, "ERROR \n" + e.getMessage());
+                    connect.closeConnection();
+                    connect = null;
+                    return "bad"; //если какакя-то ошибка возвращаем плохо
+                }
+            }else{
+                return "EMPTY";
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (s){
+                case "SUCCESS":
+                    Toast.makeText(getApplicationContext(), "Время добавлено", Toast.LENGTH_SHORT).show();
+                    forServerDB.clear();
+                    break;
+                case "EMPTY":
+                    Toast.makeText(getApplicationContext(), "Список для отправки пуст", Toast.LENGTH_SHORT).show();
+                    break;
+                case "bad":
+                    Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
     public class MainServerConnect  extends AsyncTask<Integer, Void, String>{
 
-        ConnectWithServer connect = new ConnectWithServer();
-        Gson gson = new Gson();
+
         String fromServer;
 
         @Override
@@ -359,34 +407,13 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             tours.add("Тур " + i);
         }
     }
+
     void changeTour(int n){
         tours.clear();
         for(int i = 1; i <= n; i++){
             tours.add("Тур " + i);
         }
     }
-
-    /*void addStadiums(int n){
-        for(int i = 1; i <= n; i++){
-            stadiumsList.add(new Stadiums(i, "Спартак - " + i));
-        }
-    }*/
-
-    /*void addSchedule(int n){
-        int time = 9;
-        int checked = 0;
-        for(int i = 1; i <= stadiumsList.size(); i++){
-            for(int j = 1; j <= n; j++){
-                if(j % 2 == 0){
-                    checked = 0;
-                }else{
-                    checked = 1;
-                }
-                scheduleList.add(new Schedule(String.valueOf(9+j) + ": 20",
-                        new Stadiums(i, "Спартак - " + i), checked));
-            }
-        }
-    }*/
 
     public ArrayList<Schedule> getScheduleList(){
         return scheduleList;

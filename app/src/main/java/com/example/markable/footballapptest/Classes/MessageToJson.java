@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest.Classes;
 
+import java.util.ArrayList;
+
 public class MessageToJson {
 
     public String messageLogic;
@@ -10,6 +12,7 @@ public class MessageToJson {
     private MessageRegister user_info;
     String responseFromServer;
     int settingForApp;
+    ArrayList<Schedule> schedule;
 
     public MessageToJson(String messageLogic, int id, String team_name, MessageRegister user_info) {
         this.messageLogic = messageLogic;
@@ -17,6 +20,11 @@ public class MessageToJson {
         this.team_name = team_name;
         this.user_info = user_info;
 
+    }
+
+    public MessageToJson(String messageLogic, ArrayList<Schedule> schedule) {
+        this.messageLogic = messageLogic;
+        this.schedule = schedule;
     }
 
     public MessageToJson(String messageLogic, int id, int tour) {
