@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -119,6 +118,12 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                                                 && s.getName_stadium().equals(match.getNameStadium())){
                                             s.setBusy_time(0);
                                             deleteScheduleForServer(s);
+                                            s.setTeam_home("");
+                                            s.setTeam_guest("");
+                                            s.setId_match(0);
+                                            s.setName_division("");
+                                            s.setId_tour(0);
+                                            addInfoInMatch(s);
                                         }
                                     }
                                     for(NextMatches m : gamesInTour){
@@ -128,6 +133,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                                         }
                                     }
                                     adapter.update(gamesInTour, scheduleList);
+                                    new MainServerConneсtSentSchedule().execute();
                                 }
                             })
                             .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -292,11 +298,11 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     public void onClick(View view) {
         if(view.getId() == R.id.btn_sendSchedule){
             Log.i(TAG, "Отправка для сервера новыых значений: \n" + forServerDB);
-            new MainServerConneсеSentSchedule().execute();
+            new MainServerConneсtSentSchedule().execute();
         }
     }
 
-    public class MainServerConneсеSentSchedule extends AsyncTask<Integer, Void, String>{
+    public class MainServerConneсtSentSchedule extends AsyncTask<Integer, Void, String>{
 
         String fromServer;
 
@@ -328,8 +334,11 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             super.onPostExecute(s);
             switch (s){
                 case "SUCCESS":
-                    Toast.makeText(getApplicationContext(), "Время добавлено", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Успешно", Toast.LENGTH_SHORT).show();
                     forServerDB.clear();
+                    forServer[0] = spDivision.getSelectedItemPosition() + 1;
+                    forServer[1] = spTour.getSelectedItemPosition() + 1;
+                    new MainServerConnect().execute(forServer[0], forServer[1]);
                     break;
                 case "EMPTY":
                     Toast.makeText(getApplicationContext(), "Список для отправки пуст", Toast.LENGTH_SHORT).show();
