@@ -34,5 +34,14 @@
     <string name="name">Fullname</string>
     <string name="hint_teamName">Команда</string>
 
+    <string-array name="divisions_list">
+        <item>Высший дивизион</item>
+        <item>Первый дивизион</item>
+        <item>Второй дивизион А</item>
+        <item>Второй дивизион В</item>
+        <item>Третий дивизион А</item>
+        <item>Третий дивизион В</item>
+    </string-array>>
+
 
 </resources>

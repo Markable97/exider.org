@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.markable.footballapptest"
-        minSdkVersion 19
+        minSdkVersion 17
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 21
         versionCode 1
