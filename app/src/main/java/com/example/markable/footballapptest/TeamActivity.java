@@ -33,7 +33,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     private static final String TAG = "TeamAcrivity";
 
     private ImageFromServer image;
-
+    private String nameTeamFromActivity;
 
     TextView nameTeam;
     ImageView imageTeam;
@@ -54,17 +54,20 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_content);
         Bundle args = getIntent().getExtras();
-        if(args!=null){
-            image = args.getParcelable("dateForActivity");
-        }
-
-        new ServerConnect().execute(image.getNameImage());
-
         nameTeam = findViewById(R.id.teamAcrivity_tv_teamName);
-        nameTeam.setText(image.getNameImage());
 
         imageTeam = findViewById(R.id.teamActivity_im_image);
-        imageTeam.setImageBitmap(image.getBitmapImageBig());
+        if(args!=null){
+            image = args.getParcelable("dateForActivity");
+            nameTeamFromActivity = args.getString("dataForActivityName");
+            if (image!=null){
+                imageTeam.setImageBitmap(image.getBitmapImageBig());
+            }
+            nameTeam.setText(nameTeamFromActivity);
+        }
+
+        new ServerConnect().execute(nameTeamFromActivity);
+
 
         rb_statistic = findViewById(R.id.rb_statisticPlayers);
         rb_statistic.setChecked(true);
@@ -135,17 +138,17 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
                 arrayTeamImage = connect.fileFromServer();
-
-                for(PrevMatches match : arrayAllMatches){
-                    for(ImageFromServer image : arrayTeamImage){
-                        if(image.getNameImage().equals(match.getTeamHome())){
-                            match.setImageHome(image);
-                        }else if (image.getNameImage().equals(match.getTeamVisit())){
-                            match.setImageVisit(image);
+                if(arrayTeamImage!=null){
+                    for(PrevMatches match : arrayAllMatches){
+                        for(ImageFromServer image : arrayTeamImage){
+                            if(image.getNameImage().equals(match.getTeamHome())){
+                                match.setImageHome(image);
+                            }else if (image.getNameImage().equals(match.getTeamVisit())){
+                                match.setImageVisit(image);
+                            }
                         }
                     }
                 }
-
                 connect.closeConnection();
                 return "success"; //все хорошо
             }catch (Exception e){

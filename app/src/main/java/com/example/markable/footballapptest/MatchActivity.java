@@ -60,8 +60,7 @@ public class MatchActivity extends AppCompatActivity {
             matches = (PrevMatches) args.getSerializable("information");
             //imageHome = args.getParcelable("imageHome");
             //imageVisit = args.getParcelable("imageVisit");
-            Log.i(TAG, "onCreate: " + matches.toString() + matches.getImageHome().getNameImage()
-                    + matches.getImageVisit().getNameImage());
+            Log.i(TAG, "onCreate: " + matches.toString());
         }
 
         layout_home = findViewById(R.id.match_layoutHome);
@@ -77,9 +76,13 @@ public class MatchActivity extends AppCompatActivity {
         nameTeamVisit = findViewById(R.id.match_teamGuest);
         nameTeamVisit.setText(matches.getTeamVisit());
         imageTeamHome = findViewById(R.id.match_imageHome);
-        imageTeamHome.setImageBitmap(matches.getImageHome().getBitmapImageBig());
+        if(matches.getImageHome()!=null){
+            imageTeamHome.setImageBitmap(matches.getImageHome().getBitmapImageBig());
+        }
         imageTeamVisit = findViewById(R.id.match_imageGuest);
-        imageTeamVisit.setImageBitmap(matches.getImageVisit().getBitmapImageBig());
+        if(matches.getImageVisit()!=null){
+            imageTeamVisit.setImageBitmap(matches.getImageVisit().getBitmapImageBig());
+        }
 
         textViewParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);

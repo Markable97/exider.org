@@ -29,7 +29,7 @@ import java.util.List;
 public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewForResults.ViewHolder> {
 
     private static final String TAG = "AdapterResults";
-
+    PrevMatches match;
     private List<PrevMatches>  list;
 
     //конструктов для адаптера
@@ -50,11 +50,15 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     }
     @Override
     public void onBindViewHolder(final RecyclerViewForResults.ViewHolder holder, final int position) {
-        PrevMatches match = list.get(position);
+        match = list.get(position);
 
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
-        holder.imageTeamHome.setImageBitmap(match.getImageHome().getBitmapImageBig());
-        holder.imageTeamVisit.setImageBitmap(match.getImageVisit().getBitmapImageBig());
+        if(match.getImageHome()!=null){
+            holder.imageTeamHome.setImageBitmap(match.getImageHome().getBitmapImageBig());
+        }
+        if(match.getImageVisit()!=null){
+            holder.imageTeamVisit.setImageBitmap(match.getImageVisit().getBitmapImageBig());
+        }
         holder.nameTeamHome.setText(match.getTeamHome());
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));

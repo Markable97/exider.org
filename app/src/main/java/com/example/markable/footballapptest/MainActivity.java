@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 /*Snackbar.make(view, "Отправка заявки на игру", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                if(manager.settingApp() == 1){
+                if(manager.settingApp() == 2){
                     Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
                     startActivity(intent);
                 }else{
