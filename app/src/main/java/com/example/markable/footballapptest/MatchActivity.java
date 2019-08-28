@@ -92,7 +92,7 @@ public class MatchActivity extends AppCompatActivity {
         new MainServerConnect().execute(matches.getIdMatch());
     }
 
-    public class MainServerConnect extends AsyncTask<Integer, Void, String> {
+    private class MainServerConnect extends AsyncTask<Integer, Void, String> {
 
         ConnectWithServer connect = new ConnectWithServer();
         Gson gson = new Gson();

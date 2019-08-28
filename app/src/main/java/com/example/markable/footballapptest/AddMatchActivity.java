@@ -302,7 +302,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public class MainServerConneсtSentSchedule extends AsyncTask<Integer, Void, String>{
+    private class MainServerConneсtSentSchedule extends AsyncTask<Integer, Void, String>{
 
         String fromServer;
 
@@ -350,7 +350,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public class MainServerConnect  extends AsyncTask<Integer, Void, String>{
+    private class MainServerConnect  extends AsyncTask<Integer, Void, String>{
 
 
         String fromServer;
@@ -360,7 +360,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             Log.i(TAG,"Дивизион = " + integers[0] + " Тур = " + integers[1]);
             MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
-            message.setDate(strDB);
+
             try{
                 connect.openConnection(); //открывваем соединение
                 fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игр
@@ -369,6 +369,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                 /*message.setMessageLogic("getCntStadium");
                 fromServer = connect.responseFromServer(gson.toJson(message));
                 countStadium = Integer.valueOf(fromServer);*/
+                message.setDate(strDB);
                 message.setMessageLogic("getStadiumList");
                 fromServer = connect.responseFromServer(gson.toJson(message));
                 stadiumsList.clear();

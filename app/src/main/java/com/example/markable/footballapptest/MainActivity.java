@@ -75,7 +75,25 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 /*Snackbar.make(view, "Отправка заявки на игру", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                if(manager.settingApp() == 2){
+                Intent intent = null;
+                switch (manager.settingApp()){
+                    case 3:
+                        intent = new Intent(getApplicationContext(),AddMatchActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(getApplicationContext(),AddResultsActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        MyDialogFragment myDialogFragment = new MyDialogFragment();
+                        FragmentManager manager = getSupportFragmentManager();
+                        //myDialogFragment.show(manager, "dialog");
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        myDialogFragment.show(transaction, "dialog");
+                        break;
+                }
+                /*if(manager.settingApp() == 2){
                     Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
                     startActivity(intent);
                 }else{
@@ -84,7 +102,7 @@ public class MainActivity extends AppCompatActivity
                     //myDialogFragment.show(manager, "dialog");
                     FragmentTransaction transaction = manager.beginTransaction();
                     myDialogFragment.show(transaction, "dialog");
-                }
+                }*/
             }
         });
 
@@ -187,7 +205,7 @@ public class MainActivity extends AppCompatActivity
         return true;
 }
 
-    public class MainServerConnect extends AsyncTask<Integer, Void, String>{
+    private class MainServerConnect extends AsyncTask<Integer, Void, String>{
         ConnectWithServer connect = new ConnectWithServer();
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";

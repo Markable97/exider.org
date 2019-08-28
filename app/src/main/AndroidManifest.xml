@@ -24,7 +24,10 @@
         <activity android:name=".MatchActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".AddResultsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="Добавление результатов"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".AddMatchActivity"
                   android:label="Составление расписания"
                   android:launchMode="singleTop"
