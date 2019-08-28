@@ -76,7 +76,7 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
             Log.i(TAG, "Строка для телефона: " + str +
                     "\n Строка для БД: " + strDB);
             dateTour.setText(str);
-            new MainServerConnect().execute(forServer[0], forServer[1]);
+            new MainServerConnect().execute(forServer[0]);
         }
     };
 
@@ -92,18 +92,13 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         btnSend = (Button)findViewById(R.id.btn_sendSchedule);
         btnSend.setOnClickListener(this);
 
-        //адаптеры для тура и дивизиона
-        changeTour(15);
-        ArrayAdapter<String> adapterTour = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
-                tours);
-        spTour.setAdapter(adapterTour);
-
+        //адаптеры для дивизиона
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.divisions_list));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDivision.setAdapter(adapter);
         spDivision.setOnItemSelectedListener(this);
-        spTour.setOnItemSelectedListener(this);
+        spTour.setVisibility(View.GONE); // скрытие элемента чтобы не создавать еще один макет
 
         //выьаскивание сегодняшней даты и слушатекль на editText
         dateTour.setOnTouchListener(this);
@@ -115,17 +110,10 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
 
     }
 
-    void changeTour(int n){
-        tours.clear();
-        for(int i = 1; i <= n; i++){
-            tours.add("Тур " + i);
-        }
-    }
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         beginPicker.show();
-        //forServer[0] = spDivision.getSelectedItemPosition() + 1;
-        //forServer[1] = spTour.getSelectedItemPosition() + 1;
+        forServer[0] = spDivision.getSelectedItemPosition() + 1;
         return true;
     }
 
@@ -139,7 +127,6 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-        ArrayAdapter<String> arrayTour = (ArrayAdapter<String>) spTour.getAdapter();
         //ArrayAdapter<String> arrayDiv = (ArrayAdapter<String>) spDivision.getAdapter();
         switch (parent.getId()){
             case R.id.spinner_diviisions:
@@ -147,33 +134,13 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
                         + " номер - " + position,Toast.LENGTH_SHORT).show();*/
                 //forServer[0] = position + 1;
 
-                switch (position){
-                    case 0:
-                        changeTour(11);
-                        arrayTour.notifyDataSetChanged();
-                        break;
-                    case 1:
-                        changeTour(21);
-                        arrayTour.notifyDataSetChanged();
-                        break;
-                }
                 if(!firsLaunch){
                     if(dateTour.getText().length()!=0){
                         forServer[0] = position + 1;
-                        forServer[1] = spTour.getSelectedItemPosition() + 1;
                         new MainServerConnect().execute(forServer[0], forServer[1]);
                         spDivision.setEnabled(false);
                         spTour.setEnabled(false);
                     }
-                }
-                break;
-            case R.id.spinner_tour:
-                if(dateTour.getText().length()!=0){
-                    forServer[0] = spDivision.getSelectedItemPosition() + 1;
-                    forServer[1] = position + 1;
-                    new MainServerConnect().execute(forServer[0], forServer[1]);
-                    spDivision.setEnabled(false);
-                    spTour.setEnabled(false);
                 }
                 break;
         }
@@ -189,8 +156,8 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         @Override
         protected String doInBackground(Integer... integers) {
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
-            Log.i(TAG,"Дивизион = " + integers[0] + " Тур = " + integers[1]);
-            MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
+            Log.i(TAG,"Дивизион = " + integers[0]);
+            MessageToJson message = new MessageToJson("getTourAddResult",integers[0]);
             message.setDate(strDB);
             try {
                 connect.openConnection(); //открывваем соединение
