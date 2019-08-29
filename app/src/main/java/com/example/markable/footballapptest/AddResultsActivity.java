@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.markable.footballapptest.Adapters.RecyclerViewAddMatches;
 import com.example.markable.footballapptest.Adapters.RecyclerViewAddResults;
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
@@ -38,6 +39,7 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
 
     ConnectWithServer connect = new ConnectWithServer();
     Gson gson = new Gson();
+    RecyclerViewAddMatches adapter;
 
     private ArrayList<NextMatches> gamesInTour = new ArrayList<>();
 
@@ -88,9 +90,21 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         spDivision = (Spinner) findViewById(R.id.spinner_diviisions);
         spTour = (Spinner) findViewById(R.id.spinner_tour);
         recyclerView = (RecyclerView) findViewById(R.id.listAddMatches);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dateTour = (EditText)findViewById(R.id.editText_dateTour);
         btnSend = (Button)findViewById(R.id.btn_sendSchedule);
         btnSend.setOnClickListener(this);
+
+        //listener
+        RecyclerViewAddMatches.OnAddMatchClickListener listener = new RecyclerViewAddMatches.OnAddMatchClickListener() {
+            @Override
+            public void onMatchClick(NextMatches match, int check) {
+                Toast.makeText(getApplicationContext(), "Нажат:\n" + match.toString(), Toast.LENGTH_LONG).show();
+            }
+        };
+        //адаптер для recyclerView
+        adapter = new RecyclerViewAddMatches(gamesInTour, listener/*getSupportFragmentManager()*/);
+        recyclerView.setAdapter(adapter);
 
         //адаптеры для дивизиона
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
@@ -165,7 +179,11 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
                 gamesInTour.clear();
                 gamesInTour = gson.fromJson(fromServer, new TypeToken<ArrayList<NextMatches>>(){}.getType());
                 connect.closeConnection();
-                return "success";
+                if (gamesInTour.size() != 0){
+                    return "success";
+                }else{
+                    return "empty";
+                }
             }
             catch (Exception e){
                 return "bad";
@@ -176,21 +194,20 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             forServer[0] = 0;
-            forServer[1] = 0;
-            //forServerDB.clear();
-            //addStadiums(4);
-            //addSchedule(9);
-            if (s.equals("success")){
-                Log.i(TAG,"Игры в туре: \n" + gamesInTour.toString());
-               // Log.i(TAG,"Список стадионов: \n" + stadiumsList.toString());
-                //Log.i(TAG,"Расписвник: \n" + scheduleList.toString());
-                //adapter.update(gamesInTour, scheduleList, stadiumsList);
-            }else{
-                Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
+            switch(s){
+                case "success":
+                    Log.i(TAG,"Игры в туре: \n" + gamesInTour.toString());
+                    adapter.update(gamesInTour);
+                    break;
+                case "empty":
+                    Toast.makeText(getApplicationContext(),"Нет матчей для заполнения", Toast.LENGTH_LONG).show();
+                    break;
+                case "bad":
+                    Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
+                    break;
             }
             firsLaunch =false;
             spDivision.setEnabled(true);
-            spTour.setEnabled(true);
         }
     }
 
