@@ -1,12 +1,11 @@
 package com.example.markable.footballapptest;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.markable.footballapptest.Adapters.RecyclerViewAddMatches;
-import com.example.markable.footballapptest.Adapters.RecyclerViewAddResults;
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
@@ -99,7 +97,9 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         RecyclerViewAddMatches.OnAddMatchClickListener listener = new RecyclerViewAddMatches.OnAddMatchClickListener() {
             @Override
             public void onMatchClick(NextMatches match, int check) {
-                Toast.makeText(getApplicationContext(), "Нажат:\n" + match.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Нажат:\n" + match.toString(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), AddProtocolActivity.class);
+                startActivity(intent);
             }
         };
         //адаптер для recyclerView
