@@ -20,11 +20,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/match_nameDivision"
+                android:id="@+id/protocol_division"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
+                android:textSize="14sp"
                 tools:text="Первый дивизион" />
+
+            <TextView
+                android:id="@+id/protocol_tour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                tools:text="Тур 12" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,13 +42,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/match_teamHome"
+                    android:id="@+id/protocol_teamHome"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="TextView"
                     android:textAlignment="center"
+                    android:textSize="14sp"
                     tools:text="Бобби Дезлер" />
 
                 <LinearLayout
@@ -47,26 +58,20 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/match_tour"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TextView"
-                        android:textAlignment="center"
-                        tools:text="Тур 12" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/editText"
+                            android:id="@+id/protocol_goalHome"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ems="10"
-                            android:inputType="number" />
+                            android:ems="3"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:maxLength="2" />
 
                         <TextView
                             android:id="@+id/textView2"
@@ -74,21 +79,25 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_horizontal|center_vertical"
+                            android:text=":"
+                            android:textSize="24sp"
                             tools:text=":" />
 
                         <EditText
-                            android:id="@+id/editText2"
+                            android:id="@+id/protocol_goalGuest"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:ems="10"
-                            android:inputType="number" />
+                            android:ems="2"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:maxLength="2" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/match_teamGuest"
+                    android:id="@+id/protocol_teamGuest"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -96,6 +105,7 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:text="TextView"
                     android:textAlignment="center"
+                    android:textSize="14sp"
                     tools:text="Дизайн-окно-связист" />
 
 
@@ -105,7 +115,7 @@
 
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager_team_name"
+        android:id="@+id/protocol_viewPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
@@ -115,10 +125,12 @@
             android:id="@+id/protocol_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_blue_dark"
-            android:layout_gravity = "top"
+            android:layout_gravity="top"
+            android:background="@color/btn_login_bg"
             app:tabMode="fixed">
 
         </android.support.design.widget.TabLayout>
+
     </android.support.v4.view.ViewPager>
+
 </LinearLayout>

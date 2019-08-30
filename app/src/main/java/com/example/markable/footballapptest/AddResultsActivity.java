@@ -99,6 +99,7 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
             public void onMatchClick(NextMatches match, int check) {
                 //Toast.makeText(getApplicationContext(), "Нажат:\n" + match.toString(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), AddProtocolActivity.class);
+                intent.putExtra("protocol", match);
                 startActivity(intent);
             }
         };
