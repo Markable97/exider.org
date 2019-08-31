@@ -1,5 +1,6 @@
 package com.example.markable.footballapptest;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,15 +11,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Adapters.FragmentPageAdapterProtocol;
+import com.example.markable.footballapptest.Classes.ConnectWithServer;
+import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
+import com.example.markable.footballapptest.Classes.Player;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class AddProtocolActivity extends AppCompatActivity {
 
     private static final String TAG = AddProtocolActivity.class.getSimpleName();
 
+    ConnectWithServer connect = new ConnectWithServer();
+    Gson gson = new Gson();
+
     NextMatches matchProtocol;
+    ArrayList<Player> playerHome = new ArrayList<>();
+    ArrayList<Player> playerVisit = new ArrayList<>();
+
     TextView tv_division, tv_tour, tv_teamHome, tv_teamGuest;
     EditText ed_goalHome, ed_goalGuest;
 
@@ -53,6 +67,50 @@ public class AddProtocolActivity extends AppCompatActivity {
         viewPager.setAdapter(new FragmentPageAdapterProtocol(getSupportFragmentManager(), AddProtocolActivity.this, teamNames));
         tabLayout = (TabLayout) findViewById(R.id.protocol_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        new MainServerConnect().execute(teamNames[0], teamNames[1]);
+    }
+
+    private class MainServerConnect extends AsyncTask<String, Void, String> {
+        ArrayList<String> fromServer;
+        @Override
+        protected String doInBackground(String... teams) {
+            Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
+            Log.i(TAG,"Командлы  = " + teams[0] + " " + teams[1]);
+            MessageToJson message = new MessageToJson("getPlayersProtocol", teams[0]+";"+teams[1]);
+            try{
+                connect.openConnection();
+                fromServer = connect.responseFromServerArray(gson.toJson(message), 2);
+                playerHome.clear();
+                playerHome = gson.fromJson(fromServer.get(0), new TypeToken<ArrayList<Player>>(){}.getType());
+                if(!playerHome.isEmpty()){
+                    Log.i(TAG, "Команда хохзяев \n" + playerHome.toString());
+                }
+                playerVisit.clear();
+                playerVisit = gson.fromJson(fromServer.get(1), new TypeToken<ArrayList<Player>>(){}.getType());
+                if(!playerHome.isEmpty()){
+                    Log.i(TAG, "Команда гостей \n" + playerVisit.toString());
+                }
+                connect.closeConnection();
+                return "success";
+            }catch (Exception e){
+                return  "bad";
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (s){
+                case "success":
+                    Log.i(TAG, "SUCCESS");
+                    break;
+                case "bad":
+                    Log.i(TAG, "BAD");
+                    break;
+            }
+        }
     }
 
     @Override

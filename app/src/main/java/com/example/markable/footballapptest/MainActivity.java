@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity
             MessageToJson message = new MessageToJson("division", integers[0]);
             try{
                 connect.openConnection(); //открываем соединение
-                ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message)); //получаем массив JSON-ов
+                ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message), 3); //получаем массив JSON-ов
                 Log.i(TAG, response.toString());
                 for(int i = 0; i < response.size(); i++){
                     switch (i){

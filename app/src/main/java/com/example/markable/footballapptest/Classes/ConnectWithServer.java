@@ -91,7 +91,7 @@ public class ConnectWithServer {
 
     }
 
-    public ArrayList<String> responseFromServerArray(String messageForServer) throws Exception{
+    public ArrayList<String> responseFromServerArray(String messageForServer, int n) throws Exception{
 
         if(socket == null || socket.isClosed()){
             Log.v(TAG, "Невозмоэно отправить данные \n" );
@@ -99,35 +99,64 @@ public class ConnectWithServer {
         }
         ArrayList<String> arrayJsonsString = new ArrayList<>();
         String response;
-        try {
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            out.writeUTF(messageForServer);
-            Log.v(TAG,  "Данные отправлены \n" + messageForServer);
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            response = in.readUTF();//турнирная таблица в виде JSON
-            Log.i(TAG, "Турнирная таблица в виде JSON'\n" + response);
-            if(!response.isEmpty()){
-                arrayJsonsString.add(response);
-            }
-            response = in.readUTF();//Предыдущие матчи (Результаты)
-            Log.i(TAG, "Результаты в формате JSON \n" + response);
-            if(!response.isEmpty()){
-                arrayJsonsString.add(response);
-            }
-            response = in.readUTF();
-            Log.i(TAG, "Каленжарь в формате JSON \n" + response);
-            if(!response.isEmpty()){
-                arrayJsonsString.add(response);
-            }
-            //closeConnection();
-            return arrayJsonsString;
+        switch (n){
+            case 3:
+                try {
+                    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                    out.writeUTF(messageForServer);
+                    Log.v(TAG,  "Данные отправлены \n" + messageForServer);
+                    DataInputStream in = new DataInputStream(socket.getInputStream());
+                    response = in.readUTF();//турнирная таблица в виде JSON
+                    Log.i(TAG, "Турнирная таблица в виде JSON'\n" + response);
+                    if(!response.isEmpty()){
+                        arrayJsonsString.add(response);
+                    }
+                    response = in.readUTF();//Предыдущие матчи (Результаты)
+                    Log.i(TAG, "Результаты в формате JSON \n" + response);
+                    if(!response.isEmpty()){
+                        arrayJsonsString.add(response);
+                    }
+                    response = in.readUTF();
+                    Log.i(TAG, "Каленжарь в формате JSON \n" + response);
+                    if(!response.isEmpty()){
+                        arrayJsonsString.add(response);
+                    }
+                    //closeConnection();
+                    return arrayJsonsString;
 
 
-        }catch (IOException e){
-            Log.v(TAG, "Невозможно отправить или поулчить данные");
-            throw new Exception("Невозможно отправить или получить данные " +  e.getMessage());
+                }catch (IOException e){
+                    Log.v(TAG, "Невозможно отправить или поулчить данные");
+                    throw new Exception("Невозможно отправить или получить данные " +  e.getMessage());
+                }
+
+            case 2:
+                try {
+                    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                    out.writeUTF(messageForServer);
+                    Log.v(TAG,  "Данные отправлены \n" + messageForServer);
+                    DataInputStream in = new DataInputStream(socket.getInputStream());
+                    response = in.readUTF();//турнирная таблица в виде JSON
+                    Log.i(TAG, "JSON 1'\n" + response);
+                    if(!response.isEmpty()){
+                        arrayJsonsString.add(response);
+                    }
+                    response = in.readUTF();//Предыдущие матчи (Результаты)
+                    Log.i(TAG, "JSON 2 \n" + response);
+                    if(!response.isEmpty()){
+                        arrayJsonsString.add(response);
+                    }
+                    //closeConnection();
+                    return arrayJsonsString;
+
+
+                }catch (IOException e){
+                    Log.v(TAG, "Невозможно отправить или поулчить данные");
+                    throw new Exception("Невозможно отправить или получить данные " +  e.getMessage());
+                }
         }
 
+        return null;
     }
 
     public ArrayList<ImageFromServer> fileFromServer () throws Exception{
