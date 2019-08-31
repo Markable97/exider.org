@@ -59,7 +59,10 @@ public class Player implements Serializable, Parcelable{
         this.redCard = redCard;
     }
 
-
+    public Player(String playerTeam, String playerName) {
+        this.playerTeam = playerTeam;
+        this.playerName = playerName;
+    }
 
     public Bitmap getPlayerImage() {
         return playerImage;
