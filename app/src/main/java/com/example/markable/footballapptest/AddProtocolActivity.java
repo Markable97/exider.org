@@ -46,7 +46,7 @@ public class AddProtocolActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_result);
         tv_division = (TextView)findViewById(R.id.protocol_division);
-        tv_tour = (TextView)findViewById(R.id.protocol_tour);
+        //tv_tour = (TextView)findViewById(R.id.protocol_tour);
         tv_teamHome = (TextView) findViewById(R.id.protocol_teamHome);
         tv_teamGuest = (TextView) findViewById(R.id.protocol_teamGuest);
         ed_goalHome = (EditText) findViewById(R.id.protocol_goalHome);
@@ -55,8 +55,8 @@ public class AddProtocolActivity extends AppCompatActivity {
         if(args != null){
             matchProtocol = (NextMatches) args.getSerializable("protocol");
             Log.i(TAG, "Матч для протокола: " + matchProtocol.toString());
-            tv_division.setText(matchProtocol.getNameDivision());
-            tv_tour.setText("Тур - " + matchProtocol.getIdTour());
+            tv_division.setText(matchProtocol.getNameDivision() + ": тур - " + matchProtocol.getIdTour());
+            //tv_tour.setText("Тур - " + matchProtocol.getIdTour());
             tv_teamHome.setText(matchProtocol.getTeamHome());
             tv_teamGuest.setText(matchProtocol.getTeamVisit());
             teamNames[0] = matchProtocol.getTeamHome();

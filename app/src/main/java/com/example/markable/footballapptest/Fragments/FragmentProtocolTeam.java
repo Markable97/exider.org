@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -79,7 +80,7 @@ public class FragmentProtocolTeam  extends Fragment {
         //Создание таблицы для занесения протокола
         for(int i = -1; i < players.size(); i++){
             TableRow tableRow = new TableRow(getActivity());
-            tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             for(int j = 0; j < 7; j++){
                 if(i == -1){
                     //Шапка таблицы
@@ -93,7 +94,7 @@ public class FragmentProtocolTeam  extends Fragment {
                         textView.setGravity(Gravity.CENTER);
                         textView.setBackgroundColor(whiteColor);
                         switch (j){
-                            case 0: textView.setText(""); break;
+                            case 0: textView.setText("В игре"); break;
                             case 1: textView.setText("#"); break;
                             case 2: textView.setText("ФИО");break;
                             case 3: textView.setText("Гол");break;
@@ -113,7 +114,7 @@ public class FragmentProtocolTeam  extends Fragment {
                         tableRow.addView(imageView, j);
                     }
                 }else{
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                     //params.gravity = Gravity.CENTER;
                     params.setMargins(_1dp, _1dp, _1dp, _1dp);
@@ -126,11 +127,22 @@ public class FragmentProtocolTeam  extends Fragment {
                         textView.setText(String.valueOf(player.getPlayerName()));
                         tableRow.addView(textView, j);
                     }else if(j == 0){
+                        //Сначала создаем LinerLayout
+                        LinearLayout linearLayout = new LinearLayout(getActivity());
+                        linearLayout.setOrientation(LinearLayout.VERTICAL);
+                        linearLayout.setLayoutParams(params);
+                        linearLayout.setBackgroundColor(whiteColor);
+                        tableRow.addView(linearLayout, j);
+                        //Созадем параметры для этого layout
+                        LinearLayout.LayoutParams lin_params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
+                        lin_params.gravity = Gravity.CENTER;
                         CheckBox checkBox = new CheckBox(getActivity());
-                        checkBox.setGravity(Gravity.CENTER);
+                        //checkBox.setGravity(Gravity.CENTER);
                         checkBox.setBackgroundColor(whiteColor);
-                        checkBox.setLayoutParams(params);
-                        tableRow.addView(checkBox, j);
+                        checkBox.setLayoutParams(lin_params);
+                        linearLayout.addView(checkBox);
+
                     }else{
                         EditText editText = new EditText(getActivity());
                         editText.setGravity(Gravity.CENTER);

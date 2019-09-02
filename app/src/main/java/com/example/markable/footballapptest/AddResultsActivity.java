@@ -202,6 +202,7 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
                     break;
                 case "empty":
                     Toast.makeText(getApplicationContext(),"Нет матчей для заполнения", Toast.LENGTH_LONG).show();
+                    adapter.update(gamesInTour);
                     break;
                 case "bad":
                     Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
