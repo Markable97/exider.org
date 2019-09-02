@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.markable.footballapptest.Adapters.FragmentPageAdapterProtocol;
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
@@ -64,13 +65,19 @@ public class AddProtocolActivity extends AppCompatActivity {
 
         }
         viewPager = (ViewPager) findViewById(R.id.protocol_viewPage);
-        viewPager.setAdapter(new FragmentPageAdapterProtocol(getSupportFragmentManager(), AddProtocolActivity.this, teamNames));
         tabLayout = (TabLayout) findViewById(R.id.protocol_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
 
         new MainServerConnect().execute(teamNames[0], teamNames[1]);
     }
 
+    public ArrayList<Player> getPlayerHome(){
+        return playerHome;
+    }
+
+    public ArrayList<Player> getPlayerVisit(){
+        return playerVisit;
+    }
     private class MainServerConnect extends AsyncTask<String, Void, String> {
         ArrayList<String> fromServer;
         @Override
@@ -105,9 +112,11 @@ public class AddProtocolActivity extends AppCompatActivity {
             switch (s){
                 case "success":
                     Log.i(TAG, "SUCCESS");
+                    viewPager.setAdapter(new FragmentPageAdapterProtocol(getSupportFragmentManager(), AddProtocolActivity.this, teamNames));
+                    tabLayout.setupWithViewPager(viewPager);
                     break;
                 case "bad":
-                    Log.i(TAG, "BAD");
+                    Toast.makeText(getApplicationContext(), "Ошщибка соединния", Toast.LENGTH_SHORT).show();
                     break;
             }
         }

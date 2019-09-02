@@ -21,7 +21,7 @@ public class FragmentPageAdapterProtocol extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return FragmentProtocolTeam.newInstance(teamNames[position]);
+        return FragmentProtocolTeam.newInstance(teamNames[position], position);
     }
 
     @Override
