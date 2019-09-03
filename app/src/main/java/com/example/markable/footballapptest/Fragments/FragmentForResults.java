@@ -71,7 +71,7 @@ public class FragmentForResults extends Fragment implements UpdateFragListener {
     }
 
     @Override
-    public void update() {
+    public void update(int option) {
         newPrevMatches = activity.getPrevResultsMatch();
         Log.i(TAG, "update: Списка матчей" + newPrevMatches.toString());
         imageBitmap = activity.getImageArray();

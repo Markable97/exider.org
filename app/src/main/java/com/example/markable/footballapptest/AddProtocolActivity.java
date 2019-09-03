@@ -20,6 +20,7 @@ import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.Player;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -149,9 +150,11 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.menu_protocol_sent){
-            mAdapter.update();
+            mAdapter.update(PublicConstants.OPTION_SENT);
             Toast.makeText(getApplicationContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }else{
+            mAdapter.update(PublicConstants.OPTION_CLEAR);
             Toast.makeText(getApplicationContext(), "Протокол очищен", Toast.LENGTH_SHORT).show();
         }
 

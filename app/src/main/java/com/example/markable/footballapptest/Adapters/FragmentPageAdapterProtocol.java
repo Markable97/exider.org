@@ -15,6 +15,7 @@ public class FragmentPageAdapterProtocol extends FragmentPagerAdapter {
 
     private static final String TAG = FragmentPageAdapterProtocol.class.getSimpleName();
 
+    private int option;
     final int PAGE_COUNT = 2;
     Context context;
     String[] teamNames;
@@ -35,19 +36,20 @@ public class FragmentPageAdapterProtocol extends FragmentPagerAdapter {
     public int getItemPosition(@NonNull Object object) {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
-            ((UpdateFragListener) object).update();
+            ((UpdateFragListener) object).update(this.option);
         }
 
         return super.getItemPosition(object);
     }
 
-    public void update(){
+    public void update(int option){
         Log.i(TAG, "Adapter для Interface: получил команду от активности");
         /*this.table = divTable;
         this.results = prevReslts;
         this.calendar = calendar;
         this.image = image;*/
         //обновляет - вызов getItemPosition
+        this.option = option;
         notifyDataSetChanged();
     }
 

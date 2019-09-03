@@ -96,6 +96,13 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
             }
             //plug(12);
         }
+        createProtocolTable();
+        return view;
+    }
+
+    void createProtocolTable(){
+        //Сначала очистить
+        table.removeAllViews();
         //Создание таблицы для занесения протокола
         for(int i = -1; i < players.size(); i++){
             TableRow tableRow = new TableRow(getActivity());
@@ -217,13 +224,18 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
             table.addView(tableRow, i+1);
         }
         Log.i(TAG, "Список игроков команлы: " + teamName + "\n" + players.size() );
-        return view;
     }
 
     @Override
-    public void update() {
+    public void update(int option) {
         Log.i(TAG, "Активность передала команду");
-        returnData.sendDataToActivity(players);
+        if(option == 3){
+            Log.i(TAG, "Вернуть данные протокола");
+            returnData.sendDataToActivity(players);
+        }else{
+            Log.i(TAG, "Очистка протокола");
+            createProtocolTable();
+        }
 
     }
 }

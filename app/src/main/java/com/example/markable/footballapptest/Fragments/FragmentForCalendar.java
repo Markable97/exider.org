@@ -74,7 +74,7 @@ public class FragmentForCalendar extends Fragment implements UpdateFragListener 
     }
 
     @Override
-    public void update() {
+    public void update(int option) {
         Log.i(TAG, "Interface: ");
         newNextMatches = activity.getNextResultsMatch();
         Log.i(TAG, "update: Обновленный список" + newNextMatches.toString());

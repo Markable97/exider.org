@@ -31,6 +31,7 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     //private final FragmentForCalendar fragmentForCalendar = new FragmentForCalendar().newInstance();
 
     private static final String TAG = "PageAdap";
+    private int option;
     final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[]{"Календарь", "Результаты", "Таблица"};
     private Context context;
@@ -63,19 +64,20 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     public int getItemPosition(@NonNull Object object) {
         Log.i(TAG, "Adapter: getItemPosition отправка в интерфейс");
         if(object instanceof UpdateFragListener){
-            ((UpdateFragListener) object).update();
+            ((UpdateFragListener) object).update(this.option);
         }
 
         return super.getItemPosition(object);
     }
 
-    public void update(){
+    public void update(int option){
         Log.i(TAG, "Adapter для Interface: получил от шлавного фрагмента");
         /*this.table = divTable;
         this.results = prevReslts;
         this.calendar = calendar;
         this.image = image;*/
         //обновляет - вызов getItemPosition
+        this.option = option;
         notifyDataSetChanged();
     }
 

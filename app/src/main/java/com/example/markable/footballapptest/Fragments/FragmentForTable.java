@@ -24,6 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
@@ -110,7 +111,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         //image = view.findViewById(R.id.imageViewTest);
         //image.setImageBitmap(imageBitmap.get(0));
         if(newTournamentTable.size() != 0){
-            update();
+            update(PublicConstants.OPTION_UPDATE);
         }else {
             //textView.setText("Чисто проверить! ");
         }
@@ -247,7 +248,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
     }
 
     @Override
-    public void update() {
+    public void update(int option) {
         Log.i(TAG, "Interface: Сработал пустой метод");
         newTournamentTable = activity.getTournamentTable();
         imageBitmap = activity.getImageArray();
