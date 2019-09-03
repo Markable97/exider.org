@@ -8,6 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +53,14 @@ public class AddProtocolActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_result);
         toolbar =  (Toolbar) findViewById(R.id.protocol_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();// возврат на предыдущий activity
+            }
+        });
         tv_division = (TextView)findViewById(R.id.protocol_division);
         //tv_tour = (TextView)findViewById(R.id.protocol_tour);
         tv_teamHome = (TextView) findViewById(R.id.protocol_teamHome);
@@ -124,6 +135,24 @@ public class AddProtocolActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_protocol, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.menu_protocol_sent){
+            Toast.makeText(getApplicationContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(), "Протокол очищен", Toast.LENGTH_SHORT).show();
+        }
+
+        return true;
     }
 
     @Override
