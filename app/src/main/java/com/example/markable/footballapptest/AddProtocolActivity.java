@@ -27,7 +27,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class AddProtocolActivity extends AppCompatActivity {
+public class AddProtocolActivity extends AppCompatActivity implements ReturnFromFragForAct{
 
     private static final String TAG = AddProtocolActivity.class.getSimpleName();
 
@@ -35,8 +35,10 @@ public class AddProtocolActivity extends AppCompatActivity {
     Gson gson = new Gson();
 
     NextMatches matchProtocol;
+    FragmentPageAdapterProtocol mAdapter;
     ArrayList<Player> playerHome = new ArrayList<>();
     ArrayList<Player> playerVisit = new ArrayList<>();
+    ArrayList<Player> playerssDB = new ArrayList<>();
 
     TextView tv_division, tv_tour, tv_teamHome, tv_teamGuest;
     EditText ed_goalHome, ed_goalGuest;
@@ -127,7 +129,8 @@ public class AddProtocolActivity extends AppCompatActivity {
             switch (s){
                 case "success":
                     Log.i(TAG, "SUCCESS");
-                    viewPager.setAdapter(new FragmentPageAdapterProtocol(getSupportFragmentManager(), AddProtocolActivity.this, teamNames));
+                    mAdapter = new FragmentPageAdapterProtocol(getSupportFragmentManager(), AddProtocolActivity.this, teamNames);
+                    viewPager.setAdapter(mAdapter);
                     tabLayout.setupWithViewPager(viewPager);
                     break;
                 case "bad":
@@ -136,7 +139,6 @@ public class AddProtocolActivity extends AppCompatActivity {
             }
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_protocol, menu);
@@ -147,6 +149,7 @@ public class AddProtocolActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.menu_protocol_sent){
+            mAdapter.update();
             Toast.makeText(getApplicationContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getApplicationContext(), "Протокол очищен", Toast.LENGTH_SHORT).show();
@@ -154,6 +157,21 @@ public class AddProtocolActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void sendDataToActivity(ArrayList<Player> arrayPlayers) {
+        Log.i(TAG, "Данные из фрагмента: " + arrayPlayers.size());
+        for(Player p : arrayPlayers){
+            if(p.getPlayerView().getInGame() == 1){
+                playerssDB.add(new Player(p.getIdPlayer(),p.getPlayerTeam(), p.getPlayerName(), p.getAmplua(), p.getBirhtday(),
+                        p.getPlayerView().getNumber(), p.getPlayerView().getInGame(),p.getPlayerView().getGoal(), p.getPlayerView().getAssist(),
+                        p.getPlayerView().getYellowCard(), p.getPlayerView().getRedCard()));
+            }
+        }
+        Log.i(TAG, "Игроки в протоколе для БАЗЫ: \n" + playerssDB.toString());
+        //отправка в базу данных
+    }
+
 
     @Override
     public void onStart() {

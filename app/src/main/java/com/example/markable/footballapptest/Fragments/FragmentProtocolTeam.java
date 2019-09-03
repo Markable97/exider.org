@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,16 +23,21 @@ import android.widget.TextView;
 
 import com.example.markable.footballapptest.AddProtocolActivity;
 import com.example.markable.footballapptest.Classes.Player;
+import com.example.markable.footballapptest.Classes.PlayerView;
 import com.example.markable.footballapptest.R;
+import com.example.markable.footballapptest.ReturnFromFragForAct;
+import com.example.markable.footballapptest.UpdateFragListener;
 
 import java.util.ArrayList;
 
-public class FragmentProtocolTeam  extends Fragment {
+public class FragmentProtocolTeam  extends Fragment implements UpdateFragListener {
 
     private static final String TAG = FragmentProtocolTeam.class.getSimpleName();
 
     private static final String KEY = "protocol_name";
     private static final String KEY_2 = "protocol_position";
+
+    private ReturnFromFragForAct returnData;
 
     private int _50dp;
     private int _1dp;
@@ -44,7 +50,7 @@ public class FragmentProtocolTeam  extends Fragment {
     TableLayout table;
 
     String teamName;
-
+    ArrayList<PlayerView> playerViews = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
 
     public static FragmentProtocolTeam newInstance(String name, int position){
@@ -59,6 +65,7 @@ public class FragmentProtocolTeam  extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        returnData = (ReturnFromFragForAct) context;
         final float scale = context.getResources().getDisplayMetrics().density;
         _50dp = (int) (49*scale*0.5f);
         _1dp = (int)(1*scale*0.5f);
@@ -93,6 +100,12 @@ public class FragmentProtocolTeam  extends Fragment {
         for(int i = -1; i < players.size(); i++){
             TableRow tableRow = new TableRow(getActivity());
             tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            PlayerView playerView = null;
+            Player player = null;
+            if(i > -1){
+                playerView = new PlayerView(teamName);
+                player = players.get(i);
+            }
             for(int j = 0; j < 7; j++){
                 if(i == -1){
                     //Шапка таблицы
@@ -129,14 +142,15 @@ public class FragmentProtocolTeam  extends Fragment {
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                     //params.gravity = Gravity.CENTER;
+
                     params.setMargins(_1dp, _1dp, _1dp, _1dp);
                     if(j == 2){
                         TextView textView = new TextView(getActivity());
                         textView.setGravity(Gravity.CENTER);
                         textView.setBackgroundColor(whiteColor);
                         textView.setLayoutParams(params);
-                        Player player = players.get(i);
                         textView.setText(String.valueOf(player.getPlayerName()));
+                        playerView.setPlayerName(textView);
                         tableRow.addView(textView, j);
                     }else if(j == 0){
                         //Сначала создаем LinerLayout
@@ -154,7 +168,7 @@ public class FragmentProtocolTeam  extends Fragment {
                         checkBox.setBackgroundColor(whiteColor);
                         checkBox.setLayoutParams(lin_params);
                         linearLayout.addView(checkBox);
-
+                        playerView.setInGame(checkBox);
                     }else{
                         EditText editText = new EditText(getActivity());
                         editText.setGravity(Gravity.CENTER);
@@ -162,13 +176,27 @@ public class FragmentProtocolTeam  extends Fragment {
                         editText.setLayoutParams(params);
                         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
                         switch (j){
+                            case 1:
+                                editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
+                                playerView.setNumber(editText);
+                                break;
+                            case 3:
+                                editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
+                                playerView.setGoal(editText);
+                                break;
                             case 4:
+                                editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
+                                playerView.setAssist(editText);
+                                break;
                             case 5:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+                                playerView.setYellowCard(editText);
                                 break;
-                             default:
-                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
-                                 break;
+                            case 6:
+                                editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+                                playerView.setRedCard(editText);
+                                break;
+
                         }
 
                         tableRow.addView(editText, j);
@@ -183,15 +211,19 @@ public class FragmentProtocolTeam  extends Fragment {
                     }*/
                 }
             }
+            if(i > -1){
+                player.setPlayerView(playerView);
+            }
             table.addView(tableRow, i+1);
         }
-
+        Log.i(TAG, "Список игроков команлы: " + teamName + "\n" + players.size() );
         return view;
     }
 
-    void plug(int n){
-        for(int i = 0; i < n; i++){
-            players.add(new Player(teamName, "Игрок" + i + " игрок"));
-        }
+    @Override
+    public void update() {
+        Log.i(TAG, "Активность передала команду");
+        returnData.sendDataToActivity(players);
+
     }
 }

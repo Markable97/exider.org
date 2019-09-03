@@ -24,6 +24,7 @@ public class Player implements Serializable, Parcelable{
     private int penalty;
     private int penalty_out;
     private int own_goal;
+    private transient PlayerView playerView;
 
     public Player(int idPlayer, String playerTeam, String playerName, String birhtday, String amplua, int number,
                   int games, int goal, int assist, int yellowCard, int redCard, int penalty, int penalty_out,
@@ -102,6 +103,27 @@ public class Player implements Serializable, Parcelable{
         return number;
     }
 
+    public void setPlayerView(PlayerView playerView) {
+        this.playerView = playerView;
+        if(playerView.inGame.isChecked() == true){
+            this.games = 1;
+        }
+        if(playerView.number.getText().length() > 0){
+            this.number = Integer.parseInt(String.valueOf(playerView.number.getText()));
+        }
+        if(playerView.goal.getText().length() > 0){
+            this.goal = Integer.parseInt(String.valueOf(playerView.goal.getText()));
+        }
+        if(playerView.assist.getText().length() > 0){
+            this.assist = Integer.parseInt(String.valueOf(playerView.assist.getText()));
+        }
+        if(playerView.yellowCard.getText().length() > 0){
+            this.yellowCard = Integer.parseInt(String.valueOf(playerView.yellowCard.getText()));
+        }
+        if(playerView.redCard.getText().length() > 0){
+            this.redCard = Integer.parseInt(String.valueOf(playerView.redCard.getText()));
+        }
+    }
 
     public int getGoal() {
         return goal;
@@ -133,6 +155,10 @@ public class Player implements Serializable, Parcelable{
 
     public int getOwn_goal() {
         return own_goal;
+    }
+
+    public PlayerView getPlayerView() {
+        return playerView;
     }
 
     @Override
