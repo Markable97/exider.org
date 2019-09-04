@@ -20,11 +20,10 @@ import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.Player;
+import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -41,10 +40,12 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
     ArrayList<Player> playerVisit = new ArrayList<>();
     ArrayList<Player> playerssDB = new ArrayList<>();
 
-    TextView tv_division, tv_tour, tv_teamHome, tv_teamGuest;
+    TextView tv_division, tv_teamHome, tv_teamGuest;
     EditText ed_goalHome, ed_goalGuest;
 
     String[] teamNames = new String[2];
+
+    int idMatch, goalHome, goalVisit;
 
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -151,10 +152,14 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
 
         if(item.getItemId() == R.id.menu_protocol_sent){
             mAdapter.update(PublicConstants.OPTION_SENT);
-            Toast.makeText(getApplicationContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
-            onBackPressed();
+            idMatch = matchProtocol.getIdMatch();
+            goalHome = Integer.parseInt(String.valueOf(ed_goalHome.getText()));
+            goalVisit = Integer.parseInt(String.valueOf(ed_goalGuest.getText()));
+            new MainServerConnectSentResult().execute();
         }else{
             mAdapter.update(PublicConstants.OPTION_CLEAR);
+            ed_goalHome.setText("");
+            ed_goalGuest.setText("");
             Toast.makeText(getApplicationContext(), "Протокол очищен", Toast.LENGTH_SHORT).show();
         }
 
@@ -175,6 +180,48 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
         //отправка в базу данных
     }
 
+
+    private class MainServerConnectSentResult extends AsyncTask<String, Void, String> {
+        String fromServer;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.i(TAG, "doInBackground: начало потока отправки результата!!!!!!!!!!!!!!!!!!!!!");
+            if (!playerssDB.isEmpty()){
+                MessageToJson message = new MessageToJson("setResults", new PrevMatches(idMatch, goalHome, goalVisit),
+                        playerssDB);
+                try{
+                    connect.openConnection();
+                    Log.i(TAG, "Для сервера в виде JSON" + gson.toJson(message));
+                    fromServer = connect.responseFromServer(gson.toJson(message));
+                    connect.closeConnection();
+                    return fromServer;
+                }catch (Exception e){
+                    return "bad";
+                }
+            }else{
+                return "EMPTY";
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (s){
+                case "SUCCESS":
+                    Toast.makeText(getApplicationContext(), "Успешно", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                    break;
+                case "EMPTY":
+                    Toast.makeText(getApplicationContext(), "Список для отправки пуст", Toast.LENGTH_SHORT).show();
+                    break;
+                case "bad":
+                    Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
 
     @Override
     public void onStart() {

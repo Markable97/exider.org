@@ -15,6 +15,13 @@ public class PrevMatches implements Serializable {
     ImageFromServer imageHome;
     ImageFromServer imageVisit;
 
+    public PrevMatches(int id_match, int goalHome, int goalVisit) {
+        this.id_match = id_match;
+        this.goalHome = goalHome;
+        this.goalVisit = goalVisit;
+    }
+
+
     public PrevMatches(int idMatch, String nameDivision, int idTour, String teamHome, int goalHome, int goalVisit, String teamVisit) {
         this.id_match = idMatch;
         this.nameDivision = nameDivision;

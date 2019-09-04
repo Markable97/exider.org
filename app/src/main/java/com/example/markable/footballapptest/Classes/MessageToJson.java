@@ -13,13 +13,20 @@ public class MessageToJson {
     String responseFromServer;
     int settingForApp;
     ArrayList<Schedule> schedule;
-
+    PrevMatches match;
+    ArrayList<Player> players;
     public MessageToJson(String messageLogic, int id, String team_name, MessageRegister user_info) {
         this.messageLogic = messageLogic;
         this.id = id;
         this.team_name = team_name;
         this.user_info = user_info;
 
+    }
+
+    public MessageToJson(String messageLogic, PrevMatches match, ArrayList<Player> players){
+        this.messageLogic = messageLogic;
+        this.match = match;
+        this.players = players;
     }
 
     public MessageToJson(String messageLogic, ArrayList<Schedule> schedule) {
