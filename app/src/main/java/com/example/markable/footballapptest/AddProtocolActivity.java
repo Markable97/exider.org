@@ -169,6 +169,7 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
     @Override
     public void sendDataToActivity(ArrayList<Player> arrayPlayers) {
         Log.i(TAG, "Данные из фрагмента: " + arrayPlayers.size());
+        playerssDB.clear();
         for(Player p : arrayPlayers){
             if(p.getPlayerView().getInGame() == 1){
                 playerssDB.add(new Player(p.getIdPlayer(),p.getPlayerTeam(), p.getPlayerName(), p.getAmplua(), p.getBirhtday(),
@@ -215,6 +216,9 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
                     break;
                 case "EMPTY":
                     Toast.makeText(getApplicationContext(), "Список для отправки пуст", Toast.LENGTH_SHORT).show();
+                    break;
+                case "bad DB":
+                    Toast.makeText(getApplicationContext(), "Ошибка при добавлении", Toast.LENGTH_SHORT).show();
                     break;
                 case "bad":
                     Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_SHORT).show();
