@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TextInputEditText;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private Button btnLogin;
     private Button btnLinkToRegister;
     private EditText inputEmail;
-    private EditText inputPassword;
+    private TextInputEditText inputPassword;
     SessionManager session;
     Handler handler;
 
@@ -35,23 +36,25 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        inputEmail = (EditText) findViewById(R.id.email);
+        inputPassword = (TextInputEditText) findViewById(R.id.password);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+        btnLogin.setOnClickListener(this);
+        btnLinkToRegister.setOnClickListener(this);
         session = new SessionManager(getApplicationContext());
         if (session.checkLogin()){
             HashMap<String, String> user_info = session.getUserDetails();
             String mEmail = user_info.get(session.KEY_EMAIL);
             String mPassword =   user_info.get(session.KEY_PASSWORD);
+            inputEmail.setText(mEmail);
+            inputPassword.setText(mPassword);
             MessageToJson message = new MessageToJson("login",
                     new MessageRegister(mEmail,
                            mPassword));
             Thread thread = new Thread(new ThreadLogin(mEmail, mPassword, message));
             thread.start();
         }
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-        btnLogin.setOnClickListener(this);
-        btnLinkToRegister.setOnClickListener(this);
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {

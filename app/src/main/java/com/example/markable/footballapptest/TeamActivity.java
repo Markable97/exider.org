@@ -65,17 +65,20 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
             }
             nameTeam.setText(nameTeamFromActivity);
         }
+        container = findViewById(R.id.container_frag_team);
+        rb_statistic = findViewById(R.id.rb_statisticPlayers);
+        rb_statistic.setChecked(true);
+        rb_matches = findViewById(R.id.rb_allMatches);
+        radioGroup = findViewById(R.id.radioGroup_team);
+        radioGroup.setOnCheckedChangeListener(this);
+        rb_statistic.setEnabled(false);
+        rb_matches.setEnabled(false);
 
         new ServerConnect().execute(nameTeamFromActivity);
 
 
-        rb_statistic = findViewById(R.id.rb_statisticPlayers);
-        rb_statistic.setChecked(true);
-        //rb_matches = findViewById(R.id.rb_allMatches);
-        radioGroup = findViewById(R.id.radioGroup_team);
-        radioGroup.setOnCheckedChangeListener(this);
 
-        container = findViewById(R.id.container_frag_team);
+
 
         /*fragStatistic = new FragmentForTeamStatistic().newInstance();
         fragMatches = new FragmentForTeamMatches();
@@ -168,6 +171,8 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 fragMatches = new FragmentForTeamMatches().newInstance();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
+                rb_statistic.setEnabled(true);
+                rb_matches.setEnabled(true);
             }else{
                 Toast.makeText(getApplicationContext(),"Не удалось получить данные", Toast.LENGTH_LONG).show();
             }

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,View.OnTouchListener, View.OnClickListener {
+public class AddResultsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,View.OnTouchListener{
 
     private static final String TAG = AddResultsActivity.class.getSimpleName();
 
@@ -91,7 +91,7 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dateTour = (EditText)findViewById(R.id.editText_dateTour);
         btnSend = (Button)findViewById(R.id.btn_sendSchedule);
-        btnSend.setOnClickListener(this);
+        btnSend.setVisibility(View.GONE); // скрытие элемента чтобы не создавать еще один макет
 
         //listener
         RecyclerViewAddMatches.OnAddMatchClickListener listener = new RecyclerViewAddMatches.OnAddMatchClickListener() {
@@ -132,13 +132,6 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         return true;
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.btn_sendSchedule){
-            Toast.makeText(this, "Нажата кнопка", Toast.LENGTH_LONG).show();
-        }
-
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
