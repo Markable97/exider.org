@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new MainServerConnect().execute(1);
+        new MainServerConnect(MainActivity.this).execute(1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity
             dataForFragment = 6;
         }
 
-        new MainServerConnect().execute(dataForFragment);
+        new MainServerConnect(MainActivity.this).execute(dataForFragment);
     //fragmentMain.update(dataForFragment);
 
         /*try {
@@ -214,6 +216,17 @@ public class MainActivity extends AppCompatActivity
         //String ipAdres = "192.168.0.104";
         //String ipAdres = "92.38.241.107";
         //String ipAdres = "10.0.2.2"
+        MainActivity activity;
+        private Context context;
+        ProgressDialog progressDialog ;
+        public MainServerConnect(MainActivity activity){
+            this.activity = activity;
+            context = activity;
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Загрузка");
+            progressDialog.show();
+        }
 
 
         @Override
@@ -274,7 +287,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            //super.onPostExecute(s);
             if (s.equals("success")){
                 if(flag == false){//проверка на запущенность активности
                     fragmentMain = new FragmentMain();
@@ -287,6 +300,7 @@ public class MainActivity extends AppCompatActivity
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }
+            this.progressDialog.dismiss();
         }
 
     }

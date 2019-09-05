@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -74,7 +76,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         rb_statistic.setEnabled(false);
         rb_matches.setEnabled(false);
 
-        new ServerConnect().execute(nameTeamFromActivity);
+        new ServerConnect(TeamActivity.this).execute(nameTeamFromActivity);
 
 
 
@@ -114,6 +116,18 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         String fromServer = null;
         int countIm = 0;
+
+        TeamActivity activity;
+        private Context context;
+        ProgressDialog progressDialog ;
+        public ServerConnect(TeamActivity activity){
+            this.activity = activity;
+            context = activity;
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Загрузка");
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -176,6 +190,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
             }else{
                 Toast.makeText(getApplicationContext(),"Не удалось получить данные", Toast.LENGTH_LONG).show();
             }
+            progressDialog.dismiss();
         }
     }
 
