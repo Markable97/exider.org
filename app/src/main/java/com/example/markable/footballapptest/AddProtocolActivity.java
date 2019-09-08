@@ -151,6 +151,7 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.menu_protocol_sent){
+            playerssDB.clear();
             mAdapter.update(PublicConstants.OPTION_SENT);
             idMatch = matchProtocol.getIdMatch();
             goalHome = Integer.parseInt(String.valueOf(ed_goalHome.getText()));
@@ -169,7 +170,7 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
     @Override
     public void sendDataToActivity(ArrayList<Player> arrayPlayers) {
         Log.i(TAG, "Данные из фрагмента: " + arrayPlayers.size());
-        playerssDB.clear();
+
         for(Player p : arrayPlayers){
             if(p.getPlayerView().getInGame() == 1){
                 playerssDB.add(new Player(p.getIdPlayer(),p.getPlayerTeam(), p.getPlayerName(), p.getAmplua(), p.getBirhtday(),

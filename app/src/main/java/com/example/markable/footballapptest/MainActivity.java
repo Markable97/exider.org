@@ -68,15 +68,13 @@ public class MainActivity extends AppCompatActivity
         new MainServerConnect(MainActivity.this).execute(1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setTitle(getResources().getString(R.string.high_div));
         manager = new SessionManager(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Отправка заявки на игру", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
                 Intent intent = null;
                 switch (manager.settingApp()){
                     case 3: //Админ
@@ -95,16 +93,6 @@ public class MainActivity extends AppCompatActivity
                         myDialogFragment.show(transaction, "dialog");
                         break;
                 }
-                /*if(manager.settingApp() == 2){
-                    Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
-                    startActivity(intent);
-                }else{
-                    MyDialogFragment myDialogFragment = new MyDialogFragment();
-                    FragmentManager manager = getSupportFragmentManager();
-                    //myDialogFragment.show(manager, "dialog");
-                    FragmentTransaction transaction = manager.beginTransaction();
-                    myDialogFragment.show(transaction, "dialog");
-                }*/
             }
         });
 

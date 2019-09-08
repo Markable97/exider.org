@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">FootballAppTest</string>
+    <string name="team_activity">Профил команды</string>
+    <string name="match_activity">Статистика матча</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Сброс</string>
+    <string name="action_settings">Выйти</string>
 
     <string name="high_div">Высший дивизион</string>>
     <string name="first_div">Первый дивизион</string>>

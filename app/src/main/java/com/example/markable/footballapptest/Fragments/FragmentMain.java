@@ -2,11 +2,13 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +76,10 @@ public class FragmentMain extends Fragment {
         mAdapter = new SampleFragmentPageAdapter(getChildFragmentManager(), getContext());
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
+        tabLayout.setSelectedTabIndicatorHeight((int) (2 * getResources().getDisplayMetrics().density));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.enable_tab), getResources().getColor(R.color.colorAccent));
        // new ServerConnectTest().execute("1");
        // update("1");
         /*while (table.equals("")){

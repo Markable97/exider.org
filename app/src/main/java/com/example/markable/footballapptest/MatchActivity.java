@@ -217,7 +217,7 @@ public class MatchActivity extends AppCompatActivity {
                 }
                 if(p.getYellowCard()>0){
                     TextView textView = new TextView(context);
-                    textView.setText(p.getPlayerName() + "(" + p.getYellowCard() + ")");
+                    textView.setText(p.getPlayerName());
                     textView.setGravity(11); //выравнивание по центру
                     textView.setLayoutParams(textViewParams);
                     if(p.getYellowCard() == 1){//Желтые карточки

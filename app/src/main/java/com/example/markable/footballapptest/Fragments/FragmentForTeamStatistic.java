@@ -2,6 +2,7 @@ package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -101,6 +102,9 @@ public class FragmentForTeamStatistic extends Fragment {
         mAdapter = new FragmentPageAdapterForStatistic(getChildFragmentManager(), arrayPlayers);
         viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
+        tabLayout.setSelectedTabIndicatorHeight((int) (2 * getResources().getDisplayMetrics().density));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.enable_tab), getResources().getColor(R.color.colorAccent));
 
         return view;
     }

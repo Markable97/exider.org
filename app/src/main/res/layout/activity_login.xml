@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/bg_login"
+    android:background="@color/bg_register"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">
@@ -21,32 +21,34 @@
             android:paddingTop="2dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/white">
+            android:textColorHint="@color/input_register_hint"
+            android:background="@color/input_register_bg">
         <android.support.design.widget.TextInputEditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/input_register_bg"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/input_login"
-            android:textColorHint="@color/input_login_hint" />
+            android:textColor="@color/input_register"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:paddingTop="2dp"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/input_register_bg"
+            android:textColorHint="@color/input_register_hint"
             app:passwordToggleEnabled="true">
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/password"
                 android:padding="10dp"
+                android:textColor="@color/input_register"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@color/input_register_bg"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
                 />
@@ -59,9 +61,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/btn_login_bg"
+            android:background="@color/colorAccent"
             android:text="@string/btn_login"
-            android:textColor="@color/btn_login" />
+            android:textColor="@color/white" />
 
         <!-- Link to Login Screen -->
 

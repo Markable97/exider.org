@@ -17,9 +17,11 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".TeamActivity"
+            android:label="@string/team_activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MatchActivity"
+            android:label="@string/match_activity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AddResultsActivity"

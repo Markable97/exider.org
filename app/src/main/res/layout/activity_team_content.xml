@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/tabLayout"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -33,14 +34,6 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/teamAcrivity_tv_teamName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textAlignment="center"
-                tools:text="Название команды" />
-
             <RadioGroup
                 android:id="@+id/radioGroup_team"
                 android:layout_width="match_parent"
@@ -53,7 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/state_player"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
                 <RadioButton
                     android:id="@+id/rb_allMatches"
@@ -61,9 +55,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/all_matches"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/teamAcrivity_tv_teamName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                tools:text="Название команды" />
         </LinearLayout>
 
     </LinearLayout>
@@ -71,8 +74,7 @@
     <FrameLayout
         android:id="@+id/container_frag_team"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="2dp">
+        android:layout_height="match_parent">
 
 
     </FrameLayout>
