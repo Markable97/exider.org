@@ -64,6 +64,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу",
                             Toast.LENGTH_SHORT).show();
                     btnLogin.setEnabled(true);
+                    inputEmail.setEnabled(true);
+                    inputPassword.setEnabled(true);
                     /*Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
                     startActivity(intent);
                     finish();*/
@@ -76,6 +78,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     Toast.makeText(getApplicationContext(),"Не верный логин или пароль",
                             Toast.LENGTH_SHORT).show();
                     btnLogin.setEnabled(true);
+                    inputEmail.setEnabled(true);
+                    inputPassword.setEnabled(true);
                 }
             }
         };
@@ -93,6 +97,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     MessageToJson message = new MessageToJson("login", new MessageRegister(email, password));
                     Thread thread = new Thread(new ThreadLogin(email, password, message));
                     thread.start();
+                    inputEmail.setEnabled(false);
+                    inputPassword.setEnabled(false);
                     btnLogin.setEnabled(false);
                 } else {
                     // Prompt user to enter credentials

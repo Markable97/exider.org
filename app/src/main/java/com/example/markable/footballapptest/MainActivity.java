@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();*/
                 Intent intent = null;
                 switch (manager.settingApp()){
-                    case 3:
+                    case 3: //Админ
                         intent = new Intent(getApplicationContext(),AddMatchActivity.class);
                         startActivity(intent);
                         break;
-                    case 2:
+                    case 2: //Судья
                         intent = new Intent(getApplicationContext(),AddResultsActivity.class);
                         startActivity(intent);
                         break;

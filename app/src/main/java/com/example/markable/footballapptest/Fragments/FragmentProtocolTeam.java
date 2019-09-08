@@ -182,6 +182,7 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
                         editText.setBackgroundColor(whiteColor);
                         editText.setLayoutParams(params);
                         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                        editText.setMaxLines(1);
                         switch (j){
                             case 1:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
