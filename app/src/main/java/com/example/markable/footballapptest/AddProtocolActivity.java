@@ -85,6 +85,9 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
         }
         viewPager = (ViewPager) findViewById(R.id.protocol_viewPage);
         tabLayout = (TabLayout) findViewById(R.id.protocol_tabs);
+        tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
+        tabLayout.setSelectedTabIndicatorHeight((int) (2 * getResources().getDisplayMetrics().density));
+        tabLayout.setTabTextColors(getResources().getColor(R.color.enable_tab), getResources().getColor(R.color.colorAccent));
 
 
         new MainServerConnect().execute(teamNames[0], teamNames[1]);

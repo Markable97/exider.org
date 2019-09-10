@@ -29,6 +29,8 @@
     <color name="tabLayout">#3A4750</color>
     <color name="enable_tab">#727272</color>
     <color name="backgtound_match">#eeeeee</color>
-
+    <color name="buzy_schedule">#FF8A80</color>
+    <color name="free_schedule">#B2FF59</color>
+    <color name="active_schedule">#40C4FF</color>
 
 </resources>

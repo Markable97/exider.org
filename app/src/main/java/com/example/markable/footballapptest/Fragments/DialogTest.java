@@ -29,7 +29,7 @@ import com.example.markable.footballapptest.R;
 import java.util.ArrayList;
 
 public class DialogTest extends DialogFragment implements DialogInterface.OnClickListener {
-    private static final String TAG = AddMatchActivity.class.getSimpleName();
+    private static final String TAG = DialogTest.class.getSimpleName();
     LinearLayout layoutMain;
     Context context;
     ArrayList<View> listView = new ArrayList<>();
@@ -41,6 +41,10 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
     String test = "Что-то";
     final String TAG_DIALOG = "dialog_add_time_match";
     AddMatchActivity activity;
+
+    int buzyColor;
+    int freeColor;
+    int activeColor;
     /*public static DialogTest newInstance(ArrayList<Stadiums> stadiums, ArrayList<Schedule> schedule){
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList();
@@ -61,6 +65,9 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         matchForSchedule = (NextMatches) getArguments().getSerializable("match_schedule");
         context = getActivity();
         activity = (AddMatchActivity)getActivity();
+        buzyColor = activity.getResources().getColor(R.color.buzy_schedule);
+        freeColor = activity.getResources().getColor(R.color.free_schedule);
+        activeColor = activity.getResources().getColor(R.color.active_schedule);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_dialog_add_match_time, null);
         layoutMain = (LinearLayout) view.findViewById(R.id.liner_dialog_add_match);
@@ -97,10 +104,11 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                         }*/
                         if (time.get(k).getBusy_time() == 1){
                             //tv.setEnabled(false);
-                            tv.setBackgroundColor(Color.parseColor("#FFFFEBEE"));
+                            tv.setBackgroundColor(buzyColor);//(Color.parseColor("#FFFFEBEE"));
                         }else{
-                            tv.setBackgroundColor(Color.parseColor("#FFE8F5E9")); //FFFFEBEE
+                            tv.setBackgroundColor(freeColor);//(Color.parseColor("#FFE8F5E9")); //FFFFEBEE
                         }
+                        //tv.setTextColor(Color.GRAY);
                         tv.setText(time.get(k).getMatch_time());
                         addSchedule(tv, time.get(k));
                         k++;
@@ -115,7 +123,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
                                             s.getTeam_home() + " - " + s.getTeam_guest(),Toast.LENGTH_LONG).show();
                                 }else{
                                     tv.setEnabled(false);
-                                    tv.setBackgroundColor(Color.parseColor("#FFE8EAF6"));
+                                    tv.setBackgroundColor(activeColor);//(Color.parseColor("#FFE8EAF6"));
                                     returnDialog = s;
                                     btnActiv(tv);
                                     test = "Спартак - " +pole +"\nВремя "+tv.getText();
@@ -191,7 +199,7 @@ public class DialogTest extends DialogFragment implements DialogInterface.OnClic
         for(Schedule s : scheduleList){
             if(!s.getView().equals(btnActiv) && s.getBusy_time()!=1){
                 Button btn = (Button)s.getView();
-                btn.setBackgroundColor(Color.parseColor("#FFE8F5E9"));
+                btn.setBackgroundColor(freeColor);//(Color.parseColor("#FFE8F5E9"));
                 btn.setEnabled(true);
             }
         }
