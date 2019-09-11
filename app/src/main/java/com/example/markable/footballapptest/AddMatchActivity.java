@@ -9,10 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -89,6 +91,9 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_match);
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         addInformation(11);
         spDivision = (Spinner) findViewById(R.id.spinner_diviisions);
         spTour = (Spinner) findViewById(R.id.spinner_tour);
@@ -171,7 +176,16 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         btnSend = (Button)findViewById(R.id.btn_sendSchedule);
         btnSend.setOnClickListener(this);
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         ArrayAdapter<String> arrayTour = (ArrayAdapter<String>) spTour.getAdapter();

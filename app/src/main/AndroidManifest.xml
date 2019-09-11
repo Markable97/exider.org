@@ -18,6 +18,7 @@
         <activity
             android:name=".TeamActivity"
             android:label="@string/team_activity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MatchActivity"

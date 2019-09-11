@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean flag = false;
+    boolean update = false;
+    int dataForFragment = 1;
     //final String IP = "10.0.2.2";
     final String IP = PublicConstants.IP;
 
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new MainServerConnect(MainActivity.this).execute(1);
+        new MainServerConnect(MainActivity.this).execute(dataForFragment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(getResources().getString(R.string.high_div));
@@ -136,11 +138,14 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_clear) {
-            Toast.makeText(getApplicationContext(),"Нажата кнопка сброса", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Вы вышли из пользователя", Toast.LENGTH_SHORT).show();
             SessionManager session = new SessionManager(getApplicationContext());
             session.logoutUser();
             finish();
             return true;
+        }else{
+            update = true;
+            new MainServerConnect(MainActivity.this).execute(dataForFragment);
         }
 
         return super.onOptionsItemSelected(item);
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         //Fragment fragment = null;
         //Class fragmentClass = null;
 
-        int dataForFragment = 0;
+
 
         int id = item.getItemId();
 
@@ -269,6 +274,7 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG, "ERROR \n" + e.getMessage());
                 connect.closeConnection();
                 connect = null;
+                update = false;
                 return "bad"; //если какакя-то ошибка возвращаем плохо
             }
         }
@@ -283,6 +289,8 @@ public class MainActivity extends AppCompatActivity
                     fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
                     flag = true;
                 }else{
+                    if(update)
+                        Toast.makeText(MainActivity.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
                     fragmentMain.update();
                 }
             }else{

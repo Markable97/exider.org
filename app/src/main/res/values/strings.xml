@@ -37,6 +37,7 @@
     <string name="hint_teamName">Команда</string>
     <string name="sentProtocol">Добавить данные</string>
     <string name="clearProtocol">Очистить протокол</string>
+    <string name="action_refresh">Обновить</string>
 
     <string-array name="divisions_list">
         <item>Высший дивизион</item>

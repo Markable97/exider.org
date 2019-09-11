@@ -7,12 +7,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
@@ -37,6 +39,8 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     private ImageFromServer image;
     private String nameTeamFromActivity;
 
+    Toolbar toolbar;
+
     TextView nameTeam;
     ImageView imageTeam;
     RadioButton rb_statistic, rb_matches;
@@ -55,6 +59,16 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_content);
+        toolbar  = (Toolbar) findViewById(R.id.team_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();// возврат на предыдущий activity
+            }
+        });
         Bundle args = getIntent().getExtras();
         nameTeam = findViewById(R.id.teamAcrivity_tv_teamName);
 
