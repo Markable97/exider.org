@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -93,6 +95,31 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
         new MainServerConnect().execute(teamNames[0], teamNames[1]);
     }
 
+    @Override
+    public void onBackPressed(){
+        playerssDB.clear();
+        mAdapter.update(PublicConstants.OPTION_SENT);
+        if (!playerssDB.isEmpty() || ed_goalHome.getText().length() > 0 || ed_goalGuest.getText().length() > 0 ){
+            AlertDialog.Builder bulder = new AlertDialog.Builder(AddProtocolActivity.this);
+            bulder.setTitle("Есть данные для отправки. Выйти?")
+                    .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            AddProtocolActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+        }else{
+            this.finish();// возврат на предыдущий activity
+        }
+    }
+
     public ArrayList<Player> getPlayerHome(){
         return playerHome;
     }
@@ -159,7 +186,11 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
             idMatch = matchProtocol.getIdMatch();
             goalHome = Integer.parseInt(String.valueOf(ed_goalHome.getText()));
             goalVisit = Integer.parseInt(String.valueOf(ed_goalGuest.getText()));
-            new MainServerConnectSentResult().execute();
+            if(playerssDB.isEmpty()  || ed_goalHome.getText().length() == 0 || ed_goalGuest.getText().length() == 0){
+                Toast.makeText(getApplicationContext(), "Нет данных для отправки", Toast.LENGTH_SHORT).show();
+            }else{
+                new MainServerConnectSentResult().execute();
+            }
         }else{
             mAdapter.update(PublicConstants.OPTION_CLEAR);
             ed_goalHome.setText("");

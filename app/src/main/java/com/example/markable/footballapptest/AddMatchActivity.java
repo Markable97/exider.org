@@ -180,12 +180,36 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!forServerDB.isEmpty()){
+            AlertDialog.Builder bulder = new AlertDialog.Builder(AddMatchActivity.this);
+            bulder.setTitle("Есть данные для отправки. Выйти?")
+                    .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            AddMatchActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+        }else{
+            this.finish();
+        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         ArrayAdapter<String> arrayTour = (ArrayAdapter<String>) spTour.getAdapter();
