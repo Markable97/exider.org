@@ -34,6 +34,7 @@
             android:name=".AddProtocolActivity"
             android:label="Протокол матча"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".AddMatchActivity"

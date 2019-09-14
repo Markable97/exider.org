@@ -15,6 +15,7 @@ public class MessageToJson {
     ArrayList<Schedule> schedule;
     PrevMatches match;
     ArrayList<Player> players;
+    int actionDB; //1 - insert; 2 - update
     public MessageToJson(String messageLogic, int id, String team_name, MessageRegister user_info) {
         this.messageLogic = messageLogic;
         this.id = id;
@@ -54,9 +55,6 @@ public class MessageToJson {
         this.user_info = user_info;
     }
 
-    public String getMessageLogic() {
-        return messageLogic;
-    }
 
     public int getId() {
         return id;
@@ -66,13 +64,6 @@ public class MessageToJson {
         this.messageLogic = messageLogic;
     }
 
-    public String getTeam_name() {
-        return team_name;
-    }
-
-    public MessageRegister getUser_info() {
-        return user_info;
-    }
 
     public String getResponseFromServer() {
         return responseFromServer;
@@ -82,8 +73,8 @@ public class MessageToJson {
         return settingForApp;
     }
 
-    public String getDate() {
-        return date;
+    public void setActionDB(int actionDB) {
+        this.actionDB = actionDB;
     }
 
     public void setDate(String date) {

@@ -2,7 +2,7 @@ package com.example.markable.footballapptest.Classes;
 
 import java.io.Serializable;
 
-public class NextMatches implements Serializable {
+public class NextMatches extends NextMatchesWithGoal implements Serializable {
 
     private String nameDivision;
     private int idMatch;
@@ -14,6 +14,7 @@ public class NextMatches implements Serializable {
     private String nameStadium;
 
     public NextMatches(String nameDivision, int idTour, String teamHome, String teamVisit, String date, String nameStadium) {
+        super();
         this.nameDivision = nameDivision;
         this.idTour = idTour;
         this.teamHome = teamHome;
@@ -73,6 +74,6 @@ public class NextMatches implements Serializable {
                 ", teamVisit='" + teamVisit + '\'' +
                 ", date='" + date + '\'' +
                 ", nameStadium='" + nameStadium + '\'' +
-                '}' + "\n";
+                '}' + " " + super.toString() + "\n";
     }
 }

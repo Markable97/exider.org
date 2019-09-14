@@ -42,11 +42,15 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
     ArrayList<Player> playerVisit = new ArrayList<>();
     ArrayList<Player> playerssDB = new ArrayList<>();
 
+    //1 - insert; 2 - update
+    private int actionDB;
+
     TextView tv_division, tv_teamHome, tv_teamGuest;
     EditText ed_goalHome, ed_goalGuest;
 
     String[] teamNames = new String[2];
 
+    int oldGoalHome, oldGoalGuest;
     int idMatch, goalHome, goalVisit;
 
     ViewPager viewPager;
@@ -75,11 +79,18 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
         ed_goalGuest = (EditText) findViewById(R.id.protocol_goalGuest);
         Bundle args = getIntent().getExtras();
         if(args != null){
+            actionDB = args.getInt("optionsDB");
             matchProtocol = (NextMatches) args.getSerializable("protocol");
             Log.i(TAG, "Матч для протокола: " + matchProtocol.toString());
             tv_division.setText(matchProtocol.getNameDivision() + ": тур - " + matchProtocol.getIdTour());
             //tv_tour.setText("Тур - " + matchProtocol.getIdTour());
             tv_teamHome.setText(matchProtocol.getTeamHome());
+            if(matchProtocol.getPlayed() == 1){
+                oldGoalHome = matchProtocol.getGoalHome();
+                oldGoalGuest = matchProtocol.getGoalGuest();
+                ed_goalHome.setText(String.valueOf(oldGoalHome));
+                ed_goalGuest.setText(String.valueOf(oldGoalGuest));
+            }
             tv_teamGuest.setText(matchProtocol.getTeamVisit());
             teamNames[0] = matchProtocol.getTeamHome();
             teamNames[1] = matchProtocol.getTeamVisit();
@@ -95,28 +106,47 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
         new MainServerConnect().execute(teamNames[0], teamNames[1]);
     }
 
+    void showDialogAction(){
+        AlertDialog.Builder bulder = new AlertDialog.Builder(AddProtocolActivity.this);
+        bulder.setTitle("Есть данные для отправки. Выйти?")
+                .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AddProtocolActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
+    }
+
     @Override
     public void onBackPressed(){
         playerssDB.clear();
         mAdapter.update(PublicConstants.OPTION_SENT);
-        if (!playerssDB.isEmpty() || ed_goalHome.getText().length() > 0 || ed_goalGuest.getText().length() > 0 ){
-            AlertDialog.Builder bulder = new AlertDialog.Builder(AddProtocolActivity.this);
-            bulder.setTitle("Есть данные для отправки. Выйти?")
-                    .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            AddProtocolActivity.this.finish();
-                        }
-                    })
-                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .show();
+        if(actionDB == 1){
+            if (!playerssDB.isEmpty() || ed_goalHome.getText().length() > 0 || ed_goalGuest.getText().length() > 0 ){
+                showDialogAction();
+            }else{
+                this.finish();// возврат на предыдущий activity
+            }
         }else{
-            this.finish();// возврат на предыдущий activity
+            if((ed_goalHome.getText().length() == 0 || ed_goalGuest.getText().length() == 0)) {
+                Toast.makeText(getApplicationContext(), "Голы не заполнены", Toast.LENGTH_SHORT).show();
+            }else{
+                goalHome = Integer.parseInt(String.valueOf(ed_goalHome.getText()));
+                goalVisit = Integer.parseInt(String.valueOf(ed_goalGuest.getText()));
+                if (!playerssDB.isEmpty() || (ed_goalHome.getText().length() > 0 && goalHome != oldGoalHome)||
+                        (ed_goalGuest.getText().length() > 0 && goalVisit != oldGoalGuest) ){
+                    showDialogAction();
+                }else{
+                    this.finish();// возврат на предыдущий activity
+                }
+            }
         }
     }
 
@@ -184,11 +214,12 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
             playerssDB.clear();
             mAdapter.update(PublicConstants.OPTION_SENT);
             idMatch = matchProtocol.getIdMatch();
-            goalHome = Integer.parseInt(String.valueOf(ed_goalHome.getText()));
-            goalVisit = Integer.parseInt(String.valueOf(ed_goalGuest.getText()));
+
             if(playerssDB.isEmpty()  || ed_goalHome.getText().length() == 0 || ed_goalGuest.getText().length() == 0){
                 Toast.makeText(getApplicationContext(), "Нет данных для отправки", Toast.LENGTH_SHORT).show();
             }else{
+                goalHome = Integer.parseInt(String.valueOf(ed_goalHome.getText()));
+                goalVisit = Integer.parseInt(String.valueOf(ed_goalGuest.getText()));
                 new MainServerConnectSentResult().execute();
             }
         }else{
@@ -226,6 +257,7 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
             if (!playerssDB.isEmpty()){
                 MessageToJson message = new MessageToJson("setResults", new PrevMatches(idMatch, goalHome, goalVisit),
                         playerssDB);
+                message.setActionDB(actionDB);
                 try{
                     connect.openConnection();
                     Log.i(TAG, "Для сервера в виде JSON" + gson.toJson(message));

@@ -1,11 +1,6 @@
 package com.example.markable.footballapptest.Adapters;
 
-import android.content.Context;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +10,6 @@ import android.widget.TextView;
 import com.example.markable.footballapptest.Classes.NextMatches;
 import com.example.markable.footballapptest.Classes.Schedule;
 import com.example.markable.footballapptest.Classes.Stadiums;
-import com.example.markable.footballapptest.Fragments.DialogTest;
-import com.example.markable.footballapptest.Fragments.MyDialogFragment;
-import com.example.markable.footballapptest.Fragments.MyDialogFragmentAddMatchTime;
 import com.example.markable.footballapptest.R;
 
 import java.util.ArrayList;

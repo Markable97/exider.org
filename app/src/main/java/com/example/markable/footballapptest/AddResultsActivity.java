@@ -1,6 +1,8 @@
 package com.example.markable.footballapptest;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,8 +54,6 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
     EditText dateTour;
     Button btnSend;
 
-    private List<PrevMatches> matches = new ArrayList<>();
-    ArrayList<String> tours = new ArrayList<>();
 
     //ждя работы с датой
     String strDB;
@@ -100,11 +100,26 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
         //listener
         RecyclerViewAddMatches.OnAddMatchClickListener listener = new RecyclerViewAddMatches.OnAddMatchClickListener() {
             @Override
-            public void onMatchClick(NextMatches match, int check) {
+            public void onMatchClick(final NextMatches match, int check) {
                 //Toast.makeText(getApplicationContext(), "Нажат:\n" + match.toString(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), AddProtocolActivity.class);
-                intent.putExtra("protocol", match);
-                startActivity(intent);
+                if(match.getPlayed() == 1){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddResultsActivity.this);
+                    builder.setTitle("Матч уже сыгран - изменить?")
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    transitionActivity(match, 2);
+                                }
+                            }).show();
+                }else{
+                    transitionActivity(match, 1);
+                }
             }
         };
         //адаптер для recyclerView
@@ -129,6 +144,12 @@ public class AddResultsActivity extends AppCompatActivity implements AdapterView
 
     }
 
+    void transitionActivity(NextMatches match, int options){
+        Intent intent = new Intent(getApplicationContext(), AddProtocolActivity.class);
+        intent.putExtra("protocol", match);
+        intent.putExtra("optionsDB", options);
+        startActivity(intent);
+    }
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         beginPicker.show();
