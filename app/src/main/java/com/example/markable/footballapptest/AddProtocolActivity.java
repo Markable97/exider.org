@@ -164,6 +164,7 @@ public class AddProtocolActivity extends AppCompatActivity implements ReturnFrom
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             Log.i(TAG,"Командлы  = " + teams[0] + " " + teams[1]);
             MessageToJson message = new MessageToJson("getPlayersProtocol", teams[0]+";"+teams[1]);
+            message.setId(matchProtocol.getIdMatch());
             try{
                 connect.openConnection();
                 fromServer = connect.responseFromServerArray(gson.toJson(message), 2);

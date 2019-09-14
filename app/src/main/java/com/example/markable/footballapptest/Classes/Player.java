@@ -24,6 +24,7 @@ public class Player implements Serializable, Parcelable{
     private int penalty;
     private int penalty_out;
     private int own_goal;
+    private int inGame;
     private transient PlayerView playerView;
 
     public Player(int idPlayer, String playerTeam, String playerName, String birhtday, String amplua, int number,
@@ -157,6 +158,10 @@ public class Player implements Serializable, Parcelable{
         return own_goal;
     }
 
+    public int getInGame() {
+        return inGame;
+    }
+
     public PlayerView getPlayerView() {
         return playerView;
     }
@@ -171,6 +176,7 @@ public class Player implements Serializable, Parcelable{
                 ", amplua='" + amplua + '\'' +
                 ", number=" + number +
                 ", games=" + games +
+                ", inGame=" + inGame +
                 ", goal=" + goal +
                 ", assist=" + assist +
                 ", yellowCard=" + yellowCard +

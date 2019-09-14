@@ -144,14 +144,14 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
                         }
                         //     Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(imageView, j);
-                    }
-                }else{
+                    } //конец создания шапки
+                }else{ //заполнения основной таблицы
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                     //params.gravity = Gravity.CENTER;
 
                     params.setMargins(_1dp, _1dp, _1dp, _1dp);
-                    if(j == 2){
+                    if(j == 2){ //Имя
                         TextView textView = new TextView(getActivity());
                         textView.setGravity(Gravity.CENTER);
                         textView.setBackgroundColor(whiteColor);
@@ -159,7 +159,7 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
                         textView.setText(String.valueOf(player.getPlayerName()));
                         playerView.setPlayerName(textView);
                         tableRow.addView(textView, j);
-                    }else if(j == 0){
+                    }else if(j == 0){ //checkBox
                         //Сначала создаем LinerLayout
                         LinearLayout linearLayout = new LinearLayout(getActivity());
                         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -171,12 +171,15 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
                                 ViewGroup.LayoutParams.MATCH_PARENT);
                         lin_params.gravity = Gravity.CENTER;
                         CheckBox checkBox = new CheckBox(getActivity());
+                        if(player.getInGame() == 1){
+                            checkBox.setChecked(true);
+                        }
                         //checkBox.setGravity(Gravity.CENTER);
                         checkBox.setBackgroundColor(whiteColor);
                         checkBox.setLayoutParams(lin_params);
                         linearLayout.addView(checkBox);
                         playerView.setInGame(checkBox);
-                    }else{
+                    }else{//активность
                         EditText editText = new EditText(getActivity());
                         editText.setGravity(Gravity.CENTER);
                         editText.setBackgroundColor(whiteColor);
@@ -186,22 +189,37 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
                         switch (j){
                             case 1:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
+                                if(player.getInGame() == 1 && player.getNumber() > 0){
+                                    editText.setText(String.valueOf(player.getNumber()));
+                                }
                                 playerView.setNumber(editText);
                                 break;
                             case 3:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
+                                if(player.getInGame() == 1 && player.getGoal() > 0){
+                                    editText.setText(String.valueOf(player.getGoal()));
+                                }
                                 playerView.setGoal(editText);
                                 break;
                             case 4:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
+                                if(player.getInGame() == 1 && player.getAssist() > 0){
+                                    editText.setText(String.valueOf(player.getAssist()));
+                                }
                                 playerView.setAssist(editText);
                                 break;
                             case 5:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+                                if(player.getInGame() == 1 && player.getYellowCard() > 0){
+                                    editText.setText(String.valueOf(player.getYellowCard()));
+                                }
                                 playerView.setYellowCard(editText);
                                 break;
                             case 6:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(1) });
+                                if(player.getInGame() == 1 && player.getRedCard() > 0){
+                                    editText.setText(String.valueOf(player.getRedCard()));
+                                }
                                 playerView.setRedCard(editText);
                                 break;
 
