@@ -10,7 +10,7 @@ public class PlayerView {
     CheckBox inGame;
     EditText number;
     TextView playerName;
-    EditText goal;
+    public EditText goal;
     EditText assist;
     EditText yellowCard;
     EditText redCard;

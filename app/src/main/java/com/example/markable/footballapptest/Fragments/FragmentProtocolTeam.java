@@ -1,16 +1,22 @@
 package com.example.markable.footballapptest.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -20,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.markable.footballapptest.AddProtocolActivity;
 import com.example.markable.footballapptest.Classes.Player;
@@ -30,7 +37,7 @@ import com.example.markable.footballapptest.UpdateFragListener;
 
 import java.util.ArrayList;
 
-public class FragmentProtocolTeam  extends Fragment implements UpdateFragListener {
+public class FragmentProtocolTeam  extends Fragment implements UpdateFragListener{
 
     private static final String TAG = FragmentProtocolTeam.class.getSimpleName();
 
@@ -53,6 +60,51 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
     ArrayList<PlayerView> playerViews = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
 
+    private static final int REQUEST_GOAL = 1;
+    private static final int REQUEST_ANOTHER_ONE = 2;
+    public void openDialog(Player player) {
+        FragmentManager fm = getFragmentManager();
+        Fragment fragment = fm.findFragmentByTag("dialog_goal");
+        if (fragment == null) {
+            DialogGoal dialog = DialogGoal.newInstance(player);
+            dialog.setTargetFragment(this, REQUEST_GOAL);
+            dialog.show(getFragmentManager(), "dialog_goal");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_GOAL:
+                    int goal = data.getIntExtra(DialogGoal.TAG_GOAL, 0);
+                    int penalty = data.getIntExtra(DialogGoal.TAG_PENALTY, 0);
+                    int penaltyOut = data.getIntExtra(DialogGoal.TAG_PENALTY_OUT, 0);
+                    int ownGoal = data.getIntExtra(DialogGoal.TAG_GOAL_OWN, 0);
+                    int idPlayer = data.getIntExtra(DialogGoal.TAG_PLAYER, 0);
+                    Log.i(TAG, "Данны из диалога голов "+ idPlayer + " " + goal + " " + penalty + " " + penaltyOut +  " " + ownGoal);
+                    updateUI(idPlayer, goal, penalty, penaltyOut, ownGoal);
+                    break;
+                case REQUEST_ANOTHER_ONE:
+                    //...
+                    break;
+                //обработка других requestCode
+            }
+        }
+    }
+
+    void updateUI(int idPlayer, int goal, int penalty, int penaltyOut, int ownGoal){
+        for(Player p : players){
+            if(p.getIdPlayer()==idPlayer){
+                p.getPlayerView().goal.setText("*");
+                p.setGoal(goal);
+                p.setOwn_goal(ownGoal);
+                p.setPenalty(penalty);
+                p.setPenalty_out(penaltyOut);
+            }
+        }
+    }
     public static FragmentProtocolTeam newInstance(String name, int position){
         FragmentProtocolTeam fragment = new FragmentProtocolTeam();
         Bundle args = new Bundle();
@@ -196,8 +248,17 @@ public class FragmentProtocolTeam  extends Fragment implements UpdateFragListene
                                 break;
                             case 3:
                                 editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
-                                if(player.getInGame() == 1 && player.getGoal() > 0){
-                                    editText.setText(String.valueOf(player.getGoal()));
+                                final Player finalPlayer = player;
+                                editText.setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                                        openDialog(finalPlayer);
+                                        return true;
+                                    }
+                                });
+                                if(player.getInGame() == 1 && (player.getGoal() > 0 || player.getOwn_goal() > 0 ||
+                                        player.getPenalty() > 0 || player.getPenalty_out() > 0)){
+                                    editText.setText("*");
                                 }
                                 playerView.setGoal(editText);
                                 break;

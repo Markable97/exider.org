@@ -70,9 +70,6 @@ public class Player implements Serializable, Parcelable{
         return playerImage;
     }
 
-    public void setPlayerImage(Bitmap playerImage) {
-        this.playerImage = playerImage;
-    }
 
     public int getIdPlayer() {
         return idPlayer;
@@ -112,9 +109,9 @@ public class Player implements Serializable, Parcelable{
         if(playerView.number.getText().length() > 0){
             this.number = Integer.parseInt(String.valueOf(playerView.number.getText()));
         }
-        if(playerView.goal.getText().length() > 0){
+        /*if(playerView.goal.getText().length() > 0){
             this.goal = Integer.parseInt(String.valueOf(playerView.goal.getText()));
-        }
+        }*/
         if(playerView.assist.getText().length() > 0){
             this.assist = Integer.parseInt(String.valueOf(playerView.assist.getText()));
         }
@@ -160,6 +157,22 @@ public class Player implements Serializable, Parcelable{
 
     public int getInGame() {
         return inGame;
+    }
+
+    public void setGoal(int goal) {
+        this.goal = goal;
+    }
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
+    public void setPenalty_out(int penalty_out) {
+        this.penalty_out = penalty_out;
+    }
+
+    public void setOwn_goal(int own_goal) {
+        this.own_goal = own_goal;
     }
 
     public PlayerView getPlayerView() {
