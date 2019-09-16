@@ -7,8 +7,11 @@ import com.example.markable.footballapptest.Classes.TournamentTable;
 import java.util.ArrayList;
 
 public interface UpdateFragListener {
-
-    void update();
+    /*
+    * option = 1 - update
+    * option = 2 - clear
+    * */
+    void update(int option);
 
 
 }

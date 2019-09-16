@@ -24,6 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.example.markable.footballapptest.Classes.TournamentTable;
 import com.example.markable.footballapptest.MainActivity;
 import com.example.markable.footballapptest.R;
@@ -92,6 +93,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
 
         activity = (MainActivity)getActivity();
         newTournamentTable = activity.getTournamentTable();
+        Log.i(TAG, "Размер массива" + newTournamentTable.size());
         imageBitmap = activity.getImageArray();
         Log.i(TAG, "onCreateView: Создание таблицы");
 
@@ -109,7 +111,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         //image = view.findViewById(R.id.imageViewTest);
         //image.setImageBitmap(imageBitmap.get(0));
         if(newTournamentTable.size() != 0){
-            update();
+            update(PublicConstants.OPTION_UPDATE);
         }else {
             //textView.setText("Чисто проверить! ");
         }
@@ -188,12 +190,65 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     color = whiteColor;
                 }
                 break;
+                case "Второй дивизион A":
+                if(position==0 || position==1){
+                    color = green;
+                }else if(position==2){
+                    color = yellow;
+                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
+                    color = pink;
+                }else if(position>=newTournamentTable.size()-5){
+                    color = red;
+                }else {
+                    color = whiteColor;
+                }
+                break;
+                case "Второй дивизион B":
+                if(position==0 || position==1){
+                    color = green;
+                }else if(position==2){
+                    color = yellow;
+                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
+                    color = pink;
+                }else if(position>=newTournamentTable.size()-5){
+                    color = red;
+                }else {
+                    color = whiteColor;
+                }
+                break;
+                case "Третий дивизион A":
+                if(position==0 || position==1){
+                    color = green;
+                }else if(position==2){
+                    color = yellow;
+                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
+                    color = pink;
+                }else if(position>=newTournamentTable.size()-5){
+                    color = red;
+                }else {
+                    color = whiteColor;
+                }
+                break;
+                case "Третий дивизион B":
+                if(position==0 || position==1){
+                    color = green;
+                }else if(position==2){
+                    color = yellow;
+                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
+                    color = pink;
+                }else if(position>=newTournamentTable.size()-5){
+                    color = red;
+                }else {
+                    color = whiteColor;
+                }
+                break;
+
         }
         return color;
     }
 
     @Override
-    public void update() {
+    public void update(int option) {
         Log.i(TAG, "Interface: Сработал пустой метод");
         newTournamentTable = activity.getTournamentTable();
         imageBitmap = activity.getImageArray();
@@ -235,7 +290,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                     TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
                     //params.gravity = Gravity.CENTER;
-                    TextView tv = new TextView(getActivity());
+                    final TextView tv = new TextView(getActivity());
                     params.setMargins(_1dp, _1dp, _1dp, _1dp);
                     tv.setLayoutParams(params);
                     tv.setGravity(Gravity.CENTER);
@@ -259,9 +314,15 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             tv.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ImageFromServer descriptionImage = imageBitmap.get(finalI);
+                                    ImageFromServer descriptionImage = null;
+                                    if(imageBitmap != null){
+                                        descriptionImage = imageBitmap.get(finalI);
+                                    }
                                     Intent intent = new Intent(getActivity(), TeamActivity.class);
-                                    intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
+                                    if(descriptionImage != null){
+                                        intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
+                                    }
+                                    intent.putExtra("dataForActivityName", tv.getText());
                                     startActivity(intent);
                                 }
                             });

@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/team_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tabLayout"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -33,14 +54,6 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/teamAcrivity_tv_teamName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textAlignment="center"
-                tools:text="Название команды" />
-
             <RadioGroup
                 android:id="@+id/radioGroup_team"
                 android:layout_width="match_parent"
@@ -53,7 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/state_player"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
                 <RadioButton
                     android:id="@+id/rb_allMatches"
@@ -61,9 +75,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/all_matches"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/teamAcrivity_tv_teamName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                tools:text="Название команды" />
         </LinearLayout>
 
     </LinearLayout>
@@ -71,10 +94,9 @@
     <FrameLayout
         android:id="@+id/container_frag_team"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="2dp">
+        android:layout_height="match_parent">
 
 
     </FrameLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

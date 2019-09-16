@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#303841</color>
+    <color name="colorPrimaryDark">#303841</color>
+    <color name="colorAccent">#FA4659</color>
 
     <color name="backTable">#000000</color>
     <color name="backCell">#ffffff</color>
@@ -14,18 +14,23 @@
 
 
     <color name="bg_login">#26ae90</color>
-    <color name="bg_register">#2e3237</color>
+    <color name="bg_register">#2E3237</color>
     <color name="bg_main">#428bca</color>
-    <color name="white">#ffffff</color>
+    <color name="white">#FFFFFF</color>
     <color name="input_login">#222222</color>
     <color name="input_login_hint">#999999</color>
     <color name="input_register">#888888</color>
     <color name="input_register_bg">#3b4148</color>
     <color name="input_register_hint">#5e6266</color>
-    <color name="btn_login">#26ae90</color>
-    <color name="btn_login_bg">#eceef1</color>
+    <color name="btn_login">#26AE90</color>
+    <color name="btn_login_bg">#ECEEF1</color>
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
-
+    <color name="tabLayout">#3A4750</color>
+    <color name="enable_tab">#727272</color>
+    <color name="backgtound_match">#eeeeee</color>
+    <color name="buzy_schedule">#FF8A80</color>
+    <color name="free_schedule">#B2FF59</color>
+    <color name="active_schedule">#40C4FF</color>
 
 </resources>

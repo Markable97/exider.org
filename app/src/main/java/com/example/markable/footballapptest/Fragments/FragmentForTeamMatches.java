@@ -54,7 +54,7 @@ public class FragmentForTeamMatches extends Fragment {
         recyclerView = view.findViewById(R.id.listAllMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //adapter = new RecycleViewAllMatches(getActivity(), arrayAllMatches, arrayImage);
-        adapter = new RecyclerViewForResults(getActivity(), arrayAllMatches,arrayImage);
+        adapter = new RecyclerViewForResults(/*getActivity(),*/ arrayAllMatches);
         recyclerView.setAdapter(adapter);
 
 

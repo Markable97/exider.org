@@ -24,6 +24,8 @@ public class Player implements Serializable, Parcelable{
     private int penalty;
     private int penalty_out;
     private int own_goal;
+    private int inGame;
+    private transient PlayerView playerView;
 
     public Player(int idPlayer, String playerTeam, String playerName, String birhtday, String amplua, int number,
                   int games, int goal, int assist, int yellowCard, int redCard, int penalty, int penalty_out,
@@ -59,15 +61,15 @@ public class Player implements Serializable, Parcelable{
         this.redCard = redCard;
     }
 
-
+    public Player(String playerTeam, String playerName) {
+        this.playerTeam = playerTeam;
+        this.playerName = playerName;
+    }
 
     public Bitmap getPlayerImage() {
         return playerImage;
     }
 
-    public void setPlayerImage(Bitmap playerImage) {
-        this.playerImage = playerImage;
-    }
 
     public int getIdPlayer() {
         return idPlayer;
@@ -99,6 +101,27 @@ public class Player implements Serializable, Parcelable{
         return number;
     }
 
+    public void setPlayerView(PlayerView playerView) {
+        this.playerView = playerView;
+        if(playerView.inGame.isChecked() == true){
+            this.games = 1;
+        }
+        if(playerView.number.getText().length() > 0){
+            this.number = Integer.parseInt(String.valueOf(playerView.number.getText()));
+        }
+        /*if(playerView.goal.getText().length() > 0){
+            this.goal = Integer.parseInt(String.valueOf(playerView.goal.getText()));
+        }*/
+        if(playerView.assist.getText().length() > 0){
+            this.assist = Integer.parseInt(String.valueOf(playerView.assist.getText()));
+        }
+        if(playerView.yellowCard.getText().length() > 0){
+            this.yellowCard = Integer.parseInt(String.valueOf(playerView.yellowCard.getText()));
+        }
+        if(playerView.redCard.getText().length() > 0){
+            this.redCard = Integer.parseInt(String.valueOf(playerView.redCard.getText()));
+        }
+    }
 
     public int getGoal() {
         return goal;
@@ -132,6 +155,30 @@ public class Player implements Serializable, Parcelable{
         return own_goal;
     }
 
+    public int getInGame() {
+        return inGame;
+    }
+
+    public void setGoal(int goal) {
+        this.goal = goal;
+    }
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
+    public void setPenalty_out(int penalty_out) {
+        this.penalty_out = penalty_out;
+    }
+
+    public void setOwn_goal(int own_goal) {
+        this.own_goal = own_goal;
+    }
+
+    public PlayerView getPlayerView() {
+        return playerView;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -142,6 +189,7 @@ public class Player implements Serializable, Parcelable{
                 ", amplua='" + amplua + '\'' +
                 ", number=" + number +
                 ", games=" + games +
+                ", inGame=" + inGame +
                 ", goal=" + goal +
                 ", assist=" + assist +
                 ", yellowCard=" + yellowCard +

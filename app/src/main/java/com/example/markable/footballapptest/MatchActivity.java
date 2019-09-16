@@ -2,16 +2,21 @@ package com.example.markable.footballapptest;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
+import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.Classes.PrevMatches;
 import com.example.markable.footballapptest.Classes.PublicConstants;
@@ -52,12 +57,15 @@ public class MatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_content);
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         Bundle args = getIntent().getExtras();
         if(args!=null){
             matches = (PrevMatches) args.getSerializable("information");
-            imageHome = args.getParcelable("imageHome");
-            imageVisit = args.getParcelable("imageVisit");
-            Log.i(TAG, "onCreate: " + matches.toString() + imageVisit.getNameImage() + imageHome.getNameImage());
+            //imageHome = args.getParcelable("imageHome");
+            //imageVisit = args.getParcelable("imageVisit");
+            Log.i(TAG, "onCreate: " + matches.toString());
         }
 
         layout_home = findViewById(R.id.match_layoutHome);
@@ -73,57 +81,71 @@ public class MatchActivity extends AppCompatActivity {
         nameTeamVisit = findViewById(R.id.match_teamGuest);
         nameTeamVisit.setText(matches.getTeamVisit());
         imageTeamHome = findViewById(R.id.match_imageHome);
-        imageTeamHome.setImageBitmap(imageHome.getBitmapImageBig());
+        if(matches.getImageHome()!=null){
+            imageTeamHome.setImageBitmap(matches.getImageHome().getBitmapImageBig());
+        }
         imageTeamVisit = findViewById(R.id.match_imageGuest);
-        imageTeamVisit.setImageBitmap(imageVisit.getBitmapImageBig());
+        if(matches.getImageVisit()!=null){
+            imageTeamVisit.setImageBitmap(matches.getImageVisit().getBitmapImageBig());
+        }
 
         textViewParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         textViewParams.gravity = Gravity.CENTER;
         Log.i(TAG, "onCreate: id_match" + matches.getIdMatch());
 
-        new MainServerConnect().execute(String.valueOf(matches.getIdMatch()));
+        new MainServerConnect().execute(matches.getIdMatch());
     }
 
-    public class MainServerConnect extends AsyncTask<String, Void, String> {
 
-        String  query = "",
-                fromServer;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private class MainServerConnect extends AsyncTask<Integer, Void, String> {
+
+        ConnectWithServer connect = new ConnectWithServer();
+        Gson gson = new Gson();
+        int idMatch;
+        String  fromServer;
 
         @Override
-        protected String doInBackground(String... strings) {
-
-            for(String s : strings){
-                query = "{\"messageLogic\":\"player\",\"id_division\":"+ s + "}";
-                //query = "{\"id_division\":" + s + ",\"id_tour\":2}";
-            }
-
-            Socket socket;
-            Gson gson = new Gson();
-
-            try {
-                socket = new Socket(IP, PublicConstants.port);
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-
-                out.writeUTF(query);
-                fromServer = in.readUTF();
-                Log.i(TAG, "Данные с сервера в виду JSON = " + fromServer);
+        protected String doInBackground(Integer... integers) {
+            Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
+            idMatch = integers[0];
+            Log.i(TAG, "Матч id = " + idMatch);
+            MessageToJson message = new MessageToJson("player", idMatch);
+            try{
+                connect.openConnection();
+                fromServer = connect.responseFromServer(gson.toJson(message));
+                Log.i(TAG, "Данные от сервера \n" + fromServer);
                 playersInMatch.clear();
                 playersInMatch = gson.fromJson(fromServer, new TypeToken<ArrayList<Player>>(){}.getType());
-                Log.i(TAG, "Массив = " + playersInMatch.get(2));
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                Log.i(TAG, "Массив = " + playersInMatch.size());
+                connect.closeConnection();
+                return "success";
+            }catch (Exception e) {
+                Log.i(TAG, "ERROR \n" + e.getMessage());
+                connect.closeConnection();
+                connect = null;
+                return "bad"; //если какакя-то ошибка возвращаем плохо
             }
-
-            return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            addLayout(playersInMatch);
+            if (s.equals("success")){
+                addLayout(playersInMatch);
+            }else{
+                Toast.makeText(getApplicationContext(),"Не удалось получить данные", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -211,7 +233,7 @@ public class MatchActivity extends AppCompatActivity {
                 }
                 if(p.getYellowCard()>0){
                     TextView textView = new TextView(context);
-                    textView.setText(p.getPlayerName() + "(" + p.getYellowCard() + ")");
+                    textView.setText(p.getPlayerName());
                     textView.setGravity(11); //выравнивание по центру
                     textView.setLayoutParams(textViewParams);
                     if(p.getYellowCard() == 1){//Желтые карточки
