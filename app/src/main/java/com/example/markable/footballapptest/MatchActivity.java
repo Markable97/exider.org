@@ -2,11 +2,13 @@ package com.example.markable.footballapptest;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +57,9 @@ public class MatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_content);
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         Bundle args = getIntent().getExtras();
         if(args!=null){
             matches = (PrevMatches) args.getSerializable("information");
@@ -92,7 +97,18 @@ public class MatchActivity extends AppCompatActivity {
         new MainServerConnect().execute(matches.getIdMatch());
     }
 
-    public class MainServerConnect extends AsyncTask<Integer, Void, String> {
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private class MainServerConnect extends AsyncTask<Integer, Void, String> {
 
         ConnectWithServer connect = new ConnectWithServer();
         Gson gson = new Gson();
@@ -217,7 +233,7 @@ public class MatchActivity extends AppCompatActivity {
                 }
                 if(p.getYellowCard()>0){
                     TextView textView = new TextView(context);
-                    textView.setText(p.getPlayerName() + "(" + p.getYellowCard() + ")");
+                    textView.setText(p.getPlayerName());
                     textView.setGravity(11); //выравнивание по центру
                     textView.setLayoutParams(textViewParams);
                     if(p.getYellowCard() == 1){//Желтые карточки

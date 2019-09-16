@@ -1,16 +1,20 @@
 package com.example.markable.footballapptest;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
@@ -35,6 +39,8 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     private ImageFromServer image;
     private String nameTeamFromActivity;
 
+    Toolbar toolbar;
+
     TextView nameTeam;
     ImageView imageTeam;
     RadioButton rb_statistic, rb_matches;
@@ -53,6 +59,16 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_content);
+        toolbar  = (Toolbar) findViewById(R.id.team_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();// возврат на предыдущий activity
+            }
+        });
         Bundle args = getIntent().getExtras();
         nameTeam = findViewById(R.id.teamAcrivity_tv_teamName);
 
@@ -65,17 +81,20 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
             }
             nameTeam.setText(nameTeamFromActivity);
         }
-
-        new ServerConnect().execute(nameTeamFromActivity);
-
-
+        container = findViewById(R.id.container_frag_team);
         rb_statistic = findViewById(R.id.rb_statisticPlayers);
         rb_statistic.setChecked(true);
-        //rb_matches = findViewById(R.id.rb_allMatches);
+        rb_matches = findViewById(R.id.rb_allMatches);
         radioGroup = findViewById(R.id.radioGroup_team);
         radioGroup.setOnCheckedChangeListener(this);
+        rb_statistic.setEnabled(false);
+        rb_matches.setEnabled(false);
 
-        container = findViewById(R.id.container_frag_team);
+        new ServerConnect(TeamActivity.this).execute(nameTeamFromActivity);
+
+
+
+
 
         /*fragStatistic = new FragmentForTeamStatistic().newInstance();
         fragMatches = new FragmentForTeamMatches();
@@ -111,6 +130,18 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         String fromServer = null;
         int countIm = 0;
+
+        TeamActivity activity;
+        private Context context;
+        ProgressDialog progressDialog ;
+        public ServerConnect(TeamActivity activity){
+            this.activity = activity;
+            context = activity;
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Загрузка");
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -168,9 +199,12 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                 fragMatches = new FragmentForTeamMatches().newInstance();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_frag_team, fragStatistic ).commit();
+                rb_statistic.setEnabled(true);
+                rb_matches.setEnabled(true);
             }else{
                 Toast.makeText(getApplicationContext(),"Не удалось получить данные", Toast.LENGTH_LONG).show();
             }
+            progressDialog.dismiss();
         }
     }
 

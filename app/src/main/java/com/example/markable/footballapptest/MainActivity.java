@@ -1,5 +1,7 @@
 package com.example.markable.footballapptest;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean flag = false;
+    boolean update = false;
+    int dataForFragment = 1;
     //final String IP = "10.0.2.2";
     final String IP = PublicConstants.IP;
 
@@ -63,27 +67,33 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new MainServerConnect().execute(1);
+        new MainServerConnect(MainActivity.this).execute(dataForFragment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setTitle(getResources().getString(R.string.high_div));
         manager = new SessionManager(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Отправка заявки на игру", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-                if(manager.settingApp() == 2){
-                    Intent intent = new Intent(getApplicationContext(),AddMatchActivity.class);
-                    startActivity(intent);
-                }else{
-                    MyDialogFragment myDialogFragment = new MyDialogFragment();
-                    FragmentManager manager = getSupportFragmentManager();
-                    //myDialogFragment.show(manager, "dialog");
-                    FragmentTransaction transaction = manager.beginTransaction();
-                    myDialogFragment.show(transaction, "dialog");
+                Intent intent = null;
+                switch (manager.settingApp()){
+                    case 3: //Админ
+                        intent = new Intent(getApplicationContext(),AddMatchActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2: //Судья
+                        intent = new Intent(getApplicationContext(),AddResultsActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        MyDialogFragment myDialogFragment = new MyDialogFragment();
+                        FragmentManager manager = getSupportFragmentManager();
+                        //myDialogFragment.show(manager, "dialog");
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        myDialogFragment.show(transaction, "dialog");
+                        break;
                 }
             }
         });
@@ -128,11 +138,14 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_clear) {
-            Toast.makeText(getApplicationContext(),"Нажата кнопка сброса", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Вы вышли из пользователя", Toast.LENGTH_SHORT).show();
             SessionManager session = new SessionManager(getApplicationContext());
             session.logoutUser();
             finish();
             return true;
+        }else{
+            update = true;
+            new MainServerConnect(MainActivity.this).execute(dataForFragment);
         }
 
         return super.onOptionsItemSelected(item);
@@ -145,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         //Fragment fragment = null;
         //Class fragmentClass = null;
 
-        int dataForFragment = 0;
+
 
         int id = item.getItemId();
 
@@ -165,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             dataForFragment = 6;
         }
 
-        new MainServerConnect().execute(dataForFragment);
+        new MainServerConnect(MainActivity.this).execute(dataForFragment);
     //fragmentMain.update(dataForFragment);
 
         /*try {
@@ -187,7 +200,7 @@ public class MainActivity extends AppCompatActivity
         return true;
 }
 
-    public class MainServerConnect extends AsyncTask<Integer, Void, String>{
+    private class MainServerConnect extends AsyncTask<Integer, Void, String>{
         ConnectWithServer connect = new ConnectWithServer();
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
@@ -196,6 +209,17 @@ public class MainActivity extends AppCompatActivity
         //String ipAdres = "192.168.0.104";
         //String ipAdres = "92.38.241.107";
         //String ipAdres = "10.0.2.2"
+        MainActivity activity;
+        private Context context;
+        ProgressDialog progressDialog ;
+        public MainServerConnect(MainActivity activity){
+            this.activity = activity;
+            context = activity;
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Загрузка");
+            progressDialog.show();
+        }
 
 
         @Override
@@ -205,7 +229,7 @@ public class MainActivity extends AppCompatActivity
             MessageToJson message = new MessageToJson("division", integers[0]);
             try{
                 connect.openConnection(); //открываем соединение
-                ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message)); //получаем массив JSON-ов
+                ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message), 3); //получаем массив JSON-ов
                 Log.i(TAG, response.toString());
                 for(int i = 0; i < response.size(); i++){
                     switch (i){
@@ -250,13 +274,14 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG, "ERROR \n" + e.getMessage());
                 connect.closeConnection();
                 connect = null;
+                update = false;
                 return "bad"; //если какакя-то ошибка возвращаем плохо
             }
         }
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            //super.onPostExecute(s);
             if (s.equals("success")){
                 if(flag == false){//проверка на запущенность активности
                     fragmentMain = new FragmentMain();
@@ -264,11 +289,14 @@ public class MainActivity extends AppCompatActivity
                     fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
                     flag = true;
                 }else{
+                    if(update)
+                        Toast.makeText(MainActivity.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
                     fragmentMain.update();
                 }
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }
+            this.progressDialog.dismiss();
         }
 
     }

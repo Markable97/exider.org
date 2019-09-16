@@ -9,10 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -89,6 +91,9 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_match);
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         addInformation(11);
         spDivision = (Spinner) findViewById(R.id.spinner_diviisions);
         spTour = (Spinner) findViewById(R.id.spinner_tour);
@@ -170,6 +175,39 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
 
         btnSend = (Button)findViewById(R.id.btn_sendSchedule);
         btnSend.setOnClickListener(this);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!forServerDB.isEmpty()){
+            AlertDialog.Builder bulder = new AlertDialog.Builder(AddMatchActivity.this);
+            bulder.setTitle("Есть данные для отправки. Выйти?")
+                    .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            AddMatchActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+        }else{
+            this.finish();
+        }
     }
 
     @Override
@@ -302,7 +340,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public class MainServerConneсtSentSchedule extends AsyncTask<Integer, Void, String>{
+    private class MainServerConneсtSentSchedule extends AsyncTask<Integer, Void, String>{
 
         String fromServer;
 
@@ -350,7 +388,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    public class MainServerConnect  extends AsyncTask<Integer, Void, String>{
+    private class MainServerConnect  extends AsyncTask<Integer, Void, String>{
 
 
         String fromServer;
@@ -360,7 +398,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             Log.i(TAG,"Дивизион = " + integers[0] + " Тур = " + integers[1]);
             MessageToJson message = new MessageToJson("getTour",integers[0], integers[1]);
-            message.setDate(strDB);
+
             try{
                 connect.openConnection(); //открывваем соединение
                 fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игр
@@ -369,6 +407,7 @@ public class AddMatchActivity extends AppCompatActivity implements AdapterView.O
                 /*message.setMessageLogic("getCntStadium");
                 fromServer = connect.responseFromServer(gson.toJson(message));
                 countStadium = Integer.valueOf(fromServer);*/
+                message.setDate(strDB);
                 message.setMessageLogic("getStadiumList");
                 fromServer = connect.responseFromServer(gson.toJson(message));
                 stadiumsList.clear();
