@@ -173,9 +173,9 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                     for(PrevMatches match : arrayAllMatches){
                         for(ImageFromServer image : arrayTeamImage){
                             if(image.getNameImage().equals(match.getTeamHome())){
-                                match.setImageHome(image);
+                                match.setImageHomeImage(image);
                             }else if (image.getNameImage().equals(match.getTeamVisit())){
-                                match.setImageVisit(image);
+                                match.setImageVisitImage(image);
                             }
                         }
                     }

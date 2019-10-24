@@ -229,7 +229,31 @@ public class MainActivity extends AppCompatActivity
             MessageToJson message = new MessageToJson("division", integers[0]);
             try{
                 connect.openConnection(); //открываем соединение
-                ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message), 3); //получаем массив JSON-ов
+                String responseFromServer = connect.connectToServer(gson.toJson(message));
+                String delimiter = "\\?";
+                String[] arrayJSON = responseFromServer.split(delimiter);
+                tournamentTable.clear();
+                Log.i(TAG, arrayJSON[0]);
+                tournamentTable = gson.fromJson(arrayJSON[0], new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                Log.i(TAG, "Размер турнирной таблицы " + tournamentTable.size());
+                Log.i(TAG, arrayJSON[1]);
+                prevResultsMatch.clear();
+                try {
+                    prevResultsMatch = gson.fromJson(arrayJSON[1], new TypeToken<ArrayList<PrevMatches>>() {
+                    }.getType());
+                }catch(Exception e){
+                    Log.i(TAG, "Bed decoding JSON prevMatches");
+                }
+                Log.i(TAG, "Размер предыдущих матчей таблицы " + prevResultsMatch.size());
+                Log.i(TAG, arrayJSON[2]);
+                nextResultsMatch.clear();
+                try{
+                    nextResultsMatch = gson.fromJson(arrayJSON[2], new TypeToken<ArrayList<NextMatches>>(){}.getType());
+                }catch(Exception e){
+                    Log.i(TAG, "Bed decoding JSON nextMatches");
+                }
+                Log.i(TAG, "Размер будущх матчей " + nextResultsMatch.size());
+                /*ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message), 3); //получаем массив JSON-ов
                 Log.i(TAG, response.toString());
                 for(int i = 0; i < response.size(); i++){
                     switch (i){
@@ -260,13 +284,13 @@ public class MainActivity extends AppCompatActivity
                 for(PrevMatches match : prevResultsMatch){
                     for(ImageFromServer image : imageArray){
                         if(image.getNameImage().equals(match.getTeamHome())){
-                            match.setImageHome(image);
+                            match.setImageHomeImage(image);
                         }else if (image.getNameImage().equals(match.getTeamVisit())){
-                            match.setImageVisit(image);
+                            match.setImageVisitImage(image);
                         }
                     }
                 }
-
+                */
                 connect.closeConnection();
                 return "success"; //все хорошо
 
@@ -282,6 +306,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String s) {
             //super.onPostExecute(s);
+            this.progressDialog.dismiss();
             if (s.equals("success")){
                 if(flag == false){//проверка на запущенность активности
                     fragmentMain = new FragmentMain();
@@ -296,7 +321,7 @@ public class MainActivity extends AppCompatActivity
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }
-            this.progressDialog.dismiss();
+
         }
 
     }

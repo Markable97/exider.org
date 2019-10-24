@@ -3,6 +3,7 @@ package com.example.markable.footballapptest.Classes;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Struct;
 import java.util.ArrayList;
 
@@ -89,6 +91,51 @@ public class ConnectWithServer {
             throw new Exception("Невозможно отправить данные");
         }
 
+    }
+    /**
+    Новое подключение для обычных юзеров совместных экранов с IOS. Принимаем байты возвращаем String
+    **/
+    public String connectToServer(String messageForServer) throws Exception{
+        if(socket == null || socket.isClosed()){
+            Log.v(TAG, "Невозмоэно отправить данные \n" );
+            throw new Exception("Невозможно отправить данные. Сокет не создан или закрыт");
+        }
+        try{
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out.write(messageForServer.getBytes());
+            Log.v(TAG,  "Данные отправлены \n" + messageForServer);
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            int read;
+            int length;
+            String str = "";
+            byte[] data = new byte[4096];
+            System.out.println("First" + in.available());
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            do{
+                    System.out.println("Second" + in.available());
+                    read = in.read(data);
+                    System.out.println("Third =" + read + " data = " + data.length);
+                    if (read == -1){
+                        System.out.println("Пизде конецццццццц " + data.length);
+                        break;
+                    }
+                    outputStream.write(data, 0, read);
+                    //System.out.println(read);
+
+
+                //str+=(char)read;
+            }while(true); //in.available()> 0
+            //System.out.println(str);
+            System.out.println("\n"+outputStream.toString());
+            String response = outputStream.toString();
+            Log.i(TAG, response);
+            return response;
+        }catch (IOException e){
+            System.out.println("Error = " + e.getMessage());
+            Log.v(TAG, e.getMessage() + "\nНевозможно отправить данные");
+            throw new Exception("Невозможно отправить данные");
+        }
     }
 
     public ArrayList<String> responseFromServerArray(String messageForServer, int n) throws Exception{

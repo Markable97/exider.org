@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -23,10 +22,6 @@ import com.example.markable.footballapptest.Classes.PublicConstants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class MatchActivity extends AppCompatActivity {
@@ -81,12 +76,12 @@ public class MatchActivity extends AppCompatActivity {
         nameTeamVisit = findViewById(R.id.match_teamGuest);
         nameTeamVisit.setText(matches.getTeamVisit());
         imageTeamHome = findViewById(R.id.match_imageHome);
-        if(matches.getImageHome()!=null){
-            imageTeamHome.setImageBitmap(matches.getImageHome().getBitmapImageBig());
+        if(matches.getImageHomeImage()!=null){
+            imageTeamHome.setImageBitmap(matches.getImageHomeImage().getBitmapImageBig());
         }
         imageTeamVisit = findViewById(R.id.match_imageGuest);
-        if(matches.getImageVisit()!=null){
-            imageTeamVisit.setImageBitmap(matches.getImageVisit().getBitmapImageBig());
+        if(matches.getImageVisitImage()!=null){
+            imageTeamVisit.setImageBitmap(matches.getImageVisitImage().getBitmapImageBig());
         }
 
         textViewParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,

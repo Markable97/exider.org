@@ -1,12 +1,11 @@
 package com.example.markable.footballapptest.Adapters;
 
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,12 +52,26 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         match = list.get(position);
 
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
-        if(match.getImageHome()!=null){
-            holder.imageTeamHome.setImageBitmap(match.getImageHome().getBitmapImageBig());
+        if(!match.getImageHome().isEmpty()){
+            try{
+                byte[] decodedBytes = Base64.decode(match.getImageHome(), Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+                holder.imageTeamHome.setImageBitmap(decodedBitmap);
+            }catch (Exception e){
+                System.out.println(match.getTeamHome() + "\n" + match.getImageHome());
+            }
         }
-        if(match.getImageVisit()!=null){
-            holder.imageTeamVisit.setImageBitmap(match.getImageVisit().getBitmapImageBig());
+        if(!match.getImageGuest().isEmpty()){
+            byte[] decodedBytes = Base64.decode(match.getImageGuest(), Base64.DEFAULT);
+            Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+            holder.imageTeamVisit.setImageBitmap(decodedBitmap);
         }
+        /*if(match.getImageHomeImage()!=null){
+            holder.imageTeamHome.setImageBitmap(match.getImageHomeImage().getBitmapImageBig());
+        }
+        if(match.getImageVisitImage()!=null){
+            holder.imageTeamVisit.setImageBitmap(match.getImageVisitImage().getBitmapImageBig());
+        }*/
         holder.nameTeamHome.setText(match.getTeamHome());
         holder.nameTeamVisit.setText(match.getTeamVisit());
         holder.goalTeamHome.setText(String.valueOf(match.getGoalHome()));

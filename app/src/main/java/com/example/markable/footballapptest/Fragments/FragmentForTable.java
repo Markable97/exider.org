@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,7 +69,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         super.onAttach(context);
         final float scale = context.getResources().getDisplayMetrics().density;
         _50dp = (int) (49*scale*0.5f);
-        _1dp = (int)(1*scale*0.5f);
+        _1dp = 0;//(int)(1*scale*0.5f);
 
     }
 
@@ -305,7 +306,9 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             ImageView imageView = new ImageView(getActivity());
                             imageView.setBackgroundColor(changeColor(newTournamentTable.get(i).getDivisionName(), i));
                             imageView.setLayoutParams(paramsImage);
-                            imageView.setImageBitmap(teamPicture(newTournamentTable.get(i).getTeamName()));
+                            byte[] decodedBytes = Base64.decode(newTournamentTable.get(i).getImageBase64(), Base64.DEFAULT);
+                            Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+                            imageView.setImageBitmap(decodedBitmap);
                             tableRow.addView(imageView, j);
                             break;
                         case 2:

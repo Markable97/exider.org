@@ -138,7 +138,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 connect.openConnection();
                 //connect.onlySendDate(new Gson().toJson(message));
                 //Log.v(TAG,  "Данные успешно ушли. Закрытие********");
-                String responseServer = connect.responseFromServer(gson.toJson(message));
+                String responseServer = connect.connectToServer(gson.toJson(message));//connect.responseFromServer(gson.toJson(message));
                 Log.i(TAG, "Данные успешно ушли и пришли. Закрытие******** \n Ответ сервера: " + responseServer);
                 final MessageToJson response = gson.fromJson(responseServer,MessageToJson.class);
                 runOnUiThread(new Runnable() {

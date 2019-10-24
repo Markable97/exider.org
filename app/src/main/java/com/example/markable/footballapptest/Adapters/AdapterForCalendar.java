@@ -1,7 +1,9 @@
 package com.example.markable.footballapptest.Adapters;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +36,20 @@ public class AdapterForCalendar extends RecyclerView.Adapter<AdapterForCalendar.
     @Override
     public void onBindViewHolder(AdapterForCalendar.ViewHolder holder, int position) {
         NextMatches match = list.get(position);
-        ImageFromServer image = listImage.get(position);
+        //ImageFromServer image = listImage.get(position);
+        System.out.println();
         holder.tour.setText("Тур " + String.valueOf(match.getIdTour()));
-        for(int i = 0; i < list.size(); i++){
+        byte[] decodedBytes = Base64.decode(match.getImageHome(), Base64.DEFAULT);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+        try {
+            holder.imageHome.setImageBitmap(decodedBitmap);
+        }catch (Exception e){
+            System.out.println(match.getTeamHome() + "\n" + match.getImageHome());
+        }
+        decodedBytes = Base64.decode(match.getImageGuest(), Base64.DEFAULT);
+        decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+        holder.imageVisit.setImageBitmap(decodedBitmap);
+        /*for(int i = 0; i < list.size(); i++){
             for(int j = 0; j < listImage.size(); j++){
                 if(match.getTeamHome().equalsIgnoreCase(listImage.get(j).getNameImage())){
                     holder.imageHome.setImageBitmap(listImage.get(j).getBitmapImageBig());
@@ -44,7 +57,7 @@ public class AdapterForCalendar extends RecyclerView.Adapter<AdapterForCalendar.
                     holder.imageVisit.setImageBitmap(listImage.get(j).getBitmapImageBig());
                 }
             }
-        }
+        }*/
         holder.nameHome.setText(match.getTeamHome());
         holder.nameVisit.setText(match.getTeamVisit());
         holder.date.setText(match.getDate());
