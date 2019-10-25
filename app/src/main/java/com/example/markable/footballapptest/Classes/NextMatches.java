@@ -12,6 +12,8 @@ public class NextMatches extends NextMatchesWithGoal implements Serializable {
     private String teamVisit;
     private String date;
     private String nameStadium;
+    String imageHome;
+    String imageGuest;
 
     public NextMatches(String nameDivision, int idTour, String teamHome, String teamVisit, String date, String nameStadium) {
         super();
@@ -61,6 +63,14 @@ public class NextMatches extends NextMatchesWithGoal implements Serializable {
 
     public int getIdDivision() {
         return idDivision;
+    }
+
+    public String getImageHome() {
+        return imageHome;
+    }
+
+    public String getImageGuest() {
+        return imageGuest;
     }
 
     @Override

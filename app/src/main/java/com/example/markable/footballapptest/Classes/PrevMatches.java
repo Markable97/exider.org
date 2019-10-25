@@ -1,7 +1,5 @@
 package com.example.markable.footballapptest.Classes;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
 
 public class PrevMatches implements Serializable {
@@ -12,8 +10,11 @@ public class PrevMatches implements Serializable {
     int goalHome;
     int goalVisit;
     String teamVisit;
-    ImageFromServer imageHome;
-    ImageFromServer imageVisit;
+    String imageHome;
+    String imageGuest;
+    ImageFromServer imageHomeImage;
+    ImageFromServer imageVisitImage;
+    int played;
 
     public PrevMatches(int id_match, int goalHome, int goalVisit) {
         this.id_match = id_match;
@@ -66,20 +67,32 @@ public class PrevMatches implements Serializable {
         return teamVisit;
     }
 
-    public ImageFromServer getImageHome() {
+    public ImageFromServer getImageHomeImage() {
+        return imageHomeImage;
+    }
+
+    public ImageFromServer getImageVisitImage() {
+        return imageVisitImage;
+    }
+
+    public void setImageHomeImage(ImageFromServer imageHomeImage) {
+        this.imageHomeImage = imageHomeImage;
+    }
+
+    public void setImageVisitImage(ImageFromServer imageVisitImage) {
+        this.imageVisitImage = imageVisitImage;
+    }
+
+    public String getImageHome() {
         return imageHome;
     }
 
-    public ImageFromServer getImageVisit() {
-        return imageVisit;
+    public String getImageGuest() {
+        return imageGuest;
     }
 
-    public void setImageHome(ImageFromServer imageHome) {
-        this.imageHome = imageHome;
-    }
-
-    public void setImageVisit(ImageFromServer imageVisit) {
-        this.imageVisit = imageVisit;
+    public int getPlayed() {
+        return played;
     }
 
     @Override
