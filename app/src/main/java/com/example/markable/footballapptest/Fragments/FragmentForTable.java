@@ -166,80 +166,39 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
         int color = 0;
         switch (nameDivision){
             case "Высший дивизион":
-                if(position==0){
+                if(position == 0 || position < 7){
                     color = green;
-                }else if(position==1 || position==2){
-                    color = yellow;
-                }else if (position==newTournamentTable.size() - 3 ){
-                    color = pink;
-                }else if(position==newTournamentTable.size() - 1 || position==newTournamentTable.size() - 2 ){
+                }else{
                     color = red;
-                }else {
-                    color = whiteColor;
                 }
+
                 break;
             case "Первый дивизион":
-                if(position==0 || position==1){
+                if (position < 4){
                     color = green;
-                }else if(position==2){
+                }else if(position == 4 || position == 5){
                     color = yellow;
-                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
-                    color = pink;
-                }else if(position>=newTournamentTable.size()-5){
+                }else if (position > 15) {
                     color = red;
-                }else {
+                }else{
                     color = whiteColor;
                 }
                 break;
                 case "Второй дивизион A":
-                if(position==0 || position==1){
-                    color = green;
-                }else if(position==2){
-                    color = yellow;
-                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
-                    color = pink;
-                }else if(position>=newTournamentTable.size()-5){
-                    color = red;
-                }else {
-                    color = whiteColor;
-                }
-                break;
                 case "Второй дивизион B":
-                if(position==0 || position==1){
+                if (position < 4){
                     color = green;
-                }else if(position==2){
-                    color = yellow;
-                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
-                    color = pink;
-                }else if(position>=newTournamentTable.size()-5){
+                }else if(position > 17){
                     color = red;
                 }else {
                     color = whiteColor;
                 }
                 break;
                 case "Третий дивизион A":
-                if(position==0 || position==1){
-                    color = green;
-                }else if(position==2){
-                    color = yellow;
-                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
-                    color = pink;
-                }else if(position>=newTournamentTable.size()-5){
-                    color = red;
-                }else {
-                    color = whiteColor;
-                }
-                break;
                 case "Третий дивизион B":
                 if(position==0 || position==1){
                     color = green;
-                }else if(position==2){
-                    color = yellow;
-                }else if ((position>=newTournamentTable.size()-7)&&(position<newTournamentTable.size()-5)){
-                    color = pink;
-                }else if(position>=newTournamentTable.size()-5){
-                    color = red;
-                }else {
+                }else{
                     color = whiteColor;
                 }
                 break;
