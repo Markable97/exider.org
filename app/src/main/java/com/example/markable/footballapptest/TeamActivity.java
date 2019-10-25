@@ -2,10 +2,13 @@ package com.example.markable.footballapptest;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -38,7 +41,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     private ImageFromServer image;
     private String nameTeamFromActivity;
-
+    private String imageBase64;
     Toolbar toolbar;
 
     TextView nameTeam;
@@ -74,13 +77,18 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         imageTeam = findViewById(R.id.teamActivity_im_image);
         if(args!=null){
-            image = args.getParcelable("dateForActivity");
+            imageBase64 = args.getString("dateForActivity");
             nameTeamFromActivity = args.getString("dataForActivityName");
-            if (image!=null){
-                imageTeam.setImageBitmap(image.getBitmapImageBig());
-            }
             nameTeam.setText(nameTeamFromActivity);
         }
+        try{
+            byte[] decodedBytes = Base64.decode(imageBase64, Base64.DEFAULT);
+            Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+            imageTeam.setImageBitmap(decodedBitmap);
+        }catch (Exception e){
+            Log.i(TAG, e.getMessage() + "\n" + nameTeamFromActivity);
+        }
+
         container = findViewById(R.id.container_frag_team);
         rb_statistic = findViewById(R.id.rb_statisticPlayers);
         rb_statistic.setChecked(true);
@@ -151,24 +159,24 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
             MessageToJson message = new MessageToJson("team",teamName);
             try {
                 connect.openConnection(); //открывваем соединение
-                fromServer = connect.responseFromServer(gson.toJson(message));//получаем список игроков
+                fromServer = connect.connectToServer(gson.toJson(message));//получаем список игроков
                 Log.i(TAG, "Данные от сервера состав\n" + fromServer);
                 Type t1 = new TypeToken<ArrayList<Player>>(){}.getType();
                 arrayPlayers = gson.fromJson(fromServer, t1);
-                arrayPlayerImage = connect.fileFromServer();
+                /*arrayPlayerImage = connect.fileFromServer();
                 if(arrayPlayerImage == null){
                     Log.i(TAG, "Нет фотографий игроков");
-                }
+                }*/
                 //connect.closeConnection();
                 //Теперь загрузка матчей
-                //connect.openConnection();
+                connect.openConnection();
                 message.messageLogic = "matches";
-                fromServer = connect.responseFromServer(gson.toJson(message));
+                fromServer = connect.connectToServer(gson.toJson(message));
                 Log.i(TAG, "Данные от сервера все матчи \n" + fromServer);
                 Type t = new TypeToken<ArrayList<PrevMatches>>(){}.getType();
                 arrayAllMatches = gson.fromJson(fromServer, t);
                 Log.i(TAG, "doInBackground: all matches = " + arrayAllMatches.toString());
-                arrayTeamImage = connect.fileFromServer();
+                /*arrayTeamImage = connect.fileFromServer();
                 if(arrayTeamImage!=null){
                     for(PrevMatches match : arrayAllMatches){
                         for(ImageFromServer image : arrayTeamImage){
@@ -179,7 +187,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
                             }
                         }
                     }
-                }
+                }*/
                 connect.closeConnection();
                 return "success"; //все хорошо
             }catch (Exception e){

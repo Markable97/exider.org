@@ -14,6 +14,7 @@ public class PrevMatches implements Serializable {
     String imageGuest;
     ImageFromServer imageHomeImage;
     ImageFromServer imageVisitImage;
+    int played;
 
     public PrevMatches(int id_match, int goalHome, int goalVisit) {
         this.id_match = id_match;
@@ -88,6 +89,10 @@ public class PrevMatches implements Serializable {
 
     public String getImageGuest() {
         return imageGuest;
+    }
+
+    public int getPlayed() {
+        return played;
     }
 
     @Override

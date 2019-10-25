@@ -1,10 +1,13 @@
 package com.example.markable.footballapptest;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -76,12 +79,26 @@ public class MatchActivity extends AppCompatActivity {
         nameTeamVisit = findViewById(R.id.match_teamGuest);
         nameTeamVisit.setText(matches.getTeamVisit());
         imageTeamHome = findViewById(R.id.match_imageHome);
-        if(matches.getImageHomeImage()!=null){
-            imageTeamHome.setImageBitmap(matches.getImageHomeImage().getBitmapImageBig());
+        if(!matches.getImageHome().isEmpty()){
+            try{
+                byte[] decodedBytes = Base64.decode(matches.getImageHome(), Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+                imageTeamHome.setImageBitmap(decodedBitmap);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println(matches.getTeamHome() + "\n" + matches.getImageHome());
+            }
         }
         imageTeamVisit = findViewById(R.id.match_imageGuest);
-        if(matches.getImageVisitImage()!=null){
-            imageTeamVisit.setImageBitmap(matches.getImageVisitImage().getBitmapImageBig());
+        if(!matches.getImageGuest().isEmpty()){
+            try{
+                byte[] decodedBytes = Base64.decode(matches.getImageGuest(), Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+                imageTeamVisit.setImageBitmap(decodedBitmap);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                System.out.println(matches.getTeamVisit() + "\n" + matches.getImageGuest());
+            }
         }
 
         textViewParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -118,7 +135,8 @@ public class MatchActivity extends AppCompatActivity {
             MessageToJson message = new MessageToJson("player", idMatch);
             try{
                 connect.openConnection();
-                fromServer = connect.responseFromServer(gson.toJson(message));
+                //fromServer = connect.responseFromServer(gson.toJson(message));
+                fromServer = connect.connectToServer(gson.toJson(message));
                 Log.i(TAG, "Данные от сервера \n" + fromServer);
                 playersInMatch.clear();
                 playersInMatch = gson.fromJson(fromServer, new TypeToken<ArrayList<Player>>(){}.getType());

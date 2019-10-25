@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.markable.footballapptest.Adapters.RecycleViewAllMatches;
 import com.example.markable.footballapptest.Adapters.RecyclerViewForResults;
@@ -53,8 +54,14 @@ public class FragmentForTeamMatches extends Fragment {
         arrayImage = activity.getArrayTeamImage();
         recyclerView = view.findViewById(R.id.listAllMatches);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerViewForResults.OnFalsePlayedListiner listener = new RecyclerViewForResults.OnFalsePlayedListiner() {
+            @Override
+            public void playedFalse() {
+                Toast.makeText(getActivity(),"Матч еще не сыгран", Toast.LENGTH_SHORT).show();
+            }
+        };
         //adapter = new RecycleViewAllMatches(getActivity(), arrayAllMatches, arrayImage);
-        adapter = new RecyclerViewForResults(/*getActivity(),*/ arrayAllMatches);
+        adapter = new RecyclerViewForResults(/*getActivity(),*/ arrayAllMatches, listener);
         recyclerView.setAdapter(adapter);
 
 

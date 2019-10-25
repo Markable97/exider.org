@@ -127,6 +127,7 @@ public class ConnectWithServer {
                 //str+=(char)read;
             }while(true); //in.available()> 0
             //System.out.println(str);
+            in.close();
             System.out.println("\n"+outputStream.toString());
             String response = outputStream.toString();
             Log.i(TAG, response);

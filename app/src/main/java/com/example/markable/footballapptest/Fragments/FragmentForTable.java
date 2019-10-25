@@ -317,14 +317,15 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                             tv.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ImageFromServer descriptionImage = null;
+                                    Intent intent = new Intent(getActivity(), TeamActivity.class);
+                                    intent.putExtra("dateForActivity", newTournamentTable.get(finalI).getImageBase64());
+                                    /*ImageFromServer descriptionImage = null;
                                     if(imageBitmap != null){
                                         descriptionImage = imageBitmap.get(finalI);
                                     }
-                                    Intent intent = new Intent(getActivity(), TeamActivity.class);
                                     if(descriptionImage != null){
                                         intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
-                                    }
+                                    }*/
                                     intent.putExtra("dataForActivityName", tv.getText());
                                     startActivity(intent);
                                 }

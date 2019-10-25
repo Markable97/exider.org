@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         manager = new SessionManager(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,11 +139,12 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_clear) {
-            Toast.makeText(getApplicationContext(),"Вы вышли из пользователя", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Данная функция пока недоступна =)", Toast.LENGTH_SHORT).show();
+            /*Toast.makeText(getApplicationContext(),"Вы вышли из пользователя", Toast.LENGTH_SHORT).show();
             SessionManager session = new SessionManager(getApplicationContext());
             session.logoutUser();
             finish();
-            return true;
+            return true;*/
         }else{
             update = true;
             new MainServerConnect(MainActivity.this).execute(dataForFragment);
