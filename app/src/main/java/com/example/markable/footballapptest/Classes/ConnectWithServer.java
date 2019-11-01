@@ -39,7 +39,7 @@ public class ConnectWithServer {
                           который будет принамать наше соединение.         */
             SocketAddress address = new InetSocketAddress(IP, PORT);
             socket = new Socket();
-            socket.connect(address, 3000);
+            socket.connect(address, 10000);
             Log.i(TAG,  "Сокет создан");
         } catch (SocketTimeoutException ex){
             Log.i(TAG, "Закончено время");

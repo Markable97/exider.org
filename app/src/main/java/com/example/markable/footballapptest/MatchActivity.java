@@ -3,10 +3,13 @@ package com.example.markable.footballapptest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -49,11 +52,13 @@ public class MatchActivity extends AppCompatActivity {
     ImageView imageTeamHome;
     ImageView imageTeamVisit;
 
+
     private ArrayList<Player> playersInMatch = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_match_content);
         ActionBar actionBar =getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -195,7 +200,7 @@ public class MatchActivity extends AppCompatActivity {
                         textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.yellow_card,0);
                         layout_home.addView(textView);
                     }else{
-                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.red_yellow_card,0);
+                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_red_yellow_card,0);
                         layout_home.addView(textView);
                     }
                 }
@@ -253,7 +258,7 @@ public class MatchActivity extends AppCompatActivity {
                         textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.yellow_card,0);
                         layout_guest.addView(textView);
                     }else{
-                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.red_yellow_card,0);
+                        textView.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_red_yellow_card,0);
                         layout_guest.addView(textView);
                     }
                 }

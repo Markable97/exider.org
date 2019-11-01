@@ -183,8 +183,8 @@
                             <entry key="autoMirrored" value="true" />
                             <entry key="color" value="0f0f0f" />
                             <entry key="opacityPercent" value="99" />
-                            <entry key="outputName" value="ic_refresh" />
-                            <entry key="sourceFile" value="D:\Project\Картинки\24px.svg" />
+                            <entry key="outputName" value="ic_red_yellow_card" />
+                            <entry key="sourceFile" value="D:\ForMacOs\red_yellow_card.svg" />
                           </map>
                         </option>
                       </PersistentState>
