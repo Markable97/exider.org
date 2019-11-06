@@ -14,7 +14,7 @@ Developing a football app for Amateur leagues
 Добавление ролей происходит в бд и при каждом входе проверяется какой тип пользователь
 
 Все данные берутся из бд. Бд реализована в репозитории https://github.com/Markable97/Database . Приложение общается с сервером через сокеты
-. Сервер реализован в репозитории https://github.com/Markable97/server.
+. Сервер реализован в репозитории https://github.com/Markable97/ServerMain.
 
 ЧТО ИСПОЛЬЗУЮ:
 - Применение Navigation Drawer для бокового меню по дивизионам
