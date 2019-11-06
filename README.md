@@ -15,6 +15,7 @@ Developing a football app for Amateur leagues
 
 Все данные берутся из бд. Бд реализована в репозитории https://github.com/Markable97/Database . Приложение общается с сервером через сокеты
 . Сервер реализован в репозитории https://github.com/Markable97/server.
+
 ЧТО ИСПОЛЬЗУЮ:
 - Применение Navigation Drawer для бокового меню по дивизионам
 - Реализация вкладок через tabLayout c динамическим изменением
