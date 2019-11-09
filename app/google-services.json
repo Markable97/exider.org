@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "374152589172",
+    "firebase_url": "https://exiderorg.firebaseio.com",
+    "project_id": "exiderorg",
+    "storage_bucket": "exiderorg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374152589172:android:abbe4b22a799cacf4cc621",
+        "android_client_info": {
+          "package_name": "com.example.markable.footballapptest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374152589172-ojslu1sk5qpgen0fdrgcc88ph15o4bqg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.markable.footballapptest",
+            "certificate_hash": "f84246e32e77e0032f77a421e8b28ba78bf70f1d"
+          }
+        },
+        {
+          "client_id": "374152589172-o31ghbjsflgomqdmp4e2f9sp02boada8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWmTP3ACq5UDY9jujTQNHEvevLKWsY8js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374152589172-o31ghbjsflgomqdmp4e2f9sp02boada8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
