@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
+import com.example.markable.footballapptest.Classes.Division;
 import com.example.markable.footballapptest.Classes.ImageFromServer;
 import com.example.markable.footballapptest.Classes.MessageToJson;
 import com.example.markable.footballapptest.Classes.NextMatches;
@@ -36,10 +37,6 @@ import com.example.markable.footballapptest.Fragments.MyDialogFragmentChooseDate
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
     private ArrayList<PrevMatches> prevResultsMatch = new ArrayList<>();
     private ArrayList<NextMatches> nextResultsMatch = new ArrayList<>();
-
+    private ArrayList<Division> divisions = new ArrayList<>();
 
 
     @Override
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         new MainServerConnect(MainActivity.this).execute(dataForFragment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(getResources().getString(R.string.high_div));
+        //setTitle(getResources().getString(R.string.high_div));
         manager = new SessionManager(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -153,31 +150,41 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void addMenuItemInNavMenuDrawer(ArrayList<Division> divisions, int checkDivision) {
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+
+        Menu menu = navView.getMenu();
+        menu.clear();
+        //Menu submenu = menu.addSubMenu("Дивизионы");
+        for(Division d : divisions) {
+            if(d.idDivision == checkDivision){
+                menu.add(d.nameDivision).setCheckable(true).setChecked(true);
+                setTitle(d.nameDivision);
+            }else{
+                menu.add(d.nameDivision).setCheckable(true);
+            }
+
+        }
+
+        navView.invalidate();
+
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         //Fragment fragment = null;
         //Class fragmentClass = null;
-
-
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            //fragmentClass = FragmentForTable.class;
-            dataForFragment = 1;
-        } else if (id == R.id.nav_gallery) {
-            dataForFragment = 2;
-        } else if (id == R.id.nav_slideshow) {
-            dataForFragment = 3;
-        } else if (id == R.id.nav_manage) {
-            dataForFragment = 4;
-        } else if (id == R.id.nav_share) {
-            dataForFragment = 5;
-        } else if (id == R.id.nav_send) {
-            dataForFragment = 6;
+        dataForFragment = 0;
+        String nameDivision = item.toString();
+        for(Division d : divisions){
+            if(nameDivision.equals(d.nameDivision)){
+                dataForFragment = d.idDivision;
+            }
+        }
+        if(dataForFragment == 0){
+            return false;
         }
 
         new MainServerConnect(MainActivity.this).execute(dataForFragment);
@@ -194,10 +201,10 @@ public class MainActivity extends AppCompatActivity
         /*FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         FragmentForTable fragForDiv = new FragmentForTable().newInstance(dataForFragment);
         fragmentTransaction.replace(R.id.container, fragForDiv).commit();*/
-        item.setChecked(true);
-    setTitle(item.getTitle());
+        //item.setChecked(true);
+        //setTitle(item.getTitle());
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
 }
@@ -214,6 +221,8 @@ public class MainActivity extends AppCompatActivity
         MainActivity activity;
         private Context context;
         ProgressDialog progressDialog ;
+        String responseFromServer;
+
         public MainServerConnect(MainActivity activity){
             this.activity = activity;
             context = activity;
@@ -228,10 +237,16 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(Integer... integers) {
 
             Log.i(TAG, "Поток запущен");
-            MessageToJson message = new MessageToJson("division", integers[0]);
+            MessageToJson message = new MessageToJson("listDivision", integers[0]);
             try{
+                connect.openConnection();
+                responseFromServer = connect.connectToServer(gson.toJson(message));
+                divisions.clear();
+                divisions = gson.fromJson(responseFromServer, new TypeToken<ArrayList<Division>>(){}.getType());
+                Log.i(TAG, "Divisions: \n" + divisions);
                 connect.openConnection(); //открываем соединение
-                String responseFromServer = connect.connectToServer(gson.toJson(message));
+                message.setMessageLogic("division");
+                responseFromServer = connect.connectToServer(gson.toJson(message));
                 String delimiter = "\\?";
                 String[] arrayJSON = responseFromServer.split(delimiter);
                 tournamentTable.clear();
@@ -320,6 +335,7 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(MainActivity.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
                     fragmentMain.update();
                 }
+                addMenuItemInNavMenuDrawer(divisions, dataForFragment);
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }

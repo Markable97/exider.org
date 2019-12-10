@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.markable.footballapptest.Classes.Player;
+import com.example.markable.footballapptest.Classes.PlayerInStatistic;
 import com.example.markable.footballapptest.R;
 
 import java.util.ArrayList;
@@ -28,12 +28,18 @@ public class FragmentStatisticSquadList extends Fragment {
     private static final String TAG = "FragSquad";
 
     private ArrayList<Player> arrayPlayers;
-
+    private ArrayList<PlayerInStatistic> playersForTable = new ArrayList<>();
+    private ArrayList<PlayerInStatistic> goalkeepers = new ArrayList<>();
+    private ArrayList<PlayerInStatistic> defenders = new ArrayList<>();
+    private ArrayList<PlayerInStatistic> halfbacks = new ArrayList<>();
+    private ArrayList<PlayerInStatistic> forwards = new ArrayList<>();
+    private ArrayList<PlayerInStatistic> ussual = new ArrayList<>();
     TableLayout table;
-    private int goalkeepers;
-    private int defenders;
-    private int halfbacks;
-    private int forwards;
+    private int cntGoalkeepers;
+    private int cntDefenders;
+    private int cntHalfbacks;
+    private int cntForwards;
+    private int cntUssual;
     private int _50dp;
     private int _1dp;
     private int whiteColor;
@@ -62,16 +68,67 @@ public class FragmentStatisticSquadList extends Fragment {
         super.onCreate(savedInstanceState);
         arrayPlayers = (ArrayList<Player>) getArguments().getSerializable("arrayPlayers");
         Log.i(TAG, "onCreate: длина массива =  " + arrayPlayers.toString());
-        goalkeepers = countGoalkeeper(arrayPlayers);
-        defenders = countDefender(arrayPlayers);
-        halfbacks = countHalfback(arrayPlayers);
-        forwards = countForward(arrayPlayers);
+        sortPlayers();
+        /*cntGoalkeepers = countGoalkeeper(arrayPlayers);
+        cntDefenders = countDefender(arrayPlayers);
+        cntHalfbacks = countHalfback(arrayPlayers);
+        cntForwards = countForward(arrayPlayers);*/
         whiteColor = ContextCompat.getColor(getActivity(), R.color.backCell);
         yellowCard = R.drawable.popup_yc;
         redCard = R.drawable.popup_rc;
     }
 
-    int countDefender (ArrayList<Player> array){
+    void sortPlayers(){
+        for(Player p : arrayPlayers){
+            switch (p.getAmplua()){
+                case "Вратарь":
+                    goalkeepers.add(new PlayerInStatistic("Cell", p));
+                    cntGoalkeepers++;
+                    break;
+                case "Защитник":
+                    defenders.add(new PlayerInStatistic("Cell", p));
+                    cntDefenders++;
+                    break;
+                case "Полузащитник":
+                    halfbacks.add(new PlayerInStatistic("Cell", p));
+                    cntHalfbacks++;
+                    break;
+                case "Нападающий":
+                    forwards.add(new PlayerInStatistic("Cell", p));
+                    cntForwards++;
+                    break;
+                case "Полевой игрок":
+                    ussual.add(new PlayerInStatistic("Cell", p));
+                    cntUssual++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        playersForTable.add(new PlayerInStatistic("Head"));
+        if(cntGoalkeepers > 0 ){
+            playersForTable.add(new PlayerInStatistic("Amplua", "Вратарь"));
+            playersForTable.addAll(goalkeepers);
+        }
+        if(cntDefenders > 0 ){
+            playersForTable.add(new PlayerInStatistic("Amplua", "Защитник"));
+            playersForTable.addAll(defenders);
+        }
+        if(cntHalfbacks > 0 ){
+            playersForTable.add(new PlayerInStatistic("Amplua", "Полузащитник"));
+            playersForTable.addAll(halfbacks);
+        }
+        if(cntForwards > 0 ){
+            playersForTable.add(new PlayerInStatistic("Amplua", "Нападающий"));
+            playersForTable.addAll(forwards);
+        }
+        if(cntUssual > 0 ){
+            playersForTable.add(new PlayerInStatistic("Amplua", "Полевой игрок"));
+            playersForTable.addAll(ussual);
+        }
+    }
+
+    /*int countDefender (ArrayList<Player> array){
         int count = 0;
         for(int i = 0; i < array.size(); i++){
             if(array.get(i).getAmplua().equalsIgnoreCase("Защитник")){
@@ -110,15 +167,104 @@ public class FragmentStatisticSquadList extends Fragment {
         }
         Log.i(TAG, "countForward: " + count);
         return count;
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistic_squad, container, false);
         Log.i(TAG, "onCreateView: Создание таблицы");
         table = view.findViewById(R.id.table_squad);
+        Log.i(TAG, playersForTable.toString());
+        int cnt = 1;
+        for(PlayerInStatistic p : playersForTable){
+            TableRow tableRow = new TableRow(getActivity());
+            tableRow.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            //params.gravity = Gravity.CENTER;
+            params.setMargins(_1dp, _1dp, _1dp, _1dp);
+            switch (p.typeCell){
+                case "Head":
+                    for(int j = 0; j < 7; j++){
+                        if(j < 5){
+                            TextView textView = new TextView(getActivity());
+                            textView.setLayoutParams(params);
+                            textView.setGravity(Gravity.CENTER);
+                            textView.setBackgroundColor(whiteColor);
+                            switch (j){
+                                case 0: textView.setText("#");break;
+                                case 1: textView.setText("ФИО");break;
+                                case 2: textView.setText("Игры");break;
+                                case 3: textView.setText("Голы");break;
+                                case 4: textView.setText("Пасы");break;
+                            }
+                            tableRow.addView(textView);
+                        }else{
+                            ImageView imageView = new ImageView(getActivity());
+                            imageView.setLayoutParams(params);
+                            imageView.setBackgroundColor(whiteColor);
+                            switch (j){
+                                case 5: imageView.setImageResource(yellowCard); break;
+                                case 6: imageView.setImageResource(redCard); break;
+                            }
+                            //     Log.i(TAG, "onCreateView: Создание J++++)"  + j);
+                            tableRow.addView(imageView);
+                        }
+                    }
+                    break;
+                case "Amplua":
+                    TextView textView1= new TextView(getActivity());
+                    textView1.setGravity(Gravity.CENTER);
+                    textView1.setBackgroundColor(whiteColor);
+                    params.span = 7;
+                    textView1.setLayoutParams(params);
+                    textView1.setText(p.amplua);
+                    tableRow.addView(textView1);
+                    break;
+                case "Cell":
+                    Player player = p.player;
+                    for(int j = 0; j < 7; j++){
+                        TextView textView = new TextView(getActivity());
+                        textView.setLayoutParams(params);
+                        textView.setGravity(Gravity.CENTER);
+                        textView.setBackgroundColor(whiteColor);
+                        switch(j){
+                            case 0:
+                                textView.setText(String.valueOf(cnt)); tableRow.addView(textView); break;
+                            case 1:
+                                LinearLayout linearLayout = new LinearLayout(getActivity());
+                                LinearLayout.LayoutParams paramsLa = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+                                paramsLa.gravity = Gravity.CENTER;
+                                linearLayout.setBackgroundColor(whiteColor);
+                                linearLayout.setLayoutParams(params);
+                                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                ImageView imageView = new ImageView(getActivity());
+                                //imageView.setLayoutParams(paramsLa);
+                                imageView.setImageBitmap(player.getPlayerImage());
+                                TextView tv = new TextView(getActivity());
+                                tv.setGravity(Gravity.CENTER);
+                                tv.setLayoutParams(paramsLa);
+                                tv.setText(player.getPlayerName());
+                                //textView.setText(player.getPlayerName());
+                                linearLayout.addView(imageView);
+                                linearLayout.addView(tv);
+                                tableRow.addView(linearLayout);
+                                break;
+                            case 2: textView.setText(String.valueOf(player.getGames())); tableRow.addView(textView);break;
+                            case 3: textView.setText(String.valueOf(player.getGoal())); tableRow.addView(textView);break;
+                            case 4: textView.setText(String.valueOf(player.getAssist())); tableRow.addView(textView);break;
+                            case 5: textView.setText(String.valueOf(player.getYellowCard())); tableRow.addView(textView);break;
+                            case 6: textView.setText(String.valueOf(player.getRedCard())); tableRow.addView(textView);break;
+                        }
+                    }
+                    cnt++;
+                    break;
+            }
+            table.addView(tableRow);
+        }
 
-        int numberPlayer = 0;
+        /*int numberPlayer = 0;
         boolean flag;
         for(int i = -1; i < arrayPlayers.size() + 4; i++){
             //Log.i(TAG, "onCreateView: I ================================= " + i);
@@ -172,7 +318,7 @@ public class FragmentStatisticSquadList extends Fragment {
                        // Log.i(TAG, "onCreateView: Шаааааааапка i = " + i);
                        // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
-                    }else if((i>0 && i<(arrayPlayers.size() + 4 - forwards - halfbacks - defenders - 3)) ){//список вратарей
+                    }else if((i>0 && i<(arrayPlayers.size() + 4 - cntForwards - cntHalfbacks - cntDefenders - 3)) ){//список вратарей
                         textView.setLayoutParams(params);
                         Log.i(TAG, "onCreateView: Вратари i ="  + i + "# = "+ numberPlayer);
                         Player player = arrayPlayers.get(numberPlayer);
@@ -208,14 +354,14 @@ public class FragmentStatisticSquadList extends Fragment {
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
-                    } else if (i > goalkeepers && i <= (arrayPlayers.size() + 4 - forwards - halfbacks - defenders - 3) && j==0) {//шапка защитников
+                    } else if (i > cntGoalkeepers && i <= (arrayPlayers.size() + 4 - cntForwards - cntHalfbacks - cntDefenders - 3) && j==0) {//шапка защитников
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Защитник");
                       //  Log.i(TAG, "onCreateView: Шааааапка i = " + i);
                         //Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
-                    } else if (i > goalkeepers + 1  && i < (arrayPlayers.size() + 4 - forwards - halfbacks  - 2) ){//список защитников
+                    } else if (i > cntGoalkeepers + 1  && i < (arrayPlayers.size() + 4 - cntForwards - cntHalfbacks - 2) ){//список защитников
                         textView.setLayoutParams(params);
                         Player player = arrayPlayers.get(numberPlayer);
                         switch(j){
@@ -251,14 +397,14 @@ public class FragmentStatisticSquadList extends Fragment {
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
-                    } else  if ((i > goalkeepers + 1 + defenders) && (i <= (arrayPlayers.size() + 4 - forwards - halfbacks  - 2)) && (j==0) ){//шапка полу
+                    } else  if ((i > cntGoalkeepers + 1 + cntDefenders) && (i <= (arrayPlayers.size() + 4 - cntForwards - cntHalfbacks - 2)) && (j==0) ){//шапка полу
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Полузащитник");
                       //  Log.i(TAG, "onCreateView: Шааааапка полу i = " + i);
                        // Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
-                    } else if((i > goalkeepers + 1 + defenders + 1) && (i < (arrayPlayers.size() + 4 - forwards - 1))){//список полу
+                    } else if((i > cntGoalkeepers + 1 + cntDefenders + 1) && (i < (arrayPlayers.size() + 4 - cntForwards - 1))){//список полу
                         textView.setLayoutParams(params);
                         //Log.i(TAG, "onCreateView: Полу  i ="  + i + "# = "+ numberPlayer);
                         Player player = arrayPlayers.get(numberPlayer);
@@ -294,14 +440,14 @@ public class FragmentStatisticSquadList extends Fragment {
                         if(j!=1){
                             tableRow.addView(textView, j);
                         }
-                    } else if((i > goalkeepers + 1 + defenders + 1 + halfbacks) && (i <= (arrayPlayers.size() + 4 - forwards - 1)) && (j==0)){//шапка нап
+                    } else if((i > cntGoalkeepers + 1 + cntDefenders + 1 + cntHalfbacks) && (i <= (arrayPlayers.size() + 4 - cntForwards - 1)) && (j==0)){//шапка нап
                        // Log.i(TAG, "onCreateView: Шааааапка напа i = " + i);
                         params.span = 7;
                         textView.setLayoutParams(params);
                         textView.setText("Нападающий");
                         //Log.i(TAG, "onCreateView: Создание J++++)"  + j);
                         tableRow.addView(textView, j);
-                    } else if((i > goalkeepers + 1 + defenders + 1 + halfbacks + 1) && (i< arrayPlayers.size() + 4)){
+                    } else if((i > cntGoalkeepers + 1 + cntDefenders + 1 + cntHalfbacks + 1) && (i< arrayPlayers.size() + 4)){
                        // Log.i(TAG, "onCreateView: Нап  i ="  + i + "# = "+ numberPlayer);
                         textView.setLayoutParams(params);
                         Player player = arrayPlayers.get(numberPlayer);
@@ -346,7 +492,7 @@ public class FragmentStatisticSquadList extends Fragment {
             }
             //Log.i(TAG, "onCreateView: Создание i+++++++++++++++++++)"  + i);
             table.addView(tableRow, i+1);
-        }
+        }*/
 
         return view;
     }

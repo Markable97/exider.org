@@ -204,6 +204,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                 break;
 
         }
+        color = whiteColor;
         return color;
     }
 
