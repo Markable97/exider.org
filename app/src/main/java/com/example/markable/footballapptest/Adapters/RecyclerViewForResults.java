@@ -65,9 +65,13 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
             }
         }
         if(!match.getImageGuest().isEmpty()){
-            byte[] decodedBytes = Base64.decode(match.getImageGuest(), Base64.DEFAULT);
-            Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
-            holder.imageTeamVisit.setImageBitmap(decodedBitmap);
+            try {
+                byte[] decodedBytes = Base64.decode(match.getImageGuest(), Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray (decodedBytes, 0, decodedBytes.length);
+                holder.imageTeamVisit.setImageBitmap(decodedBitmap);
+            }catch (Exception e){
+                System.out.println("Bad base-64: " + match.getTeamHome() + "\n" + match.getImageHome());
+            }
         }
         /*if(match.getImageHomeImage()!=null){
             holder.imageTeamHome.setImageBitmap(match.getImageHomeImage().getBitmapImageBig());

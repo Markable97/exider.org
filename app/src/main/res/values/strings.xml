@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ЛФЛ</string>
+    <string name="app_name">ЛЧБ</string>
     <string name="team_activity">Профил команды</string>
     <string name="match_activity">Статистика матча</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -19,8 +19,8 @@
     <string name="state_player">Статистика игркоов</string>
     <string name="all_matches">Все матчи</string>>
 
-    <string name="name_organization">Любительская футбольная лига</string>
-    <string name="name_division">Зона Восток</string>
+    <string name="name_organization">Лига Чемпионов Бизнеса</string>
+    <string name="name_division">Футбол</string>
 
     <string name="btn_sent_result">Отправить</string>>
 
