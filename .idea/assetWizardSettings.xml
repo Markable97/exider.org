@@ -63,7 +63,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="106" />
+                                                <entry key="scalingPercent" value="88" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -87,8 +87,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="foregroundImage" value="D:\logotype.png" />
-                                      <entry key="outputName" value="ic_launcher_logotype" />
+                                      <entry key="backgroundColor" value="871667" />
+                                      <entry key="foregroundImage" value="D:\Project\Картинки\logo.svg" />
+                                      <entry key="legacyIconShape" value="CIRCLE" />
+                                      <entry key="outputName" value="ic_launcher_logotype_ucl" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -126,7 +128,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\logotype.png" />
+                                      <entry key="backgroundColor" value="ff5684" />
+                                      <entry key="dogEared" value="true" />
+                                      <entry key="iconShape" value="CIRCLE" />
+                                      <entry key="imageAsset" value="D:\Project\Картинки\logo.svg" />
                                       <entry key="outputName" value="ic_launcher_logotype_two" />
                                     </map>
                                   </option>
@@ -156,11 +161,6 @@
                             </entry>
                           </map>
                         </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
-                          </map>
-                        </option>
                       </PersistentState>
                     </value>
                   </entry>
@@ -183,8 +183,8 @@
                             <entry key="autoMirrored" value="true" />
                             <entry key="color" value="0f0f0f" />
                             <entry key="opacityPercent" value="99" />
-                            <entry key="outputName" value="ic_red_yellow_card" />
-                            <entry key="sourceFile" value="D:\ForMacOs\red_yellow_card.svg" />
+                            <entry key="outputName" value="ic_logo" />
+                            <entry key="sourceFile" value="D:\Project\Картинки\logo.svg" />
                           </map>
                         </option>
                       </PersistentState>
