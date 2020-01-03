@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class TournamentTable implements Serializable {
     private String divisionName;
     private String teamName;
+    private int idTeam;
     private int games;
     private int points;
     private int wins;
@@ -102,5 +103,9 @@ public class TournamentTable implements Serializable {
 
     public String getImageBase64() {
         return imageBase64;
+    }
+
+    public int getIdTeam() {
+        return idTeam;
     }
 }

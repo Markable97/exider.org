@@ -287,6 +287,7 @@ public class FragmentForTable extends Fragment implements UpdateFragListener{
                                         intent.putExtra("dateForActivity", (Parcelable) descriptionImage);
                                     }*/
                                     intent.putExtra("dataForActivityName", tv.getText());
+                                    intent.putExtra("dataForActivityID", newTournamentTable.get(finalI).getIdTeam());
                                     startActivity(intent);
                                 }
                             });

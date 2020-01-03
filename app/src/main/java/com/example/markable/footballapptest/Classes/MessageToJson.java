@@ -85,6 +85,10 @@ public class MessageToJson {
         this.id = id;
     }
 
+    public void setTeam_name(String team_name) {
+        this.team_name = team_name;
+    }
+
     @Override
     public String toString() {
         return "MessageToJson{" +

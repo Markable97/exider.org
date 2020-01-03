@@ -35,11 +35,10 @@ import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, ReturnFromFragForAct {
 
-    final String IP = PublicConstants.IP;
-
     private static final String TAG = "TeamAcrivity";
 
     private ImageFromServer image;
+    private int idTeam;
     private String nameTeamFromActivity;
     private String imageBase64;
     Toolbar toolbar;
@@ -79,6 +78,7 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
         if(args!=null){
             imageBase64 = args.getString("dateForActivity");
             nameTeamFromActivity = args.getString("dataForActivityName");
+            idTeam = args.getInt("dataForActivityID");
             nameTeam.setText(nameTeamFromActivity);
         }
         try{
@@ -156,7 +156,8 @@ public class TeamActivity extends AppCompatActivity implements RadioGroup.OnChec
             Log.i(TAG, "doInBackground: начало потока!!!!!!!!!!!!!!!!!!!!!");
             teamName = strings[0];
             Log.i(TAG, "Название команды = " + teamName);
-            MessageToJson message = new MessageToJson("team",teamName);
+            MessageToJson message = new MessageToJson("team",idTeam);
+            message.setTeam_name(teamName);
             try {
                 connect.openConnection(); //открывваем соединение
                 fromServer = connect.connectToServer(gson.toJson(message));//получаем список игроков
