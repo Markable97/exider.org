@@ -28,10 +28,10 @@
         android:text="@string/name_organization"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/spinner_leagues"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/name_division" />
+        android:entries="@array/leagues_list" />
 
 </LinearLayout>

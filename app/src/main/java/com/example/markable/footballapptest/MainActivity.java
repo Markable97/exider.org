@@ -20,6 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.markable.footballapptest.Classes.ConnectWithServer;
@@ -40,18 +43,23 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
 
     boolean flag = false;
+    boolean flagSpinner = true;
     boolean update = false;
-    int dataForFragment = 1;
+    int dataForFragment = 0;
     //final String IP = "10.0.2.2";
     final String IP = PublicConstants.IP;
+    //В будущем можно будет предопределять данную переенную
+    String nameLeague = "Западная Лига";
 
     private static final String TAG = "MainAct";
     FragmentMain fragmentMain;
 
     SessionManager manager;
+
+    Spinner spinnerLeague;
 
     private ArrayList<ImageFromServer> imageArray = new ArrayList<>();
     private ArrayList<TournamentTable> tournamentTable = new ArrayList<>();
@@ -64,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new MainServerConnect(MainActivity.this).execute(dataForFragment);
+        new MainServerConnect(MainActivity.this, 1).execute(dataForFragment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //setTitle(getResources().getString(R.string.high_div));
@@ -104,6 +112,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        spinnerLeague = (Spinner)navigationView.getHeaderView(0).findViewById(R.id.spinner_leagues);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.leagues_list, R.layout.spinner_league_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLeague.setAdapter(adapter);
+
+
+        int pos = adapter.getPosition(nameLeague);
+        spinnerLeague.setSelection(pos);
+
+        spinnerLeague.setOnItemSelectedListener(this);
+
+
 
 
 
@@ -144,7 +164,10 @@ public class MainActivity extends AppCompatActivity
             return true;*/
         }else{
             update = true;
-            new MainServerConnect(MainActivity.this).execute(dataForFragment);
+            if(dataForFragment==0){
+                dataForFragment = divisions.get(0).idDivision;
+            }
+            new MainServerConnect(MainActivity.this, 3).execute(dataForFragment);
         }
 
         return super.onOptionsItemSelected(item);
@@ -187,7 +210,7 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
 
-        new MainServerConnect(MainActivity.this).execute(dataForFragment);
+        new MainServerConnect(MainActivity.this, 3).execute(dataForFragment);
     //fragmentMain.update(dataForFragment);
 
         /*try {
@@ -209,10 +232,27 @@ public class MainActivity extends AppCompatActivity
         return true;
 }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
+        flagSpinner = !flagSpinner;
+        if(flagSpinner){
+            System.out.println("Выбрана лига: " + parent.getSelectedItem().toString());
+            nameLeague =  parent.getSelectedItem().toString();
+            new MainServerConnect(MainActivity.this, 2).execute(dataForFragment);
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
     private class MainServerConnect extends AsyncTask<Integer, Void, String>{
         ConnectWithServer connect = new ConnectWithServer();
         //String query = "{\"id_division\":1,\"id_tour\":2}";
         String query = "";
+        int setting = 0;/*1 - все сразу(дивы и все о них), 2 - только дивы, 3 - только инфо*/
         Gson gson = new Gson();
         String fromServer = null, fromServerResultsPrevMatches = null, fromServerCalendar = null ;
         //String ipAdres = "192.168.0.104";
@@ -223,8 +263,9 @@ public class MainActivity extends AppCompatActivity
         ProgressDialog progressDialog ;
         String responseFromServer;
 
-        public MainServerConnect(MainActivity activity){
+        public MainServerConnect(MainActivity activity, int setting){
             this.activity = activity;
+            this.setting = setting;
             context = activity;
             progressDialog = new ProgressDialog(context);
             progressDialog.setCancelable(false);
@@ -240,75 +281,77 @@ public class MainActivity extends AppCompatActivity
             MessageToJson message = new MessageToJson("listDivision", integers[0]);
             try{
                 connect.openConnection();
-                responseFromServer = connect.connectToServer(gson.toJson(message));
-                divisions.clear();
-                divisions = gson.fromJson(responseFromServer, new TypeToken<ArrayList<Division>>(){}.getType());
-                Log.i(TAG, "Divisions: \n" + divisions);
-                connect.openConnection(); //открываем соединение
-                message.setMessageLogic("division");
-                responseFromServer = connect.connectToServer(gson.toJson(message));
-                String delimiter = "\\?";
-                String[] arrayJSON = responseFromServer.split(delimiter);
-                tournamentTable.clear();
-                Log.i(TAG, arrayJSON[0]);
-                tournamentTable = gson.fromJson(arrayJSON[0], new TypeToken<ArrayList<TournamentTable>>(){}.getType());
-                Log.i(TAG, "Размер турнирной таблицы " + tournamentTable.size());
-                Log.i(TAG, arrayJSON[1]);
-                prevResultsMatch.clear();
-                try {
-                    prevResultsMatch = gson.fromJson(arrayJSON[1], new TypeToken<ArrayList<PrevMatches>>() {
-                    }.getType());
-                }catch(Exception e){
-                    Log.i(TAG, "Bed decoding JSON prevMatches");
-                }
-                Log.i(TAG, "Размер предыдущих матчей таблицы " + prevResultsMatch.size());
-                Log.i(TAG, arrayJSON[2]);
-                nextResultsMatch.clear();
-                try{
-                    nextResultsMatch = gson.fromJson(arrayJSON[2], new TypeToken<ArrayList<NextMatches>>(){}.getType());
-                }catch(Exception e){
-                    Log.i(TAG, "Bed decoding JSON nextMatches");
-                }
-                Log.i(TAG, "Размер будущх матчей " + nextResultsMatch.size());
-                /*ArrayList<String> response = connect.responseFromServerArray(gson.toJson(message), 3); //получаем массив JSON-ов
-                Log.i(TAG, response.toString());
-                for(int i = 0; i < response.size(); i++){
-                    switch (i){
-                        case 0:
-                            tournamentTable.clear();
-                            Log.i(TAG, response.get(i));
-                            tournamentTable = gson.fromJson(response.get(i), new TypeToken<ArrayList<TournamentTable>>(){}.getType());
-                            Log.i(TAG, "Размер турнирной таблицы " + tournamentTable.size());
-                            break;
-                        case 1:
-                            Log.i(TAG, response.get(i));
-                            prevResultsMatch.clear();
-                            prevResultsMatch = gson.fromJson(response.get(i), new TypeToken<ArrayList<PrevMatches>>(){}.getType());
-                            Log.i(TAG, "Размер турнирной таблицы " + prevResultsMatch.size());
-                            break;
-                        case 2:
-                            Log.i(TAG, response.get(i));
-                            nextResultsMatch.clear();
-                            nextResultsMatch = gson.fromJson(response.get(i), new TypeToken<ArrayList<NextMatches>>(){}.getType());
-                            break;
+                if(setting == 2){
+                    message.name_league = nameLeague;
+                    responseFromServer = connect.connectToServer(gson.toJson(message));
+                    divisions.clear();
+                    divisions = gson.fromJson(responseFromServer, new TypeToken<ArrayList<Division>>(){}.getType());
+                    Log.i(TAG, "Divisions: \n" + divisions);
+                    flagSpinner = false;
+                    connect.closeConnection();
+                }else if(setting == 1){
+                    message.name_league = nameLeague;
+                    responseFromServer = connect.connectToServer(gson.toJson(message));
+                    divisions.clear();
+                    divisions = gson.fromJson(responseFromServer, new TypeToken<ArrayList<Division>>(){}.getType());
+                    Log.i(TAG, "Divisions: \n" + divisions);
+                    connect.openConnection(); //открываем соединение
+                    dataForFragment= divisions.get(0).idDivision;
+                    message.setId(divisions.get(0).idDivision);
+                    message.setMessageLogic("division");
+                    responseFromServer = connect.connectToServer(gson.toJson(message));
+                    String delimiter = "\\?";
+                    String[] arrayJSON = responseFromServer.split(delimiter);
+                    tournamentTable.clear();
+                    Log.i(TAG, arrayJSON[0]);
+                    tournamentTable = gson.fromJson(arrayJSON[0], new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                    Log.i(TAG, "Размер турнирной таблицы " + tournamentTable.size());
+                    Log.i(TAG, arrayJSON[1]);
+                    prevResultsMatch.clear();
+                    try {
+                        prevResultsMatch = gson.fromJson(arrayJSON[1], new TypeToken<ArrayList<PrevMatches>>() {
+                        }.getType());
+                    }catch(Exception e){
+                        Log.i(TAG, "Bed decoding JSON prevMatches");
                     }
-                }
-                imageArray = connect.fileFromServer();
-                if(imageArray == null){
-                    Log.i(TAG, "Нет фотографий");
-                }
-
-                for(PrevMatches match : prevResultsMatch){
-                    for(ImageFromServer image : imageArray){
-                        if(image.getNameImage().equals(match.getTeamHome())){
-                            match.setImageHomeImage(image);
-                        }else if (image.getNameImage().equals(match.getTeamVisit())){
-                            match.setImageVisitImage(image);
-                        }
+                    Log.i(TAG, "Размер предыдущих матчей таблицы " + prevResultsMatch.size());
+                    Log.i(TAG, arrayJSON[2]);
+                    nextResultsMatch.clear();
+                    try{
+                        nextResultsMatch = gson.fromJson(arrayJSON[2], new TypeToken<ArrayList<NextMatches>>(){}.getType());
+                    }catch(Exception e){
+                        Log.i(TAG, "Bed decoding JSON nextMatches");
                     }
+                    Log.i(TAG, "Размер будущх матчей " + nextResultsMatch.size());
+                    connect.closeConnection();
+                }else{//3 - только инфа
+                    message.setMessageLogic("division");
+                    responseFromServer = connect.connectToServer(gson.toJson(message));
+                    String delimiter = "\\?";
+                    String[] arrayJSON = responseFromServer.split(delimiter);
+                    tournamentTable.clear();
+                    Log.i(TAG, arrayJSON[0]);
+                    tournamentTable = gson.fromJson(arrayJSON[0], new TypeToken<ArrayList<TournamentTable>>(){}.getType());
+                    Log.i(TAG, "Размер турнирной таблицы " + tournamentTable.size());
+                    Log.i(TAG, arrayJSON[1]);
+                    prevResultsMatch.clear();
+                    try {
+                        prevResultsMatch = gson.fromJson(arrayJSON[1], new TypeToken<ArrayList<PrevMatches>>() {
+                        }.getType());
+                    }catch(Exception e){
+                        Log.i(TAG, "Bed decoding JSON prevMatches");
+                    }
+                    Log.i(TAG, "Размер предыдущих матчей таблицы " + prevResultsMatch.size());
+                    Log.i(TAG, arrayJSON[2]);
+                    nextResultsMatch.clear();
+                    try{
+                        nextResultsMatch = gson.fromJson(arrayJSON[2], new TypeToken<ArrayList<NextMatches>>(){}.getType());
+                    }catch(Exception e){
+                        Log.i(TAG, "Bed decoding JSON nextMatches");
+                    }
+                    Log.i(TAG, "Размер будущх матчей " + nextResultsMatch.size());
+                    connect.closeConnection();
                 }
-                */
-                connect.closeConnection();
                 return "success"; //все хорошо
 
             }catch(Exception e) {
@@ -325,17 +368,23 @@ public class MainActivity extends AppCompatActivity
             //super.onPostExecute(s);
             this.progressDialog.dismiss();
             if (s.equals("success")){
-                if(flag == false){//проверка на запущенность активности
-                    fragmentMain = new FragmentMain();
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
-                    flag = true;
+                if(setting==1 || setting ==3){
+                    if(flag == false){//проверка на запущенность активности
+                        fragmentMain = new FragmentMain();
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frameContainer, fragmentMain).commit();
+                        flag = true;
+                    }else{
+                        if(update)
+                            Toast.makeText(MainActivity.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
+                        fragmentMain.update();
+                    }
+
+                        addMenuItemInNavMenuDrawer(divisions, dataForFragment);
+
                 }else{
-                    if(update)
-                        Toast.makeText(MainActivity.this, "Данные обновлены", Toast.LENGTH_SHORT).show();
-                    fragmentMain.update();
+                    addMenuItemInNavMenuDrawer(divisions, dataForFragment);
                 }
-                addMenuItemInNavMenuDrawer(divisions, dataForFragment);
             }else{
                 Toast.makeText(getApplicationContext(),"Ошибка соединения", Toast.LENGTH_LONG).show();
             }

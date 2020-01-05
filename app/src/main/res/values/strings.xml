@@ -47,6 +47,12 @@
         <item>Третий дивизион А</item>
         <item>Третий дивизион В</item>
     </string-array>>
+    <string-array name="leagues_list">
+        <item>Восточная Лига</item>
+        <item>Западная Лига</item>
+        <item>Северная лига</item>
+        <item>Южная Лига</item>
+    </string-array>>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 

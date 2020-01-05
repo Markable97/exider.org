@@ -11,6 +11,7 @@ public class MessageToJson {
     private String team_name;
     private MessageRegister user_info;
     String responseFromServer;
+    public String name_league;
     int settingForApp;
     ArrayList<Schedule> schedule;
     PrevMatches match;
