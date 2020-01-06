@@ -43,7 +43,7 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
     @Override
     public RecyclerViewForResults.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_row_results, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, this.list);
     }
 
     @Override
@@ -88,35 +88,22 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
             holder.goalTeamHome.setText("");
             holder.goalTeamVisit.setText("");
         }
-        if(match.getPlayed() == 1){
-            holder.bind(true);
-           holder.itemView.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    PrevMatches matches = list.get(position);
-                    Intent intent = new Intent(holder.itemView.getContext(), MatchActivity.class);
-                    /*Log.i(TAG, "onClick: Картинки" + listImage.size());
-                    for(int i = 0; i < listImage.size(); i++){
-                        if(matches.getTeamHome().equalsIgnoreCase(listImage.get(i).getNameImage())){
-                            Log.i(TAG, "onClick: Зашел в If для дома");
-                            imageHome = listImage.get(i);
-                        }
-                        if(matches.getTeamVisit().equalsIgnoreCase(listImage.get(i).getNameImage())){
-                            Log.i(TAG, "onClick: Зашел в If для гостей");
-                            imageVisit = listImage.get(i);
-                        }
-                    }
-                    Log.i(TAG, "onClick: " + imageHome.getNameImage() + imageVisit.getNameImage());*/
-                    intent.putExtra("information", matches);
-                    //intent.putExtra("imageHome", (Parcelable) imageHome);
-                    //intent.putExtra("imageVisit", (Parcelable) imageVisit);
-                    holder.itemView.getContext().startActivity(intent);
+
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(match.getPlayed()==1){
+                    holder.bind(true, match);
+                }else{
+                    holder.bind(false, match);
                 }
-            });
-        }else{
-            holder.bind(false);
-        }
+            }
+        });*/
+
+
+
     }
 
 
@@ -137,6 +124,7 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
         Boolean played;
+        PrevMatches match;
         TextView tour;
         ImageView imageTeamHome;
         ImageView imageTeamVisit;
@@ -145,7 +133,7 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
         TextView goalTeamHome;
         TextView goalTeamVisit;
 
-        ViewHolder(View itemView) {
+        ViewHolder(final View itemView, final List<PrevMatches> matches) {
             super(itemView);
             tour = itemView.findViewById(R.id.res_tour);
             imageTeamHome = itemView.findViewById(R.id.res_image_home);
@@ -157,14 +145,16 @@ public class RecyclerViewForResults extends RecyclerView.Adapter<RecyclerViewFor
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!played){
+                    match = matches.get(getLayoutPosition());
+                    if(match.getPlayed()!=1){
                         onFalsePlaedListiner.playedFalse();
+                    }else{
+                        Intent intent = new Intent(itemView.getContext(), MatchActivity.class);
+                        intent.putExtra("information", match);
+                        itemView.getContext().startActivity(intent);
                     }
                 }
             });
-        }
-        public void bind(boolean played){
-            this.played = played;
         }
     }
 }
