@@ -1,16 +1,12 @@
 package com.example.markable.footballapptest.Fragments;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +17,7 @@ import com.example.markable.footballapptest.Classes.Player;
 import com.example.markable.footballapptest.R;
 import com.example.markable.footballapptest.ReturnFromFragForAct;
 import com.example.markable.footballapptest.TeamActivity;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class FragmentForTeamStatistic extends Fragment {
